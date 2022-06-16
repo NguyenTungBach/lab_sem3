@@ -22,16 +22,16 @@
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method
             //  to avoid creating duplicate seed data.
 
-            var roles = new List<IdentityRole>
-            {
-                new IdentityRole {Name=RoleEnum.ADMIN.ToString()},
-                new IdentityRole {Name=RoleEnum.HOD.ToString()},
-                new IdentityRole {Name=RoleEnum.INSTRUCTOR.ToString()},
-                new IdentityRole {Name=RoleEnum.TECHNICAL_STAFF.ToString()},
-                new IdentityRole {Name=RoleEnum.STUDENT.ToString()},
-            };
-            roles.ForEach(s => context.Roles.Add(s));
-            context.SaveChanges();
+            //var roles = new List<IdentityRole>
+            //{
+            //    new IdentityRole {Name=RoleEnum.ADMIN.ToString()},
+            //    new IdentityRole {Name=RoleEnum.HOD.ToString()},
+            //    new IdentityRole {Name=RoleEnum.INSTRUCTOR.ToString()},
+            //    new IdentityRole {Name=RoleEnum.TECHNICAL_STAFF.ToString()},
+            //    new IdentityRole {Name=RoleEnum.STUDENT.ToString()},
+            //};
+            //roles.ForEach(s => context.Roles.Add(s));
+            //context.SaveChanges();
 
         }
     }

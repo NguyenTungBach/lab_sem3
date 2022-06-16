@@ -161,14 +161,15 @@
     <Compile Include="Enum\DepartmentStatusEnum.cs" />
     <Compile Include="Enum\DocumentStatusEnum.cs" />
     <Compile Include="Enum\EquipmentStatusEnum.cs" />
+    <Compile Include="Enum\LabStatusEnum.cs" />
     <Compile Include="Enum\RoleEnum.cs" />
     <Compile Include="Enum\ScheduleStatusEnum.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202206161252018_dbcontext.cs" />
-    <Compile Include="Migrations\202206161252018_dbcontext.designer.cs">
-      <DependentUpon>202206161252018_dbcontext.cs</DependentUpon>
+    <Compile Include="Migrations\202206161410380_context.cs" />
+    <Compile Include="Migrations\202206161410380_context.designer.cs">
+      <DependentUpon>202206161410380_context.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
@@ -236,8 +237,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202206161252018_dbcontext.resx">
-      <DependentUpon>202206161252018_dbcontext.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202206161410380_context.resx">
+      <DependentUpon>202206161410380_context.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
