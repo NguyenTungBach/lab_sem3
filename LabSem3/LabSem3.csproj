@@ -156,22 +156,30 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Data\LabSem3Context.cs" />
+    <Compile Include="Enum\AccountStatusEnum.cs" />
+    <Compile Include="Enum\ComplaintStatusEnum.cs" />
+    <Compile Include="Enum\DepartmentStatusEnum.cs" />
+    <Compile Include="Enum\DocumentStatusEnum.cs" />
+    <Compile Include="Enum\EquipmentStatusEnum.cs" />
     <Compile Include="Enum\RoleEnum.cs" />
+    <Compile Include="Enum\ScheduleStatusEnum.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202206161114058_dbcontext.cs" />
-    <Compile Include="Migrations\202206161114058_dbcontext.designer.cs">
-      <DependentUpon>202206161114058_dbcontext.cs</DependentUpon>
+    <Compile Include="Migrations\202206161252018_dbcontext.cs" />
+    <Compile Include="Migrations\202206161252018_dbcontext.designer.cs">
+      <DependentUpon>202206161252018_dbcontext.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Complaint.cs" />
     <Compile Include="Models\Department.cs" />
     <Compile Include="Models\Document.cs" />
     <Compile Include="Models\Equipment.cs" />
     <Compile Include="Models\Lab.cs" />
     <Compile Include="Models\Schedule.cs" />
-    <Compile Include="Models\Type.cs" />
+    <Compile Include="Models\TypeComplaint.cs" />
+    <Compile Include="Models\TypeEquipment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -228,8 +236,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202206161114058_dbcontext.resx">
-      <DependentUpon>202206161114058_dbcontext.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202206161252018_dbcontext.resx">
+      <DependentUpon>202206161252018_dbcontext.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
