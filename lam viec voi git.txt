@@ -1,0 +1,24 @@
+phần làm việc bắt đầu cho 1 project
+	git init : khai báo thư mục làm việc với git ----> chạy 1 lần cho 1 project
+	git remote add origin https://github.com/quytitans/T2012E-QENVY.git : cấu hình lần đầu cho 1 project, origin có thể tùy biến đặt tên
+	phần làm việc thường xuyên trên 1 project
+		git add tenthumuchoactenfile : add 1 file
+		git commit -m "motacongviecbanlamdeluulailichsu" : mô tả công việc đã làm
+		git push origin master : đẩy lên\
+		git status : kiểm tra hiện trạng tương tác giữa project và github, file nào đã lên, file nào đang chờ, file nào chưa lên git
+	.gitignore  : tạo trên project, đẩy lên git, nhưng file trong này sẽ không được phép đẩy lên
+	git add. hoặc git add -a: đưa tất cả file trong thư mục lên
+
+lấy file về từ upload của người khác --->
+git clone link thumucluutru : nếu ko có thumucluutru thì sẽ thả vào... cái này chỉ làm 1 lần cho 1 project
+git pull origin master : cái này làm thường xuyên để up down load dữ liệu
+\
+git checkout -b taoBranch  : tạo nhánh mới
+
+xóa thư mục trên git
+git rm -r --cached FolderName
+git commit -m "Removed folder from repository"
+git push origin master
+
+git reset -- .vs/*
+Update-Package Microsoft.CodeDom.Providers.DotNetCompilerPlatform -r
