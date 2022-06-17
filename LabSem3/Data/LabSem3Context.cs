@@ -35,25 +35,33 @@ namespace LabSem3.Data
                 .WithMany(g => g.Labs)
                 .HasForeignKey<string>(s => s.AccountId).WillCascadeOnDelete(false);
 
+
             modelBuilder.Entity<Schedule>()
                 .HasRequired<Account>(s => s.Instructor)
                 .WithMany(g => g.Schedules)
                 .HasForeignKey<string>(s => s.InstructorId).WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Lab>()
+                .HasMany<Schedule>(s => s.Schedules)
+                .WithRequired(g => g.Lab)
+                .HasForeignKey<int>(s => s.LabId).WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Lab>()
                 .HasRequired<Department>(s => s.Department)
                 .WithMany(g => g.Labs)
                 .HasForeignKey<int>(s => s.DepartmentId).WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Equipment>()
-                .HasRequired<Lab>(s => s.Lab)
-                .WithMany(g => g.Equipments)
+            modelBuilder.Entity<Lab>()
+                .HasMany<Equipment>(s => s.Equipments)
+                .WithRequired(g => g.Lab)
                 .HasForeignKey<int>(s => s.LabId).WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Schedule > ()
-                .HasRequired<Lab>(s => s.Lab)
-                .WithMany(g => g.Schedules)
-                .HasForeignKey<int>(s => s.LabId).WillCascadeOnDelete(false);
+           
+
+            //modelBuilder.Entity<Complaint>()
+            //    .HasRequired<TypeComplaint>(s => s.TypeComplaint)
+            //    .WithMany(g => g.Complaints)
+            //    .HasForeignKey<int>(s => s.TypeComplaintId).WillCascadeOnDelete(false);
 
             modelBuilder.Entity<IdentityUserLogin>().HasKey<string>(l => l.UserId);
             modelBuilder.Entity<IdentityRole>().HasKey<string>(r => r.Id);

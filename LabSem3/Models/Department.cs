@@ -14,9 +14,9 @@ namespace LabSem3.Models
         public string Name { get; set; }
         public string Location { get; set; }
         public int Status { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
-        public DateTime DeletedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public DateTime? DeletedAt { get; set; }
 
         public string HodId { get; set; }
         [ForeignKey("HodId")]

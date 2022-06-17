@@ -22,6 +22,9 @@ namespace LabSem3.Models
         [DataType(DataType.Text)]
         public string Note { get; set; }
         public int Status { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public DateTime? DeletedAt { get; set; }
 
         public string AccountId { get; set; }
         [ForeignKey("AccountId")]
@@ -30,5 +33,9 @@ namespace LabSem3.Models
         public string SupportedId { get; set; }
         [ForeignKey("SupportedId")]
         public virtual Account Supporter { get; set; }
+
+        public int? TypeComplaintId { get; set; }
+        [ForeignKey("TypeComplaintId")]
+        public virtual TypeComplaint TypeComplaint { get; set; }
     }
 }

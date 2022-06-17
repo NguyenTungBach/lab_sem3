@@ -13,14 +13,15 @@ namespace LabSem3.Models
         public int Id { get; set; }
 
         public int Status { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
-        public DateTime DeletedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public DateTime? DeletedAt { get; set; }
 
         public int DepartmentId { get; set; }
         [ForeignKey("DepartmentId")]
         public virtual Department Department { get; set; }
 
+        
         public int EquipmentId { get; set; }
         [ForeignKey("EquipmentId")]
         public virtual List<Equipment> Equipments { get; set; }
