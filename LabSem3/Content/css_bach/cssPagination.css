@@ -1,0 +1,36 @@
+﻿.pagination-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .pagination-container ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden; /*background-color: #333;*/
+    }
+
+    .pagination-container li {
+        float: left;
+        border-right: 1px solid #bbb;
+    }
+
+        .pagination-container li:last-child {
+            border-right: none;
+        }
+
+.pagination li a {
+    display: block;
+    color: Black;
+    text-align: center;
+    padding: 10px 16px;
+}
+
+.pagination-container li a:hover:not(.active) {
+    background-color: lightgray;
+}
+
+.pagination-container .active {
+    background-color: lightgray;
+}

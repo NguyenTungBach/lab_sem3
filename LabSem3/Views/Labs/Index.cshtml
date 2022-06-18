@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutLabs.cshtml";
 }
 
 <h2>Index</h2>
@@ -11,12 +12,6 @@
 </p>
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Account.Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Department.Name)
-        </th>
         <th>
             @Html.DisplayNameFor(model => model.Status)
         </th>
@@ -30,7 +25,13 @@
             @Html.DisplayNameFor(model => model.DeletedAt)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.DepartmentId)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.EquipmentId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AccountId)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.ScheduleId)
@@ -40,12 +41,6 @@
 
 @foreach (var item in Model) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Account.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Department.Name)
-        </td>
         <td>
             @Html.DisplayFor(modelItem => item.Status)
         </td>
@@ -59,7 +54,13 @@
             @Html.DisplayFor(modelItem => item.DeletedAt)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.DepartmentId)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.EquipmentId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AccountId)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.ScheduleId)

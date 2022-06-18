@@ -1,0 +1,82 @@
+﻿@model PagedList.IPagedList<LabSem3.Models.Account>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutLabs.cshtml";
+    <link href="~/Content/css_bach/cssPagination.css" rel="stylesheet" />
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<div class="container" style="margin-bottom:10px">
+    <form action="/Account/Index" method="get">
+        <div class="row">
+
+            <div class="col-lg-4">
+                Search Account
+                <input type="text" value="@ViewBag.UserName" class="form-control" name="UserName" placeholder="Search...">
+            </div>
+            <div class="col-lg-4">
+                <input class="btn btn-success" type="submit" value="Search" />
+            </div>
+
+        </div>
+    </form>
+
+</div>
+<table class="table">
+    <tr>
+
+        <th>
+            Id
+        </th>
+        <th>
+            User Name
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+            CreatedAt
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.Id
+            </td>
+            <td>
+                @item.UserName
+            </td>
+            <td>
+                @item.Status
+            </td>
+            <td>
+                @item.CreatedAt
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, UserName = ViewBag.UserName }))
+
+    </ul>
+</nav>

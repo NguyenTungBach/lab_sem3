@@ -14,6 +14,7 @@ namespace LabSem3.Models
         public Account()
         {
             Status = ((int)AccountStatusEnum.ACTIVE);
+            CreatedAt = DateTime.Now;
         }
         public int Status { get; set; }
         public DateTime? CreatedAt { get; set; }
