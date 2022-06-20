@@ -7,13 +7,13 @@ namespace LabSem3.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class FirstTime : IMigrationMetadata
+    public sealed partial class Context : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(FirstTime));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Context));
         
         string IMigrationMetadata.Id
         {
-            get { return "202206191657599_FirstTime"; }
+            get { return "202206201641546_Context"; }
         }
         
         string IMigrationMetadata.Source

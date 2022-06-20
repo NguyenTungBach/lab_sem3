@@ -11,6 +11,7 @@ namespace LabSem3.Enum
         HOD,
         INSTRUCTOR,
         TECHNICAL_STAFF,
-        STUDENT
+        STUDENT,
+        WAITING
     }
 }

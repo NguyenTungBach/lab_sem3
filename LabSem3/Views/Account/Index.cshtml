@@ -3,7 +3,7 @@
 
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_LayoutLabs.cshtml";
+    
     <link href="~/Content/css_bach/cssPagination.css" rel="stylesheet" />
 }
 
@@ -13,7 +13,19 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 <div class="container" style="margin-bottom:10px">
-    <form action="/Account/Index" method="get">
+    <form action="/Account/Index" method="get" class="d-none d-sm-inline-block form-inline navbar-search">
+        <div class="input-group">
+            <input value="@ViewBag.UserName" type="text" class="form-control bg-default border-0 small" placeholder="Search for..."
+                   aria-label="Search" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">
+                    <i class="fas fa-search fa-sm"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+
+    @*<form action="/Account/Index" method="get">
         <div class="row">
 
             <div class="col-lg-4">
@@ -25,7 +37,7 @@
             </div>
 
         </div>
-    </form>
+    </form>*@
 
 </div>
 <table class="table">
