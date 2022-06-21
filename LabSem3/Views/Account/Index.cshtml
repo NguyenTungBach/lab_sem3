@@ -3,7 +3,7 @@
 
 @{
     ViewBag.Title = "Index";
-    
+
     <link href="~/Content/css_bach/cssPagination.css" rel="stylesheet" />
 }
 
@@ -12,10 +12,25 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["False"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["False"]
+    </div>
+}
+
 <div class="container" style="margin-bottom:10px">
     <form action="/Account/Index" method="get" class="d-none d-sm-inline-block form-inline navbar-search">
         <div class="input-group">
-            <input value="@ViewBag.UserName" type="text" class="form-control bg-default border-0 small" placeholder="Search for..."
+            <input value="@ViewBag.UserName" name="UserName" type="text" class="form-control bg-default border-0 small" placeholder="Search for..."
                    aria-label="Search" aria-describedby="basic-addon2">
             <div class="input-group-append">
                 <button class="btn btn-primary" type="submit">
@@ -26,18 +41,18 @@
     </form>
 
     @*<form action="/Account/Index" method="get">
-        <div class="row">
+            <div class="row">
 
-            <div class="col-lg-4">
-                Search Account
-                <input type="text" value="@ViewBag.UserName" class="form-control" name="UserName" placeholder="Search...">
-            </div>
-            <div class="col-lg-4">
-                <input class="btn btn-success" type="submit" value="Search" />
-            </div>
+                <div class="col-lg-4">
+                    Search Account
+                    <input type="text" value="@ViewBag.UserName" class="form-control" name="UserName" placeholder="Search...">
+                </div>
+                <div class="col-lg-4">
+                    <input class="btn btn-success" type="submit" value="Search" />
+                </div>
 
-        </div>
-    </form>*@
+            </div>
+        </form>*@
 
 </div>
 <table class="table">
@@ -67,6 +82,7 @@
             <td>
                 @item.UserName
             </td>
+            
             <td>
                 @item.Status
             </td>

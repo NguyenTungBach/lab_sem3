@@ -1,6 +1,7 @@
 ﻿using LabSem3.Data;
 using LabSem3.Enum;
 using LabSem3.Models;
+using LabSem3.Models.ViewModel;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using PagedList;
@@ -30,7 +31,7 @@ namespace LabSem3.Controllers
             roleManager = new RoleManager<IdentityRole>(roleStore); // giống Service, xử lý các vấn đề liên quan đến logic
         }
 
-        public async Task<ActionResult> Register(string Username, string Password)
+        public async Task<bool> Register(string Username, string Password)
         {
             Account user = new Account()
             {
@@ -51,20 +52,20 @@ namespace LabSem3.Controllers
                 var check = await AddUserToRoleAsync(queryUser.Id, RoleEnum.STUDENT.ToString());
                 if (check)
                 {
-                    return View("ViewSuccess");
+                    return true;
                 }
                 else
                 {
                     ViewBag.Errors = "Lỗi tạo quyền";
                     System.Diagnostics.Debug.WriteLine("Lỗi tạo quyền");
-                    return View("ViewError");
+                    return false;
                 }
             }
             else
             {
                 ViewBag.Errors = result.Errors;
                 System.Diagnostics.Debug.WriteLine("Lỗi đăng ký là ", result.Errors);
-                return View("ViewError");
+                return false;
             }
         }
 
@@ -94,10 +95,10 @@ namespace LabSem3.Controllers
         }
 
         // GET: Account
-        public ActionResult Index(string UserName, int? page)
+        public async Task<ActionResult> Index(string UserName, int? page)
         {
-            var account = db.Users.Include(l => l.Department).OrderBy(s => s.Id).AsQueryable();
-            
+            var account = userManager.Users.Include(l => l.Department).Include(l => l.Roles).OrderBy(s => s.Id).AsQueryable();
+
             if (UserName != null && UserName.Length > 0)
             {
                 account = account.Where(s => s.UserName.Contains(UserName));
@@ -118,6 +119,24 @@ namespace LabSem3.Controllers
                 return HttpNotFound();
             }
             var account = db.Users.Find(id);
+            ViewBag.Roles = userManager.GetRoles(id).ToList();
+
+            var listUser = userManager.Users.ToList();
+
+            //var listUserByRole = new List<string>();
+            //foreach (var user in listUser)
+            //{
+            //    var checkRole = userManager.GetRoles(user.Id).ToList();
+            //    foreach (var role in checkRole)
+            //    {
+            //        if(role == RoleEnum.ADMIN.ToString())
+            //        {
+            //            listUserByRole.Add(user.UserName);
+            //        }
+            //    }
+            //}
+            //ViewBag.AccountByRole = listUserByRole;
+
             return View(account);
         }
 
@@ -130,12 +149,59 @@ namespace LabSem3.Controllers
 
         // POST: Account/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public async Task<ActionResult> Create(AccountViewModel accountViewModel)
         {
             try
             {
                 // TODO: Add insert logic here
+                if (ModelState.IsValid)
+                {
+                    var checkRoles = accountViewModel.Role.Split(',');
 
+                    var accountExist = db.Users.Where(accountFind => accountFind.UserName.Contains(accountViewModel.UserName)).FirstOrDefault();
+
+                    if (accountExist != null)
+                    {
+                        TempData["False"] = "Create account " + accountViewModel.UserName + " false because account exist";
+                        return RedirectToAction("Index");
+                    }
+
+                    Account account = new Account()
+                    {
+                        UserName = accountViewModel.UserName,
+                        Status = 1,
+                        CreatedAt = DateTime.Now
+                    };
+
+                    db.Users.Add(account);
+                    db.SaveChanges();
+
+
+                    foreach (var role in checkRoles)
+                    {
+                        var checkRoleExist = db.Roles.Where(roleFind => roleFind.Name.Contains(role)).FirstOrDefault();
+                        if (checkRoleExist == null)
+                        {
+                            TempData["False"] = "Create account flase because role " + checkRoleExist + " not exist";
+                            return RedirectToAction("Index");
+                        }
+                    }
+
+                    foreach (var role in checkRoles)
+                    {
+                        var check = await AddUserToRoleAsync(account.Id, role);
+                        if (!check)
+                        {
+                            TempData["False"] = "Create account false because something error when add role ";
+                            return RedirectToAction("Index");
+                        }
+
+                    }
+                    
+                    TempData["Success"] = "Create account " + accountViewModel.UserName + " success";
+                    return RedirectToAction("Index");
+                }
+                //TempData["False"] = "Tạo tài khoản thành công";
                 return RedirectToAction("Index");
             }
             catch

@@ -11,7 +11,7 @@
     <h4>Account</h4>
     <hr />
     <dl class="dl-horizontal">
-        
+
         <dt>
             @Html.DisplayNameFor(model => model.PhoneNumber)
         </dt>
@@ -64,7 +64,7 @@
             @Html.DisplayNameFor(model => model.Labs)
         </dt>
 
-        <dd> 
+        <dd>
             @Html.DisplayFor(model => model.Labs)
         </dd>
 
@@ -91,7 +91,25 @@
         <dd>
             @Html.DisplayFor(model => model.Schedules)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Roles)
+        </dt>
+        <dt>
+            @foreach (var role in ViewBag.Roles)
+            {
+                <span>@role </span>
+            }
+        </dt>
 
+        <dt>
+            Test Account by role
+        </dt>
+        <dt>
+            @foreach (var account in ViewBag.AccountByRole)
+            {
+                <span>@account </span>
+            }
+        </dt>
     </dl>
 </div>
 <p>

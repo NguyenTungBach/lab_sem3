@@ -56,13 +56,13 @@ namespace LabSem3.Data
                 .WithRequired(g => g.Lab)
                 .HasForeignKey<int>(s => s.LabId).WillCascadeOnDelete(false);
 
-           
+
 
             //modelBuilder.Entity<Complaint>()
             //    .HasRequired<TypeComplaint>(s => s.TypeComplaint)
             //    .WithMany(g => g.Complaints)
             //    .HasForeignKey<int>(s => s.TypeComplaintId).WillCascadeOnDelete(false);
-
+            
             modelBuilder.Entity<IdentityUserLogin>().HasKey<string>(l => l.UserId);
             modelBuilder.Entity<IdentityRole>().HasKey<string>(r => r.Id);
             modelBuilder.Entity<IdentityUserRole>().HasKey(r => new { r.RoleId, r.UserId });

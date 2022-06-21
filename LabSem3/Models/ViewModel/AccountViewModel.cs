@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -25,11 +26,16 @@ namespace LabSem3.Models.ViewModel
         
         [DisplayName("ComfirmPassword")]
         [Required(ErrorMessage = "ComfirmPassword Required")]
+        [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Confirm password doesn't match, Type again !")]
         public string ComfirmPassword { get; set; }
+
+        [Required(ErrorMessage = "Role Required")]
         public string Role { get; set; }
 
-        public int Status { get; set; }
+        
+
+        public int? Status { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
