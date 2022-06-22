@@ -11,6 +11,9 @@ namespace LabSem3.Models
     {
         [Key]
         public int Id { get; set; }
+
+        [Display(Name = "Equipment Name")]
+        [Required(ErrorMessage = "Name Equipment Require")]
         public string Name { get; set; }
         public int Status { get; set; }
         public DateTime? CreatedAt { get; set; }

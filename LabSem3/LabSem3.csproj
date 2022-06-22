@@ -179,6 +179,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ComplaintController.cs" />
+    <Compile Include="Controllers\DocumentController.cs" />
+    <Compile Include="Controllers\EquipmentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LabsController.cs" />
     <Compile Include="Data\LabSem3Context.cs" />
@@ -193,9 +195,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202206211132340_SecondTime.cs" />
-    <Compile Include="Migrations\202206211132340_SecondTime.Designer.cs">
-      <DependentUpon>202206211132340_SecondTime.cs</DependentUpon>
+    <Compile Include="Migrations\202206221643533_dbcontext.cs" />
+    <Compile Include="Migrations\202206221643533_dbcontext.Designer.cs">
+      <DependentUpon>202206221643533_dbcontext.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
@@ -2197,6 +2199,16 @@
     <Content Include="Views\Complaint\Faile.cshtml" />
     <Content Include="Views\Complaint\Index.cshtml" />
     <Content Include="Views\Complaint\ComplaintWaiting.cshtml" />
+    <Content Include="Views\Equipment\Index.cshtml" />
+    <Content Include="Views\Equipment\Create.cshtml" />
+    <Content Include="Views\Equipment\Details.cshtml" />
+    <Content Include="Views\Equipment\Edit.cshtml" />
+    <Content Include="Views\Equipment\Delete.cshtml" />
+    <Content Include="Views\Document\Index.cshtml" />
+    <Content Include="Views\Document\Details.cshtml" />
+    <Content Include="Views\Document\Create.cshtml" />
+    <Content Include="Views\Document\Edit.cshtml" />
+    <Content Include="Views\Document\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2215,8 +2227,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202206211132340_SecondTime.resx">
-      <DependentUpon>202206211132340_SecondTime.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202206221643533_dbcontext.resx">
+      <DependentUpon>202206221643533_dbcontext.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
