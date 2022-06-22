@@ -23,72 +23,90 @@
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method
             //  to avoid creating duplicate seed data.
 
-            var roles = new List<IdentityRole>
+            //var roles = new List<IdentityRole>
+            //{
+            //    new IdentityRole {Name=RoleEnum.ADMIN.ToString()},
+            //    new IdentityRole {Name=RoleEnum.HOD.ToString()},
+            //    new IdentityRole {Name=RoleEnum.INSTRUCTOR.ToString()},
+            //    new IdentityRole {Name=RoleEnum.TECHNICAL_STAFF.ToString()},
+            //    new IdentityRole {Name=RoleEnum.STUDENT.ToString()},
+            //    new IdentityRole {Name=RoleEnum.WAITING.ToString()},
+            //};
+            //roles.ForEach(s => context.Roles.Add(s));
+            //context.SaveChanges();
+
+            //var users = new List<Account>
+            //{
+            //    new Account {UserName="Admin", PasswordHash="89B8B8E486421463D7E0F5CAF60FB9CB35CE169B76E657AB21FC4D1D6B093603",CreatedAt=DateTime.Now, Status=((int)AccountStatusEnum.ACTIVE)},
+            //};
+            //users.ForEach(s => context.Users.Add(s));
+            //context.SaveChanges();
+
+            //var typeComplaints = new List<TypeComplaint>
+            //{
+            //    new TypeComplaint {Id = 1, Name = "Software Licenses"},
+            //    new TypeComplaint {Id = 2, Name = "Equipment Problem"},
+            //    new TypeComplaint {Id = 3, Name = "Required New Equipment"},
+            //    new TypeComplaint {Id = 4, Name = "Required Extra Lab"},
+            //    new TypeComplaint {Id = 5, Name = "Hygiene And Safety"},
+            //    new TypeComplaint {Id = 6, Name = "Lab Quality"},
+            //    new TypeComplaint {Id = 7, Name = "Comment For Lab Staff"},
+            //    new TypeComplaint {Id = 8, Name = "Other"}
+            //};
+
+            //typeComplaints.ForEach(s => context.TypeComplaints.Add(s));
+            //context.SaveChanges();
+
+            //var typeEquipment = new List<TypeEquipment>
+            //{
+            //    new TypeEquipment {Id = 1, Name = "Software"},
+            //    new TypeEquipment {Id = 2, Name = "Head Phone"},
+            //    new TypeEquipment {Id = 3, Name = "Desktop"},
+            //    new TypeEquipment {Id = 4, Name = "Case"},
+            //    new TypeEquipment {Id = 5, Name = "Mouse"},
+            //    new TypeEquipment {Id = 6, Name = "Key Board"},
+            //    new TypeEquipment {Id = 7, Name = "Projecter"},
+            //    new TypeEquipment {Id = 8, Name = "Screen"},
+            //    new TypeEquipment {Id = 8, Name = "Air Conditioner"},
+            //    new TypeEquipment {Id = 9, Name = "Fittings"},
+            //    new TypeEquipment {Id = 10, Name = "Wireless LAN"},
+            //    new TypeEquipment {Id = 11, Name = "Cable"},
+            //    new TypeEquipment {Id = 12, Name = "Video and audio switcher"},
+            //    new TypeEquipment {Id = 13, Name = "Table"},
+            //    new TypeEquipment {Id = 14, Name = "Chair"},
+            //    new TypeEquipment {Id = 15, Name = "Light"},
+            //    new TypeEquipment {Id = 16, Name = "Other"}
+            //};
+            //typeEquipment.ForEach(s => context.TypeEquipments.Add(s));
+            //context.SaveChanges();
+
+            var equipment = new List<Equipment>
             {
-                new IdentityRole {Name=RoleEnum.ADMIN.ToString()},
-                new IdentityRole {Name=RoleEnum.HOD.ToString()},
-                new IdentityRole {Name=RoleEnum.INSTRUCTOR.ToString()},
-                new IdentityRole {Name=RoleEnum.TECHNICAL_STAFF.ToString()},
-                new IdentityRole {Name=RoleEnum.STUDENT.ToString()},
-                new IdentityRole {Name=RoleEnum.WAITING.ToString()},
+                new Equipment{Id = 1, Name = "Chair SecretLab",TypeEquipmentId=14,Status=(int)EquipmentStatusEnum.GOOD,CreatedAt=DateTime.Now,UpdatedAt=DateTime.Now,LabId=1},
+                new Equipment{Id = 1, Name = "Raze HeadPhone",TypeEquipmentId=1,Status=(int)EquipmentStatusEnum.GOOD,CreatedAt=DateTime.Now,UpdatedAt=DateTime.Now,LabId=1},
+                new Equipment{Id = 2, Name = "Dell Desktop",TypeEquipmentId=3,Status=(int)EquipmentStatusEnum.GOOD,CreatedAt=DateTime.Now,UpdatedAt=DateTime.Now,LabId=1},
+                new Equipment{Id = 3, Name = "Logitech Mouse",TypeEquipmentId=5,Status=(int)EquipmentStatusEnum.GOOD,CreatedAt=DateTime.Now,UpdatedAt=DateTime.Now,LabId=1},
+                new Equipment{Id = 4, Name = "Logitech KeyBoard",TypeEquipmentId=6,Status=(int)EquipmentStatusEnum.GOOD,CreatedAt=DateTime.Now,UpdatedAt=DateTime.Now,LabId=1},
+                new Equipment{Id = 5, Name = "LG AirCondition",TypeEquipmentId=8,Status=(int)EquipmentStatusEnum.GOOD,CreatedAt=DateTime.Now,UpdatedAt=DateTime.Now,LabId=1},
+                new Equipment{Id = 6, Name = "Asus WirelesLan",TypeEquipmentId=10,Status=(int)EquipmentStatusEnum.GOOD,CreatedAt=DateTime.Now,UpdatedAt=DateTime.Now,LabId=1},
+                new Equipment{Id = 7, Name = "ViewSonic Projecter",TypeEquipmentId=7,Status=(int)EquipmentStatusEnum.GOOD,CreatedAt=DateTime.Now,UpdatedAt=DateTime.Now,LabId=1},
+                new Equipment{Id = 8, Name = "Screen",TypeEquipmentId=8,Status=(int)EquipmentStatusEnum.GOOD,CreatedAt=DateTime.Now,UpdatedAt=DateTime.Now,LabId=1},
+                new Equipment{Id = 9, Name = "Table",TypeEquipmentId=13,Status=(int)EquipmentStatusEnum.GOOD,CreatedAt=DateTime.Now,UpdatedAt=DateTime.Now,LabId=1},
+                new Equipment{Id = 10, Name = "Light Led",TypeEquipmentId=15,Status=(int)EquipmentStatusEnum.GOOD,CreatedAt=DateTime.Now,UpdatedAt=DateTime.Now,LabId=1},
+                new Equipment{Id = 11, Name = "Color Printer",TypeEquipmentId=16,Status=(int)EquipmentStatusEnum.GOOD,CreatedAt=DateTime.Now,UpdatedAt=DateTime.Now,LabId=1},
             };
-            roles.ForEach(s => context.Roles.Add(s));
+            equipment.ForEach(s => context.Equipments.Add(s));
             context.SaveChanges();
 
-            var users = new List<Account>
-            {
-                new Account {UserName="Admin", PasswordHash="89B8B8E486421463D7E0F5CAF60FB9CB35CE169B76E657AB21FC4D1D6B093603",CreatedAt=DateTime.Now, Status=((int)AccountStatusEnum.ACTIVE)},
-            };
-            users.ForEach(s => context.Users.Add(s));
-            context.SaveChanges();
 
-            var typeComplaints = new List<TypeComplaint>
-            {
-                new TypeComplaint {Id = 1, Name = "Software Licenses"},
-                new TypeComplaint {Id = 2, Name = "Equipment Problem"},
-                new TypeComplaint {Id = 3, Name = "Required New Equipment"},
-                new TypeComplaint {Id = 4, Name = "Required Extra Lab"},
-                new TypeComplaint {Id = 5, Name = "Hygiene And Safety"},
-                new TypeComplaint {Id = 6, Name = "Lab Quality"},
-                new TypeComplaint {Id = 7, Name = "Comment For Lab Staff"},
-                new TypeComplaint {Id = 8, Name = "Other"}
-            };
-
-            typeComplaints.ForEach(s => context.TypeComplaints.Add(s));
-            context.SaveChanges();
-
-            var typeEquipment = new List<TypeEquipment>
-            {
-                new TypeEquipment {Id = 1, Name = "Software"},
-                new TypeEquipment {Id = 2, Name = "Head Phone"},
-                new TypeEquipment {Id = 3, Name = "Desktop"},
-                new TypeEquipment {Id = 4, Name = "Case"},
-                new TypeEquipment {Id = 5, Name = "Mouse"},
-                new TypeEquipment {Id = 6, Name = "Key Board"},
-                new TypeEquipment {Id = 7, Name = "Projecter"},
-                new TypeEquipment {Id = 8, Name = "Screen"},
-                new TypeEquipment {Id = 8, Name = "Air Conditioner"},
-                new TypeEquipment {Id = 9, Name = "Fittings"},
-                new TypeEquipment {Id = 10, Name = "Wireless LAN"},
-                new TypeEquipment {Id = 11, Name = "Cable"},
-                new TypeEquipment {Id = 12, Name = "Video and audio switcher"},
-                new TypeEquipment {Id = 13, Name = "Table"},
-                new TypeEquipment {Id = 14, Name = "Chair"},
-                new TypeEquipment {Id = 15, Name = "Light"},
-                new TypeEquipment {Id = 16, Name = "Other"}
-            };
-
-            typeEquipment.ForEach(s => context.TypeEquipments.Add(s));
-            context.SaveChanges();
-
-            var departments = new List<Department>
-            {
-                new Department {Id= 1, Name="Ha Noi Center", Location="Ha Noi", Status=((int)DepartmentStatusEnum.ACTIVE),CreatedAt=DateTime.Now},
-                new Department {Id= 2, Name="Ho Chi Minh Center", Location="Ho Chi Minh City", Status=((int)DepartmentStatusEnum.ACTIVE),CreatedAt=DateTime.Now},
-                new Department {Id= 3, Name="Da Nang Center", Location="Da Nang", Status=((int)DepartmentStatusEnum.ACTIVE),CreatedAt=DateTime.Now}
-            };
-            departments.ForEach(s => context.Departments.Add(s));
-            context.SaveChanges();
+            //var departments = new List<Department>
+            //{
+            //    new Department {Id= 1, Name="Ha Noi Center", Location="Ha Noi", Status=((int)DepartmentStatusEnum.ACTIVE),CreatedAt=DateTime.Now},
+            //    new Department {Id= 2, Name="Ho Chi Minh Center", Location="Ho Chi Minh City", Status=((int)DepartmentStatusEnum.ACTIVE),CreatedAt=DateTime.Now},
+            //    new Department {Id= 3, Name="Da Nang Center", Location="Da Nang", Status=((int)DepartmentStatusEnum.ACTIVE),CreatedAt=DateTime.Now}
+            //};
+            //departments.ForEach(s => context.Departments.Add(s));
+            //context.SaveChanges();
         }
     }
 }
