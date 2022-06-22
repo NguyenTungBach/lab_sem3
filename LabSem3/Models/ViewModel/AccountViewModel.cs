@@ -12,7 +12,7 @@ namespace LabSem3.Models.ViewModel
     {
         [DisplayName("Id")]
         [Required(ErrorMessage = "Id Required")]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [DisplayName("UserName")]
         [Required(ErrorMessage = "UserName Required")]
@@ -33,11 +33,19 @@ namespace LabSem3.Models.ViewModel
         [Required(ErrorMessage = "Role Required")]
         public string Role { get; set; }
 
-        
-
         public int? Status { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
+
+        public AccountViewModel(Account account)
+        {
+            Id = account.Id;
+            UserName = account.UserName;
+            Status = account.Status;
+            CreatedAt = account.CreatedAt;
+            UpdatedAt = account.UpdatedAt;
+            DeletedAt = account.DeletedAt;
+        }
     }
 }

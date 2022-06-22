@@ -8,6 +8,7 @@ using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,7 +38,7 @@ namespace LabSem3.Controllers
             {
                 UserName = Username
             };
-
+            
             var result = await userManager.CreateAsync(user, Password);
             if (result.Succeeded)
             {
@@ -211,27 +212,59 @@ namespace LabSem3.Controllers
         }
 
         // GET: Account/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(string id)
         {
             if (id == null)
             {
                 return HttpNotFound();
             }
             var account = db.Users.Find(id);
-            return View(account);
+            var accountViewModel = new AccountViewModel(account);
+            ViewBag.Role = db.Roles.ToList();
+            ViewBag.RoleAccounts = userManager.GetRoles(id).ToList();
+            return View(accountViewModel);
         }
 
         // POST: Account/Edit/5
         [HttpPost]
-        public ActionResult Edit(string id, FormCollection collection)
+        public async Task<ActionResult> EditPostAsync(string Id, string UserName, string Password, string Role)
         {
-            //if (ModelState.IsValid)
-            //{
-            //    db.Entry(lab).State = EntityState.Modified;
-            //    db.SaveChanges();
-            //    return RedirectToAction("Index");
-            //}
-            return View();
+            if (ModelState.IsValid)
+            {
+                
+                var token = await userManager.GeneratePasswordResetTokenAsync(Id);
+                await userManager.ResetPasswordAsync(Id, token, Password);
+
+                var checkRoles = Role.Split(',');
+                var roleList = db.Roles.ToList();
+
+                foreach (var role in roleList)
+                {
+                    int check = 0;
+                    foreach (var checkRole in checkRoles)
+                    {
+                        if (role.Name.Equals(checkRole))
+                        {
+                            userManager.AddToRole(Id, role.Name);
+                            check = 1;
+                            break;
+                        }
+                    }
+                    if(check == 0)
+                    {
+                        userManager.RemoveFromRole(Id, role.Name);
+                    }
+                }
+
+                //db.Users.AddOrUpdate
+                //    db.Entry(lab).State = EntityState.Modified;
+                //    db.SaveChanges();
+                //    return RedirectToAction("Index");
+            }
+            //ViewBag.Role = db.Roles.ToList();
+            //ViewBag.RoleAccounts = userManager.GetRoles(id).ToList();
+            TempData["Success"] = "Update Account Success";
+            return RedirectToAction("Index");
         }
 
         // GET: Account/Delete/5

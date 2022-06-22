@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using LabSem3.Models.ViewModel;
 
 namespace LabSem3.Models
 {
@@ -37,5 +38,17 @@ namespace LabSem3.Models
         public int? TypeComplaintId { get; set; }
         [ForeignKey("TypeComplaintId")]
         public virtual TypeComplaint TypeComplaint { get; set; }
+
+        public Complaint()
+        {
+            
+        }
+
+        public Complaint(ComplaintViewModel complaintViewModel)
+        {
+            this.TypeComplaintId = complaintViewModel.TypeComplaintId;
+            this.Title = complaintViewModel.Title;
+            this.Detail = complaintViewModel.Detail;
+        }
     }
 }
