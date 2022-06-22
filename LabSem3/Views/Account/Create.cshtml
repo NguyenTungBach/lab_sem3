@@ -12,97 +12,66 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h4>AccountViewModel</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
-            </div>
+<div class="form-horizontal">
+    <h4>AccountViewModel</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
         </div>
+    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
         </div>
+    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ComfirmPassword, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ComfirmPassword, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ComfirmPassword, "", new { @class = "text-danger" })
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.ComfirmPassword, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ComfirmPassword, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ComfirmPassword, "", new { @class = "text-danger" })
         </div>
+    </div>
 
-        <div class="form-group">
-            <div class="control-label col-md-2">
-                Role
-            </div>
-            @foreach (var item in ViewBag.Role)
-            {
-                <div class="col-md-10">
-                    <div>
-                        <input type="checkbox" value="@item.Name" id="@item.Name" class="roleCheck">
-                        <label class="form-check-label" for="@item.Name">
-                            @item.Name
-                        </label>
-                    </div>
-                </div>
-            }
+    <div class="form-group">
+        <div class="control-label col-md-2">
+            Role
+        </div>
+        @foreach (var item in ViewBag.Role)
+        {
             <div class="col-md-10">
                 <div>
-                    <input type="checkbox" value="WAIT" id="WAIT" class="roleCheck">
-                    <label class="form-check-label" for="WAIT">
-                        WAIT
+                    <input type="checkbox" value="@item.Name" id="@item.Name" class="roleCheck">
+                    <label class="form-check-label" for="@item.Name">
+                        @item.Name
                     </label>
                 </div>
             </div>
-        </div>
+        }
+    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreatedAt, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreatedAt, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CreatedAt, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UpdatedAt, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UpdatedAt, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.UpdatedAt, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.DeletedAt, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DeletedAt, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DeletedAt, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Role, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Role, new { htmlAttributes = new { @class = "form-control", @id = "arrayRole" } })
+            @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
         </div>
     </div>
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+</div>
 }
 
 <div>
@@ -122,12 +91,12 @@
     $(document).ready(function () {
         let array = new Set();
         for (let i = 0; i < selectStatus.length; i++) { // Kiểm tra từng selectStatus
-            if (selectStatus[i].checked && $(this).val() == "WAIT") {
+            if (selectStatus[i].checked && $(this).val() == "WAITING") {
                 selectStatus.prop('checked', false);
                 $(this).prop('checked', true);
-                array.add("WAIT"); // thì đưa vào Set
+                array.add("WAITING"); // thì đưa vào Set
             }
-            if (selectStatus[i].checked && $(this).val() != "WAIT") { // Nếu có selectStatus được check
+            if (selectStatus[i].checked && $(this).val() != "WAITING") { // Nếu có selectStatus được check
                 array.add(selectStatus[i].value); // thì đưa vào Set
             }
         }
@@ -146,20 +115,20 @@
 
         if ($(this).prop('checked')) {
             for (let i = 0; i < selectStatus.length; i++) { // Kiểm tra từng selectStatus
-                if (selectStatus[i].checked && selectStatus[i].value == "wait") { // Nếu có selectStatus được check
+                if (selectStatus[i].checked && selectStatus[i].value == "WAITING") { // Nếu có selectStatus được check
                     checkWait = true;
                     $(this).prop('checked', false); // nếu trong tất cả có wait thì bỏ check
                     array = new Set();
-                    array.add("WAIT"); // thì đưa vào Set
+                    array.add("WAITING"); // thì đưa vào Set
                 }
             }
             // kiểm tra có check status = wait không
-            if (value == "WAIT") {
+            if (value == "WAITING") {
                 checkWait = true;
                 array = new Set();
                 selectStatus.prop('checked', false);
                 $(this).prop('checked', true);
-                array.add("WAIT"); // thì đưa vào Set
+                array.add("WAITING"); // thì đưa vào Set
             }
             if (!checkWait) { // nếu kiểm tra tất cả mà không có wait
                 array.add(value); // thì thêm vào mảng

@@ -11,8 +11,8 @@ namespace LabSem3.Models
     {
         [Key]
         public int Id { get; set; }
-
         public int Status { get; set; }
+        public string Thumbnail { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
@@ -22,7 +22,7 @@ namespace LabSem3.Models
         public virtual Department Department { get; set; }
 
         
-        public int EquipmentId { get; set; }
+        public int? EquipmentId { get; set; }
         [ForeignKey("EquipmentId")]
         public virtual List<Equipment> Equipments { get; set; }
 
@@ -30,7 +30,7 @@ namespace LabSem3.Models
         [ForeignKey("AccountId")]
         public virtual Account Account { get; set; }
 
-        public int ScheduleId { get; set; }
+        public int? ScheduleId { get; set; }
         [ForeignKey("ScheduleId")]
         public virtual List<Schedule> Schedules { get; set; }
     }

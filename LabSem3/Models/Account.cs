@@ -16,6 +16,10 @@ namespace LabSem3.Models
             Status = ((int)AccountStatusEnum.ACTIVE);
             CreatedAt = DateTime.Now;
         }
+        public string Thumbnail { get; set; }
+        public string Address { get; set; }
+        public int? Age { get; set; }
+        public DateTime? Birthday { get; set; }
         public int Status { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }

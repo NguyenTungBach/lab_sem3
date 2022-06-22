@@ -193,9 +193,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202206211132340_SecondTime.cs" />
-    <Compile Include="Migrations\202206211132340_SecondTime.Designer.cs">
-      <DependentUpon>202206211132340_SecondTime.cs</DependentUpon>
+    <Compile Include="Migrations\202206221553505_initDb.cs" />
+    <Compile Include="Migrations\202206221553505_initDb.Designer.cs">
+      <DependentUpon>202206221553505_initDb.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
@@ -2192,6 +2192,7 @@
     <Content Include="Views\Account\Details.cshtml" />
     <Content Include="Views\Account\Create.cshtml" />
     <Content Include="Views\Shared\_LayoutLabversion002.cshtml" />
+    <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Complaint\Create.cshtml" />
     <Content Include="Views\Complaint\Success.cshtml" />
     <Content Include="Views\Complaint\Faile.cshtml" />
@@ -2215,8 +2216,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202206211132340_SecondTime.resx">
-      <DependentUpon>202206211132340_SecondTime.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202206221553505_initDb.resx">
+      <DependentUpon>202206221553505_initDb.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
