@@ -1,5 +1,6 @@
-﻿@model LabSem3.Models.Lab
-
+﻿@model  LabSem3.Models.Lab
+@using PagedList.Mvc;
+@using PagedList;
 @{
     ViewBag.Title = "Details";
 }
@@ -22,18 +23,18 @@
         <div class="card-body">
             <div class="table-responsive">
                 <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                  
-                        <div class="col-sm-12">
-                            <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
-                                <thead>
-                                    <tr role="row"><th class="sorting sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 100px;">Equipment Id</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 150px;">Name</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 150px;">Thumbnail</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 150px;">Type Equipment</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 150px;">CreatedAt</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 189px;">UpdatedAt</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 171px;">Status</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 171px;">Action</th></tr>
-                                </thead>
-                                <tfoot>
-                                    <tr><th rowspan="1" colspan="1">Equipment Id</th><th rowspan="1" colspan="1">Name</th><th rowspan="1" colspan="1">Thumbnailt</th><th rowspan="1" colspan="1">Type Equipment</th><th rowspan="1" colspan="1">CreatedAt</th><th rowspan="1" colspan="1">UpdatedAt</th><th rowspan="1" colspan="1">Status</th><th rowspan="1" colspan="1">Action</th></tr>
-                                </tfoot>
-                                <tbody>
-                                    @foreach (var equipment in Model.Equipments)
-                                    {
+
+                    <div class="col-sm-12">
+                        <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                            <thead>
+                                <tr role="row"><th class="sorting sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 100px;">Equipment Id</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 150px;">Name</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 150px;">Thumbnail</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 150px;">Type Equipment</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 150px;">CreatedAt</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 189px;">UpdatedAt</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 171px;">Status</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 171px;">Action</th></tr>
+                            </thead>
+                            <tfoot>
+                                <tr><th rowspan="1" colspan="1">Equipment Id</th><th rowspan="1" colspan="1">Name</th><th rowspan="1" colspan="1">Thumbnailt</th><th rowspan="1" colspan="1">Type Equipment</th><th rowspan="1" colspan="1">CreatedAt</th><th rowspan="1" colspan="1">UpdatedAt</th><th rowspan="1" colspan="1">Status</th><th rowspan="1" colspan="1">Action</th></tr>
+                            </tfoot>
+                            <tbody>
+                                @foreach (var equipment in ViewBag.Equipments)
+                                {
                                     <tr class="odd">
                                         <td class="sorting_1">@equipment.Id</td>
                                         <td>@equipment.Name</td>
@@ -49,23 +50,25 @@
                                         </td>
                                         <td>
                                             @switch (equipment.Status)
-                                                        {
-                                                            case 1:
+                                            {
+                                                case 1:
                                                     <div>GOOD</div>
                                                     break;
                                             }
                                         </td>
                                         <td>
-                                            <a ><i class="fa-solid fa-info"></i></a>
-                                            <a style="margin:0 10px" ><i class="fa-solid fa-pen-to-square"></i></a>
+                                            <a><i class="fa-solid fa-info"></i></a>
+                                            <a style="margin:0 10px"><i class="fa-solid fa-pen-to-square"></i></a>
                                             <a href="#"><i class="fa-solid fa-trash-can"></i></a>
                                         </td>
                                     </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div><div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite">Showing 1 to 10 of 57 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="dataTable_previous"><a href="#" aria-controls="dataTable" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="dataTable" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="2" tabindex="0" class="page-link">2</a></li><li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="3" tabindex="0" class="page-link">3</a></li><li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="4" tabindex="0" class="page-link">4</a></li><li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="5" tabindex="0" class="page-link">5</a></li><li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="6" tabindex="0" class="page-link">6</a></li><li class="paginate_button page-item next" id="dataTable_next"><a href="#" aria-controls="dataTable" data-dt-idx="7" tabindex="0" class="page-link">Next</a></li></ul></div></div></div>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    Page @(ViewBag.Equipments.PageCount < ViewBag.Equipments.PageNumber ? 0 : ViewBag.Equipments.PageNumber) of @ViewBag.Equipments.PageCount
+                    @Html.PagedListPager((IPagedList)ViewBag.Equipments, page => Url.Action("Details",
+                        new { id = Model.Id, page }))
                 </div>
             </div>
         </div>
