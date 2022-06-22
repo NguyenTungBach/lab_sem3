@@ -207,6 +207,7 @@
     <Compile Include="Models\Schedule.cs" />
     <Compile Include="Models\TypeComplaint.cs" />
     <Compile Include="Models\TypeEquipment.cs" />
+    <Compile Include="Models\ViewModel\AccountEditViewModel.cs" />
     <Compile Include="Models\ViewModel\AccountViewModel.cs" />
     <Compile Include="Models\ViewModel\ComplaintViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
