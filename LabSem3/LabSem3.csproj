@@ -193,9 +193,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202206211132340_SecondTime.cs" />
-    <Compile Include="Migrations\202206211132340_SecondTime.Designer.cs">
-      <DependentUpon>202206211132340_SecondTime.cs</DependentUpon>
+    <Compile Include="Migrations\202206221523292_Context.cs" />
+    <Compile Include="Migrations\202206221523292_Context.Designer.cs">
+      <DependentUpon>202206221523292_Context.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
@@ -2216,8 +2216,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202206211132340_SecondTime.resx">
-      <DependentUpon>202206211132340_SecondTime.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202206221523292_Context.resx">
+      <DependentUpon>202206221523292_Context.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
