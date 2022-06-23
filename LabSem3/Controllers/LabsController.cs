@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
+using PagedList;
 using System.Web.Mvc;
 using LabSem3.Data;
 using LabSem3.Enum;
@@ -31,68 +32,7 @@ namespace LabSem3.Controllers
             roleManager = new RoleManager<IdentityRole>(roleStore); // giống Service, xử lý các vấn đề liên quan đến logic
         }
 
-        public async Task<ActionResult> Register(string Username, string Password)
-        {
-            Account user = new Account()
-            {
-                UserName = Username
-            };
 
-            var result = await userManager.CreateAsync(user, Password);
-            if (result.Succeeded)
-            {
-                var queryUser = db.Users.AsQueryable().Where(userFind => userFind.UserName.Contains(Username)).FirstOrDefault();
-                Debug.WriteLine("Tìm user có name là: ", Username);
-                Debug.WriteLine("Tạo quyền User cho user có id là: ", queryUser.Id);
-                if (queryUser == null)
-                {
-                    ViewBag.ErrorNull = "Không tìm thấy khi queryUser";
-                    Debug.WriteLine("Tạo quyền User cho user có id là: ", queryUser.Id);
-                }
-                var check = await AddUserToRoleAsync(queryUser.Id, RoleEnum.STUDENT.ToString());
-                if (check)
-                {
-                    return View("ViewSuccess");
-                }
-                else
-                {
-                    ViewBag.Errors = "Lỗi tạo quyền";
-                    System.Diagnostics.Debug.WriteLine("Lỗi tạo quyền");
-                    return View("ViewError");
-                }
-            }
-            else
-            {
-                ViewBag.Errors = result.Errors;
-                System.Diagnostics.Debug.WriteLine("Lỗi đăng ký là ", result.Errors);
-                return View("ViewError");
-            }
-        }
-
-        public async Task<bool> AddUserToRoleAsync(string UserId, string RoleName)
-        {
-            var user = db.Users.Find(UserId);
-            var role = db.Roles.AsQueryable().Where(roleFind => roleFind.Name.Contains(RoleName)).FirstOrDefault();
-            if (user == null || role == null)
-            {
-                return false;
-            }
-            var result = await userManager.AddToRoleAsync(user.Id, role.Name);
-            //string roleName1 = "Admin";
-            //string roleName2 = "User";
-            ////var result = await userManager.AddToRoleAsync(userId, roleName);
-            //var result = await userManager.AddToRolesAsync(userId, roleName1, roleName2); // Thêm nhiều Role cho 1 User
-            if (result.Succeeded)
-            {
-                return true;
-            }
-            else
-            {
-                ViewBag.Errors = result.Errors;
-                System.Diagnostics.Debug.WriteLine("Lỗi tạo quyền có lỗi là ", result.Errors);
-                return false;
-            }
-        }
 
         // GET: Labs
         public ActionResult Index()
@@ -102,7 +42,7 @@ namespace LabSem3.Controllers
         }
 
         // GET: Labs/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? id, int? page)
         {
             if (id == null)
             {
@@ -113,8 +53,12 @@ namespace LabSem3.Controllers
             {
                 return HttpNotFound();
             }
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+            ViewBag.Equipments = lab.Equipments.ToPagedList(pageNumber, pageSize);
             return View(lab);
         }
+
 
         // GET: Labs/Create
         public ActionResult Create()
@@ -130,7 +74,10 @@ namespace LabSem3.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Status,CreatedAt,UpdatedAt,DeletedAt,DepartmentId,EquipmentId,AccountId,ScheduleId")] Lab lab)
-        {
+        { 
+            lab.CreatedAt = DateTime.Now;
+            lab.UpdatedAt = DateTime.Now;
+            lab.Status = (int)LabStatusEnum.ACTIVE;
             if (ModelState.IsValid)
             {
                 db.Labs.Add(lab);

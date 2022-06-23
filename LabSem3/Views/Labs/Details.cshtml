@@ -1,5 +1,6 @@
-﻿@model LabSem3.Models.Lab
-
+﻿@model  LabSem3.Models.Lab
+@using PagedList.Mvc;
+@using PagedList;
 @{
     ViewBag.Title = "Details";
 }
@@ -9,72 +10,69 @@
 <div>
     <h4>Lab</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Account.Email)
-        </dt>
+    <div style="text-align:center">
+        <div>
+            <h4>Computer Room Diagram</h4>
+        </div>
+        <img src="https://res.cloudinary.com/hoangkien0601/image/upload/v1655830520/computer_lab_floorplan_kvfxh7.jpg" alt="Alternate Text" />
+    </div>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">List Equiptment</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
 
-        <dd>
-            @Html.DisplayFor(model => model.Account.Email)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Department.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Department.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreatedAt)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UpdatedAt)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UpdatedAt)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DeletedAt)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DeletedAt)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EquipmentId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EquipmentId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ScheduleId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ScheduleId)
-        </dd>
-
-    </dl>
+                    <div class="col-sm-12">
+                        <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                            <thead>
+                                <tr role="row"><th class="sorting sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 100px;">Equipment Id</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 150px;">Name</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 150px;">Thumbnail</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 150px;">Type Equipment</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 150px;">CreatedAt</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 189px;">UpdatedAt</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 171px;">Status</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 171px;">Action</th></tr>
+                            </thead>
+                            <tfoot>
+                                <tr><th rowspan="1" colspan="1">Equipment Id</th><th rowspan="1" colspan="1">Name</th><th rowspan="1" colspan="1">Thumbnailt</th><th rowspan="1" colspan="1">Type Equipment</th><th rowspan="1" colspan="1">CreatedAt</th><th rowspan="1" colspan="1">UpdatedAt</th><th rowspan="1" colspan="1">Status</th><th rowspan="1" colspan="1">Action</th></tr>
+                            </tfoot>
+                            <tbody>
+                                @foreach (var equipment in ViewBag.Equipments)
+                                {
+                                    <tr class="odd">
+                                        <td class="sorting_1">@equipment.Id</td>
+                                        <td>@equipment.Name</td>
+                                        <td>
+                                            <img src="https://vn-live-01.slatic.net/p/0e9e38e9e2304eae2f0ecdf59432572d.jpg" class="img-thumbnail" alt="Alternate Text" />
+                                        </td>
+                                        <td>@equipment.TypeEquipment.Name</td>
+                                        <td>
+                                            @equipment.CreatedAt
+                                        </td>
+                                        <td>
+                                            @equipment.UpdatedAt
+                                        </td>
+                                        <td>
+                                            @switch (equipment.Status)
+                                            {
+                                                case 1:
+                                                    <div>GOOD</div>
+                                                    break;
+                                            }
+                                        </td>
+                                        <td>
+                                            <a><i class="fa-solid fa-info"></i></a>
+                                            <a style="margin:0 10px"><i class="fa-solid fa-pen-to-square"></i></a>
+                                            <a href="#"><i class="fa-solid fa-trash-can"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    Page @(ViewBag.Equipments.PageCount < ViewBag.Equipments.PageNumber ? 0 : ViewBag.Equipments.PageNumber) of @ViewBag.Equipments.PageCount
+                    @Html.PagedListPager((IPagedList)ViewBag.Equipments, page => Url.Action("Details",
+                        new { id = Model.Id, page }))
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |

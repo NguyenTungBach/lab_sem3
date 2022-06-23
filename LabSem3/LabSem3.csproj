@@ -195,9 +195,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+
     <Compile Include="Migrations\202206221643533_dbcontext.cs" />
     <Compile Include="Migrations\202206221643533_dbcontext.Designer.cs">
       <DependentUpon>202206221643533_dbcontext.cs</DependentUpon>
+
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
@@ -2194,6 +2196,7 @@
     <Content Include="Views\Account\Details.cshtml" />
     <Content Include="Views\Account\Create.cshtml" />
     <Content Include="Views\Shared\_LayoutLabversion002.cshtml" />
+    <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Complaint\Create.cshtml" />
     <Content Include="Views\Complaint\Success.cshtml" />
     <Content Include="Views\Complaint\Faile.cshtml" />
@@ -2227,8 +2230,10 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+
     <EmbeddedResource Include="Migrations\202206221643533_dbcontext.resx">
       <DependentUpon>202206221643533_dbcontext.cs</DependentUpon>
+
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

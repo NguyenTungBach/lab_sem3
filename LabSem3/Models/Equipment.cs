@@ -15,6 +15,7 @@ namespace LabSem3.Models
         [Display(Name = "Equipment Name")]
         [Required(ErrorMessage = "Name Equipment Require")]
         public string Name { get; set; }
+        public string Thumbnail { get; set; }
         public int Status { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
