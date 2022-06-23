@@ -7,6 +7,15 @@ namespace LabSem3.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
+<<<<<<< HEAD:LabSem3/Migrations/202206221643533_dbcontext.Designer.cs
+    public sealed partial class dbcontext : IMigrationMetadata
+    {
+        private readonly ResourceManager Resources = new ResourceManager(typeof(dbcontext));
+        
+        string IMigrationMetadata.Id
+        {
+            get { return "202206221643533_dbcontext"; }
+=======
     public sealed partial class initDb : IMigrationMetadata
     {
         private readonly ResourceManager Resources = new ResourceManager(typeof(initDb));
@@ -14,6 +23,7 @@ namespace LabSem3.Migrations
         string IMigrationMetadata.Id
         {
             get { return "202206221553505_initDb"; }
+>>>>>>> 7839df7ac8596271075dcb750366ebe9138c28ef:LabSem3/Migrations/202206221553505_initDb.Designer.cs
         }
         
         string IMigrationMetadata.Source
