@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
+using PagedList;
 using System.Web.Mvc;
 using LabSem3.Data;
 using LabSem3.Enum;
@@ -41,7 +42,7 @@ namespace LabSem3.Controllers
         }
 
         // GET: Labs/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? id, int? page)
         {
             if (id == null)
             {
@@ -52,8 +53,12 @@ namespace LabSem3.Controllers
             {
                 return HttpNotFound();
             }
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+            ViewBag.Equipments = lab.Equipments.ToPagedList(pageNumber, pageSize);
             return View(lab);
         }
+
 
         // GET: Labs/Create
         public ActionResult Create()

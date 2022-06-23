@@ -65,6 +65,9 @@
             User Name
         </th>
         <th>
+            Roles
+        </th>
+        <th>
             Status
         </th>
         <th>
@@ -82,7 +85,12 @@
             <td>
                 @item.UserName
             </td>
-            
+            <td>
+                @foreach (var role in item.Roles)
+                {
+                    @role.RoleId
+                }
+            </td>
             <td>
                 @item.Status
             </td>

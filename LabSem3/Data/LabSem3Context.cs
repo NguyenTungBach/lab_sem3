@@ -62,9 +62,9 @@ namespace LabSem3.Data
             //    .HasRequired<TypeComplaint>(s => s.TypeComplaint)
             //    .WithMany(g => g.Complaints)
             //    .HasForeignKey<int>(s => s.TypeComplaintId).WillCascadeOnDelete(false);
-            
+
             modelBuilder.Entity<IdentityUserLogin>().HasKey<string>(l => l.UserId);
-            modelBuilder.Entity<IdentityRole>().HasKey<string>(r => r.Id);
+            //modelBuilder.Entity<IdentityRole>().HasKey<string>(r => r.Id);
             modelBuilder.Entity<IdentityUserRole>().HasKey(r => new { r.RoleId, r.UserId });
         }
     }

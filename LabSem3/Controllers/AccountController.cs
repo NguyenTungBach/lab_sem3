@@ -11,6 +11,7 @@ using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -30,6 +31,7 @@ namespace LabSem3.Controllers
             userManager = new UserManager<Account>(userStore); // giống Service, xử lý các vấn đề liên quan đến logic
             RoleStore<IdentityRole> roleStore = new RoleStore<IdentityRole>(db); // create, update, delete giống UserModel
             roleManager = new RoleManager<IdentityRole>(roleStore); // giống Service, xử lý các vấn đề liên quan đến logic
+            
         }
 
         public async Task<bool> Register(string Username, string Password)
@@ -98,7 +100,36 @@ namespace LabSem3.Controllers
         // GET: Account
         public async Task<ActionResult> Index(string UserName, int? page)
         {
-            var account = userManager.Users.Include(l => l.Department).Include(l => l.Roles).OrderBy(s => s.Id).AsQueryable();
+            var account = db.Users.Include(l => l.Department).Include(l => l.Roles).OrderBy(s => s.Id).AsQueryable();
+
+
+            if (UserName != null && UserName.Length > 0)
+            {
+                account = account.Where(s => s.UserName.Contains(UserName));
+            }
+            Debug.WriteLine(account.ToList());
+
+            var checkAcccountList = account.ToList();
+            ViewBag.UserName = UserName;
+
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+
+            return View(account.ToPagedList(pageNumber, pageSize));
+        }
+
+        public async Task<ActionResult> IndexAdmin(string UserName, int? page)
+        {
+            var account = db.Users.Include(l => l.Department).OrderBy(s => s.Id).AsQueryable();
+            
+            var accountIdByRoleAdminList = AccountIdByRoleList(RoleEnum.ADMIN.ToString());
+
+            //foreach (var accountIdByRoleAdmin in accountIdByRoleAdminList)
+            //{
+            //    account = account.Where(s => s.Id == (accountIdByRoleAdmin.Id));
+            //}
+
+            //account = account.Where(s => s.Roles.Contains(UserName));
 
             if (UserName != null && UserName.Length > 0)
             {
@@ -109,8 +140,29 @@ namespace LabSem3.Controllers
 
             int pageSize = 10;
             int pageNumber = (page ?? 1);
+            var checkAccountList = account.ToList();
             return View(account.ToPagedList(pageNumber, pageSize));
         }
+
+        public List<Account> AccountIdByRoleList(string roleEnum)
+        {
+            
+            var listUser = db.Users.ToList();
+            var listUserByRole = new List<Account>();
+            foreach (var user in listUser)
+            {
+                var checkRole = userManager.GetRoles(user.Id).ToList();
+                foreach (var role in checkRole)
+                {
+                    if (role == roleEnum)
+                    {
+                        listUserByRole.Add(user);
+                    }
+                }
+            }
+            return listUserByRole;
+        }
+
 
         // GET: Account/Details/5
         public ActionResult Details(string id)
@@ -130,7 +182,7 @@ namespace LabSem3.Controllers
             //    var checkRole = userManager.GetRoles(user.Id).ToList();
             //    foreach (var role in checkRole)
             //    {
-            //        if(role == RoleEnum.ADMIN.ToString())
+            //        if (role == RoleEnum.ADMIN.ToString())
             //        {
             //            listUserByRole.Add(user.UserName);
             //        }
@@ -219,21 +271,20 @@ namespace LabSem3.Controllers
                 return HttpNotFound();
             }
             var account = db.Users.Find(id);
-            var accountViewModel = new AccountViewModel(account);
+            var accountViewModel = new AccountEditViewModel(account);
             ViewBag.Role = db.Roles.ToList();
             ViewBag.RoleAccounts = userManager.GetRoles(id).ToList();
+            
             return View(accountViewModel);
         }
 
         // POST: Account/Edit/5
         [HttpPost]
-        public async Task<ActionResult> EditPostAsync(string Id, string UserName, string Password, string Role)
+        public async Task<ActionResult> EditPost(string Id, string UserName, string Role, int Status)
         {
             if (ModelState.IsValid)
             {
                 
-                var token = await userManager.GeneratePasswordResetTokenAsync(Id);
-                await userManager.ResetPasswordAsync(Id, token, Password);
 
                 var checkRoles = Role.Split(',');
                 var roleList = db.Roles.ToList();
@@ -255,11 +306,15 @@ namespace LabSem3.Controllers
                         userManager.RemoveFromRole(Id, role.Name);
                     }
                 }
-
-                //db.Users.AddOrUpdate
-                //    db.Entry(lab).State = EntityState.Modified;
-                //    db.SaveChanges();
-                //    return RedirectToAction("Index");
+                Account account = db.Users.Find(Id);
+                if (account == null)
+                {
+                    return HttpNotFound();
+                }
+                account.UserName = UserName;
+                account.Status = Status;
+                db.Users.AddOrUpdate(account);
+                db.SaveChanges();
             }
             //ViewBag.Role = db.Roles.ToList();
             //ViewBag.RoleAccounts = userManager.GetRoles(id).ToList();
@@ -268,25 +323,39 @@ namespace LabSem3.Controllers
         }
 
         // GET: Account/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(string id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var account = db.Users.Find(id);
+            if (account == null)
+            {
+                return HttpNotFound();
+            }
+            return View(account);
         }
 
         // POST: Account/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        [HttpPost, ActionName("Delete")]
+        public ActionResult ComfirmDeleteAccount(string id)
         {
-            try
+            if (id == null)
             {
-                // TODO: Add delete logic here
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var account = db.Users.Find(id);
+            if (account == null)
+            {
+                return HttpNotFound();
+            }
+            account.Status = ((int)AccountStatusEnum.DISABLED);
+            db.Users.AddOrUpdate(account);
+            db.SaveChanges();
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            TempData["Success"] = "Delete Account Success";
+            return RedirectToAction("Index");
         }
     }
 }

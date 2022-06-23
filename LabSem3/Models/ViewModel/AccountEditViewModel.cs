@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LabSem3.Enum;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -19,11 +20,20 @@ namespace LabSem3.Models.ViewModel
 
         [Required(ErrorMessage = "Role Required")]
         public string Role { get; set; }
+        public int Status { get; set; }
+
+        public AccountStatusEnum accountStatusEnum;
+
+        public AccountEditViewModel()
+        {
+
+        }
 
         public AccountEditViewModel(Account account)
         {
             Id = account.Id;
             UserName = account.UserName;
+            Status = account.Status;
         }
     }
 }

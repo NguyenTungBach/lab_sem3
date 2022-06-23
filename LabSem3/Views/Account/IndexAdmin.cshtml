@@ -1,0 +1,96 @@
+﻿@model PagedList.IPagedList<LabSem3.Models.Account>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "IndexAdmin";
+
+    <link href="~/Content/css_bach/cssPagination.css" rel="stylesheet" />
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["False"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["False"]
+    </div>
+}
+
+<div class="container" style="margin-bottom:10px">
+    <form action="/Account/IndexAdmin" method="get" class="d-none d-sm-inline-block form-inline navbar-search">
+        <div class="input-group">
+            <input value="@ViewBag.UserName" name="UserName" type="text" class="form-control bg-default border-0 small" placeholder="Search for..."
+                   aria-label="Search" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">
+                    <i class="fas fa-search fa-sm"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+
+</div>
+<table class="table">
+    <tr>
+
+        <th>
+            Id
+        </th>
+        <th>
+            User Name
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+            CreatedAt
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.Id
+            </td>
+            <td>
+                @item.UserName
+            </td>
+
+            <td>
+                @item.Status
+            </td>
+            <td>
+                @item.CreatedAt
+            </td>
+            <td>
+                <a href="/Account/Edit?id=@item.Id">Edit</a> |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+
+        @Html.PagedListPager(Model, page => Url.Action("IndexAdmin", new { page, UserName = ViewBag.UserName }))
+
+    </ul>
+</nav>
