@@ -1,0 +1,75 @@
+﻿@model IEnumerable<LabSem3.Models.Schedule>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.DateBoking)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SlotNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UpdatedAt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DeletedAt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LabId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InstructorId)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateBoking)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SlotNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreatedAt)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UpdatedAt)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DeletedAt)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LabId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InstructorId)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

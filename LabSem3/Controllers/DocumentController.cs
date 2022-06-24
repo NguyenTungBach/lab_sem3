@@ -7,6 +7,9 @@ using System.Net;
 using System.Web.Mvc;
 using LabSem3.Models;
 using LabSem3.Enum;
+using PagedList;
+using PagedList.Mvc;
+
 
 namespace LabSem3.Controllers
 {
@@ -18,14 +21,33 @@ namespace LabSem3.Controllers
             db = new LabSem3Context();
         }
         // GET: Documet
-        public ActionResult Index()
+        public ActionResult Index(string Search, int? page, string StartTime, string EndTime)
         {
-            var listDocument = db.Document.ToList();
-            return View(listDocument);
+            var listDocument = db.Document.OrderBy(s => s.Id).AsQueryable();
+            if (Search != null && Search.Length > 0)
+            {
+                listDocument = listDocument.Where(s => s.Title.Contains(Search));
+            }
+            if (StartTime != null && StartTime != "")
+            {
+                var startDateTime0000 = DateTime.Parse(StartTime);
+                listDocument = listDocument.Where(s => s.CreatedAt >= startDateTime0000);
+            }
+            if (EndTime != null && EndTime != "")
+            {
+                var endDateTime2359 = DateTime.Parse(EndTime).AddDays(1).AddTicks(-1);
+                listDocument = listDocument.Where(s => s.CreatedAt <= endDateTime2359);
+            }
+            ViewBag.Search = Search;
+            ViewBag.StartTime = StartTime;
+            ViewBag.EndTime = EndTime;
+            int Pagesize = 10;
+            int Pagenumber = (page ?? 1);
+            return View(listDocument.ToList().ToPagedList(Pagenumber, Pagesize));
         }
 
         // GET: Documet/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? id, int? page)
         {
             if (id == null)
             {
@@ -36,6 +58,7 @@ namespace LabSem3.Controllers
             {
                 return HttpNotFound();
             }
+            
             return View(document);
         }
 

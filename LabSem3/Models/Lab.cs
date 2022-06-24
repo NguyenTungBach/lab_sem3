@@ -14,8 +14,14 @@ namespace LabSem3.Models
         public int Id { get; set; }
         public int Status { get; set; }
         public string Thumbnail { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime? CreatedAt { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime? UpdatedAt { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime? DeletedAt { get; set; }
 
         public int DepartmentId { get; set; }
