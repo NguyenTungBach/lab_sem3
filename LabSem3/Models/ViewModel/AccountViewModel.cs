@@ -31,6 +31,11 @@ namespace LabSem3.Models.ViewModel
 
         [Required(ErrorMessage = "Role Required")]
         public string Role { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? Birthday { get; set; }
+        public string Thumbnail { get; set; }
+        public string Address { get; set; }
+        public string Age { get; set; }
 
         public int? Status { get; set; }
         public DateTime? CreatedAt { get; set; }

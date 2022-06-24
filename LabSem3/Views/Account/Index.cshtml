@@ -1,5 +1,6 @@
 ﻿@model PagedList.IPagedList<LabSem3.Models.Account>
 @using PagedList.Mvc;
+@using Microsoft.AspNet.Identity
 
 @{
     ViewBag.Title = "Index";
@@ -27,16 +28,64 @@
     </div>
 }
 
-<div class="container" style="margin-bottom:10px">
+<div style="margin-left: 10px; margin-bottom:20px">
     <form action="/Account/Index" method="get" class="d-none d-sm-inline-block form-inline navbar-search">
-        <div class="input-group">
-            <input value="@ViewBag.UserName" name="UserName" type="text" class="form-control bg-default border-0 small" placeholder="Search for..."
-                   aria-label="Search" aria-describedby="basic-addon2">
-            <div class="input-group-append">
-                <button class="btn btn-primary" type="submit">
-                    <i class="fas fa-search fa-sm"></i>
-                </button>
+        <div class="">
+            <div>
+                <div class="row">
+                    <div style="margin-right: 20px">
+                        <div style="text-align: left">Search</div>
+                        <div class="input-group">
+                            <input value="@ViewBag.UserName" name="UserName" type="search" class="form-control bg-default border-0 small" placeholder="Search for..."
+                                   aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-right: 20px">
+                        <div style="text-align: left">Role</div>
+                        <div class="">
+                            <select id="RoleSearch" name="RoleSearch" class="form-control">
+                                <option value="" @(ViewBag.RoleSearch == "" ? "selected" : "")>Choose role search</option>
+                                @foreach (var role in ViewBag.RoleList)
+                                {
+                                    <option value="@role.Id" @(role.Id == ViewBag.RoleSearch ? "selected" : "")>@role.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div style="margin-right: 20px">
+                        <div style="text-align: left">StartTime</div>
+                        <div class="input-group">
+                            <input value="@ViewBag.StartTime" name="StartTime" type="date" class="form-control bg-default border-0 small"
+                                   aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-right: 20px">
+                        <div style="text-align: left">EndTime</div>
+                        <div class="input-group">
+                            <input value="@ViewBag.EndTime" name="EndTime" type="date" class="form-control bg-default border-0 small"
+                                   aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
+        </div>
+        <div>
         </div>
     </form>
 
@@ -88,17 +137,34 @@
             <td>
                 @foreach (var role in item.Roles)
                 {
-                    @role.RoleId
+                    foreach (var roleList in ViewBag.RoleList)
+                    {
+                        if (role.RoleId.Equals(roleList.Id))
+                        {
+                            <div>@roleList.Name</div>
+
+                        }
+                    }
                 }
             </td>
             <td>
                 @item.Status
             </td>
             <td>
-                @item.CreatedAt
+                @string.Format("{0:dd/MM/yyyy hh:mm}", item.CreatedAt)
             </td>
             <td>
-                <a href="/Account/Edit?id=@item.Id">Edit</a> |
+                @if (Request.IsAuthenticated)
+                {
+                    if (@item.Id.Contains(User.Identity.GetUserId()))
+                    {
+
+                    }
+                    else
+                    {
+                        <a href="/Account/Edit?id=@item.Id">Edit</a> <span> |</span>
+                    }
+                }
                 @Html.ActionLink("Details", "Details", new { id = item.Id }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.Id })
             </td>
@@ -112,7 +178,7 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
 <nav aria-label="Page navigation example">
     <ul class="pagination">
 
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, UserName = ViewBag.UserName }))
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, UserName = ViewBag.UserName, RoleSearch = ViewBag.RoleSearch, StartTime = ViewBag.StartTime, EndTime = ViewBag.EndTime }))
 
     </ul>
 </nav>
