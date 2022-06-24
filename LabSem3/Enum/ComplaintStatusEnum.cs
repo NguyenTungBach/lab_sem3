@@ -9,6 +9,7 @@ namespace LabSem3.Enum
     {
         PENDING = 1, // chưa hỗ trợ
         PROCESSING = 2, // đang xử lý
-        COMPLETE = 3 // hoàn thành
+        COMPLETE = 3, // hoàn thành
+        UNASSIGN = 4, // chưa đc phân bổ cho người xử lý
     }
 }

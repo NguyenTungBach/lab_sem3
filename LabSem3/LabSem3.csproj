@@ -179,6 +179,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ComplaintController.cs" />
+    <Compile Include="Controllers\DocumentController.cs" />
+    <Compile Include="Controllers\EquipmentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LabsController.cs" />
     <Compile Include="Data\LabSem3Context.cs" />
@@ -193,9 +195,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202206221553505_initDb.cs" />
-    <Compile Include="Migrations\202206221553505_initDb.Designer.cs">
-      <DependentUpon>202206221553505_initDb.cs</DependentUpon>
+    <Compile Include="Migrations\202206241419271_Kien.cs" />
+    <Compile Include="Migrations\202206241419271_Kien.Designer.cs">
+      <DependentUpon>202206241419271_Kien.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
@@ -207,8 +209,11 @@
     <Compile Include="Models\Schedule.cs" />
     <Compile Include="Models\TypeComplaint.cs" />
     <Compile Include="Models\TypeEquipment.cs" />
+    <Compile Include="Models\ViewModel\AccountEditViewModel.cs" />
     <Compile Include="Models\ViewModel\AccountViewModel.cs" />
     <Compile Include="Models\ViewModel\ComplaintViewModel.cs" />
+    <Compile Include="Models\ViewModel\LoginViewModel.cs" />
+    <Compile Include="Models\ViewModel\RegisterViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -2198,6 +2203,19 @@
     <Content Include="Views\Complaint\Faile.cshtml" />
     <Content Include="Views\Complaint\Index.cshtml" />
     <Content Include="Views\Complaint\ComplaintWaiting.cshtml" />
+    <Content Include="Views\Account\Delete.cshtml" />
+    <Content Include="Views\Equipment\Index.cshtml" />
+    <Content Include="Views\Equipment\Create.cshtml" />
+    <Content Include="Views\Equipment\Details.cshtml" />
+    <Content Include="Views\Equipment\Edit.cshtml" />
+    <Content Include="Views\Equipment\Delete.cshtml" />
+    <Content Include="Views\Document\Index.cshtml" />
+    <Content Include="Views\Document\Details.cshtml" />
+    <Content Include="Views\Document\Create.cshtml" />
+    <Content Include="Views\Document\Edit.cshtml" />
+    <Content Include="Views\Document\Delete.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2216,8 +2234,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202206221553505_initDb.resx">
-      <DependentUpon>202206221553505_initDb.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202206241419271_Kien.resx">
+      <DependentUpon>202206241419271_Kien.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

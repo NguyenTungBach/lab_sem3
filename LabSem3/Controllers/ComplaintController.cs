@@ -56,7 +56,7 @@ namespace LabSem3.Controllers
         {
             var newComPlaint = new Complaint(complaintViewModel)
             {
-                AccountId = "81e0dd67-52b9-4cdf-a1f1-e65a40ccc9d7"
+                AccountId = "985f35a0-32c3-4476-9e28-14ddb97c33fe"
             };
 
             db.Complaints.Add(newComPlaint);

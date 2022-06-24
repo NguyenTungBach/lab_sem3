@@ -110,6 +110,16 @@ namespace LabSem3.Controllers
             return View(lab);
         }
 
+       
+        [HttpPost]
+        public JsonResult UpdatedStatus(int id,int status)
+        {
+            Equipment equipment = db.Equipments.Find(id);
+            equipment.Status = status;
+            db.SaveChanges();
+            return Json("Save sucesss!!");
+        }
+
         // POST: Labs/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
@@ -117,15 +127,14 @@ namespace LabSem3.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Status,CreatedAt,UpdatedAt,DeletedAt,DepartmentId,EquipmentId,AccountId,ScheduleId")] Lab lab)
         {
-            if (ModelState.IsValid)
-            {
-                db.Entry(lab).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+            var lab1 = db.Labs.Find(lab.Id);
+            lab1.UpdatedAt = DateTime.Now;
+            lab1.Status = lab.Status;
+            lab1.DepartmentId = lab1.DepartmentId;
+            db.SaveChanges();
             ViewBag.AccountId = new SelectList(db.Users, "Id", "Email", lab.AccountId);
             ViewBag.DepartmentId = new SelectList(db.Departments, "Id", "Name", lab.DepartmentId);
-            return View(lab);
+            return Redirect("/Labs/Index");
         }
 
         // GET: Labs/Delete/5

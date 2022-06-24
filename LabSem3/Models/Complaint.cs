@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using LabSem3.Models.ViewModel;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace LabSem3.Models
 {

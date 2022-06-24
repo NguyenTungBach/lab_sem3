@@ -4,6 +4,7 @@ using LabSem3.Models;
 using LabSem3.Models.ViewModel;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -30,44 +32,88 @@ namespace LabSem3.Controllers
             userManager = new UserManager<Account>(userStore); // giống Service, xử lý các vấn đề liên quan đến logic
             RoleStore<IdentityRole> roleStore = new RoleStore<IdentityRole>(db); // create, update, delete giống UserModel
             roleManager = new RoleManager<IdentityRole>(roleStore); // giống Service, xử lý các vấn đề liên quan đến logic
+            
         }
 
-        public async Task<bool> Register(string Username, string Password)
+        public ActionResult Login()
         {
-            Account user = new Account()
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Login(string UserName, string Password)
+        {
+            var user = await userManager.FindAsync(UserName, Password);
+            Debug.WriteLine("user đăng nhập là ", user);
+            if (user == null)
             {
-                UserName = Username
-            };
-            
-            var result = await userManager.CreateAsync(user, Password);
-            if (result.Succeeded)
+                TempData["False"] = "Not Found Account " + UserName;
+                return View();
+            }
+            else
             {
-                var queryUser = db.Users.AsQueryable().Where(userFind => userFind.UserName.Contains(Username)).FirstOrDefault();
-                Debug.WriteLine("Tìm user có name là: ", Username);
-                Debug.WriteLine("Tạo quyền User cho user có id là: ", queryUser.Id);
-                if (queryUser == null)
+                SignInManager<Account, string> signInManager = new SignInManager<Account, string>(userManager, Request.GetOwinContext().Authentication);
+                await signInManager.SignInAsync(user, false, false);
+                Session["userId"] = user.Id;
+
+                return Redirect("/Home");
+            }
+        }
+
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Register(RegisterViewModel registerViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                Account user = new Account()
                 {
-                    ViewBag.ErrorNull = "Không tìm thấy khi queryUser";
-                    Debug.WriteLine("Tạo quyền User cho user có id là: ", queryUser.Id);
-                }
-                var check = await AddUserToRoleAsync(queryUser.Id, RoleEnum.STUDENT.ToString());
-                if (check)
+                    UserName = registerViewModel.UserName
+                };
+
+                var result = await userManager.CreateAsync(user, registerViewModel.Password);
+                if (result.Succeeded)
                 {
-                    return true;
+                    TempData["Success"] = "Create Account Success, Please Login";
+                    var queryUser = db.Users.AsQueryable().Where(userFind => userFind.UserName.Contains(registerViewModel.UserName)).FirstOrDefault();
+                    //Debug.WriteLine("Tìm user có name là: ", Username);
+                    //Debug.WriteLine("Tạo quyền User cho user có id là: ", queryUser.Id);
+                    if (queryUser == null)
+                    {
+                        TempData["False"] = "Not found Account";
+                        //Debug.WriteLine("Tạo quyền User cho user có id là: ", queryUser.Id);
+                    }
+                    var check = await AddUserToRoleAsync(queryUser.Id, RoleEnum.STUDENT.ToString());
+                    if (check)
+                    {
+                        return Redirect("/Account/Login");
+                    }
+                    else
+                    {
+                        TempData["False"] = "Not found Add Role please call Admin to help";
+                        
+                        return View();
+                    }
                 }
                 else
                 {
-                    ViewBag.Errors = "Lỗi tạo quyền";
-                    System.Diagnostics.Debug.WriteLine("Lỗi tạo quyền");
-                    return false;
+                    TempData["False"] = "Something Error when Register please call Admin to help: " + result.Errors;
+                    //System.Diagnostics.Debug.WriteLine("Something Error ", result.Errors);
+                    return View();
                 }
             }
             else
             {
-                ViewBag.Errors = result.Errors;
-                System.Diagnostics.Debug.WriteLine("Lỗi đăng ký là ", result.Errors);
-                return false;
+                TempData["False"] = "Register not valid";
+                return View();
             }
+
+            
         }
 
         public async Task<bool> AddUserToRoleAsync(string UserId, string RoleName)
@@ -96,21 +142,65 @@ namespace LabSem3.Controllers
         }
 
         // GET: Account
-        public async Task<ActionResult> Index(string UserName, int? page)
+        public async Task<ActionResult> Index(string UserName, int? page, string RoleSearch, string StartTime, string EndTime)
         {
-            var account = userManager.Users.Include(l => l.Department).Include(l => l.Roles).OrderBy(s => s.Id).AsQueryable();
+            var account = db.Users.Include(l => l.Department).Include(l => l.Roles).OrderBy(s => s.Id).AsQueryable();
+            ViewBag.RoleList = db.Roles.ToList();
 
             if (UserName != null && UserName.Length > 0)
             {
                 account = account.Where(s => s.UserName.Contains(UserName));
             }
+            
+            if (RoleSearch != null && RoleSearch.Length > 0)
+            {
+                account = account.Where(s => s.Roles.Any(c => c.RoleId.Contains(RoleSearch)));
+            }
 
+            if (StartTime != null && StartTime != "")
+            {
+                var startDateTime0000 = DateTime.Parse(StartTime);
+                account = account.Where(s => s.CreatedAt >= startDateTime0000);
+            }
+            if (EndTime != null && EndTime != "")
+            {
+                var endDateTime2359 = DateTime.Parse(EndTime).AddDays(1).AddTicks(-1);
+                account = account.Where(s => s.CreatedAt <= endDateTime2359);
+            }
+
+            var checkAcccountList = account.ToList();
             ViewBag.UserName = UserName;
+            ViewBag.RoleSearch = RoleSearch;
+            ViewBag.StartTime = StartTime;
+            ViewBag.EndTime = EndTime;
 
             int pageSize = 10;
             int pageNumber = (page ?? 1);
+
             return View(account.ToPagedList(pageNumber, pageSize));
         }
+
+        
+
+        public List<Account> AccountIdByRoleList(string roleEnum)
+        {
+            
+            var listUser = db.Users.ToList();
+            var listUserByRole = new List<Account>();
+            foreach (var user in listUser)
+            {
+                var checkRole = userManager.GetRoles(user.Id).ToList();
+                foreach (var role in checkRole)
+                {
+                    if (role == roleEnum)
+                    {
+                        listUserByRole.Add(user);
+                    }
+                }
+            }
+            return listUserByRole;
+        }
+
 
         // GET: Account/Details/5
         public ActionResult Details(string id)
@@ -130,7 +220,7 @@ namespace LabSem3.Controllers
             //    var checkRole = userManager.GetRoles(user.Id).ToList();
             //    foreach (var role in checkRole)
             //    {
-            //        if(role == RoleEnum.ADMIN.ToString())
+            //        if (role == RoleEnum.ADMIN.ToString())
             //        {
             //            listUserByRole.Add(user.UserName);
             //        }
@@ -173,10 +263,8 @@ namespace LabSem3.Controllers
                         Status = 1,
                         CreatedAt = DateTime.Now
                     };
-
-                    db.Users.Add(account);
-                    db.SaveChanges();
-
+                    await userManager.CreateAsync(account, accountViewModel.Password);
+                    
 
                     foreach (var role in checkRoles)
                     {
@@ -219,21 +307,20 @@ namespace LabSem3.Controllers
                 return HttpNotFound();
             }
             var account = db.Users.Find(id);
-            var accountViewModel = new AccountViewModel(account);
+            var accountViewModel = new AccountEditViewModel(account);
             ViewBag.Role = db.Roles.ToList();
             ViewBag.RoleAccounts = userManager.GetRoles(id).ToList();
+            
             return View(accountViewModel);
         }
 
         // POST: Account/Edit/5
         [HttpPost]
-        public async Task<ActionResult> EditPostAsync(string Id, string UserName, string Password, string Role)
+        public async Task<ActionResult> EditPost(string Id, string UserName, string Role, int Status)
         {
             if (ModelState.IsValid)
             {
                 
-                var token = await userManager.GeneratePasswordResetTokenAsync(Id);
-                await userManager.ResetPasswordAsync(Id, token, Password);
 
                 var checkRoles = Role.Split(',');
                 var roleList = db.Roles.ToList();
@@ -255,11 +342,16 @@ namespace LabSem3.Controllers
                         userManager.RemoveFromRole(Id, role.Name);
                     }
                 }
-
-                //db.Users.AddOrUpdate
-                //    db.Entry(lab).State = EntityState.Modified;
-                //    db.SaveChanges();
-                //    return RedirectToAction("Index");
+                Account account = db.Users.Find(Id);
+                if (account == null)
+                {
+                    return HttpNotFound();
+                }
+                account.UserName = UserName;
+                account.UpdatedAt = DateTime.Now;
+                account.Status = Status;
+                db.Users.AddOrUpdate(account);
+                db.SaveChanges();
             }
             //ViewBag.Role = db.Roles.ToList();
             //ViewBag.RoleAccounts = userManager.GetRoles(id).ToList();
@@ -268,25 +360,40 @@ namespace LabSem3.Controllers
         }
 
         // GET: Account/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(string id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var account = db.Users.Find(id);
+            if (account == null)
+            {
+                return HttpNotFound();
+            }
+            return View(account);
         }
 
         // POST: Account/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        [HttpPost, ActionName("Delete")]
+        public ActionResult ComfirmDeleteAccount(string id)
         {
-            try
+            if (id == null)
             {
-                // TODO: Add delete logic here
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var account = db.Users.Find(id);
+            if (account == null)
+            {
+                return HttpNotFound();
+            }
+            account.Status = ((int)AccountStatusEnum.DISABLED);
+            account.DeletedAt = DateTime.Now;
+            db.Users.AddOrUpdate(account);
+            db.SaveChanges();
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            TempData["Success"] = "Delete Account Success";
+            return RedirectToAction("Index");
         }
     }
 }

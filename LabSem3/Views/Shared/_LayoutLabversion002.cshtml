@@ -24,7 +24,7 @@
 </head>
 
 <body id="page-top">
-
+    @using Microsoft.AspNet.Identity
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -68,10 +68,9 @@
                 <div id="collapseOne" class="collapse" aria-labelledby="headingTwo"
                      data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Components:</h6>
-                        <a class="collapse-item active" href="buttons.html">View All Complaint</a>
-                        <a class="collapse-item" href="cards.html">Complaints Waiting</a>
-                        <a class="collapse-item" href="cards.html">Add Complaint</a>
+                        <h6 class="collapse-header">Custom Account:</h6>
+                        <a class="collapse-item active" href="/Account/Index">List</a>
+                        <a class="collapse-item" href="/Account/Create">Create</a>
                     </div>
                 </div>
             </li>
@@ -119,10 +118,9 @@
                 <div id="collapse4" class="collapse" aria-labelledby="headingTwo"
                      data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Components:</h6>
-                        <a class="collapse-item active" href="buttons.html">View All Complaint</a>
-                        <a class="collapse-item" href="cards.html">Complaints Waiting</a>
-                        <a class="collapse-item" href="cards.html">Add Complaint</a>
+                        <h6 class="collapse-header">Custom Departments:</h6>
+                        <a class="collapse-item active" href="/Departments/Index">List</a>
+                        <a class="collapse-item" href="/Departments/Create">Create</a>
                     </div>
                 </div>
             </li>
@@ -137,9 +135,8 @@
                      data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Components:</h6>
-                        <a class="collapse-item active" href="buttons.html">View All Complaint</a>
-                        <a class="collapse-item" href="cards.html">Complaints Waiting</a>
-                        <a class="collapse-item" href="cards.html">Add Complaint</a>
+                        <a class="collapse-item active" href="/Document/Index">List</a>
+                        <a class="collapse-item" href="/Document/Create">Create</a>
                     </div>
                 </div>
             </li>
@@ -154,8 +151,8 @@
                      data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Lab:</h6>
-                        <a class="collapse-item active" href="/Labs/Index">List Lab</a>
-                        <a class="collapse-item" href="/Labs/Create">Create Lab</a>
+                        <a class="collapse-item active" href="/Labs/Index">List</a>
+                        <a class="collapse-item" href="/Labs/Create">Create</a>
                     </div>
                 </div>
             </li>
@@ -169,10 +166,9 @@
                 <div id="collapse7" class="collapse" aria-labelledby="headingTwo"
                      data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Components:</h6>
-                        <a class="collapse-item active" href="buttons.html">View All Complaint</a>
-                        <a class="collapse-item" href="cards.html">Complaints Waiting</a>
-                        <a class="collapse-item" href="cards.html">Add Complaint</a>
+                        <h6 class="collapse-header">Custom Equipments:</h6>
+                        <a class="collapse-item active" href="/Equipment/Index">List</a>
+                        <a class="collapse-item" href="/Equipment/Create">Create</a>
                     </div>
                 </div>
             </li>
@@ -203,16 +199,16 @@
 
                     <!-- Topbar Search -->
                     @*<form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                   aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
+                            <div class="input-group">
+                                <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                                       aria-label="Search" aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="button">
+                                        <i class="fas fa-search fa-sm"></i>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </form>*@
+                        </form>*@
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -372,7 +368,11 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                @if (Request.IsAuthenticated)
+                                {
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">@User.Identity.GetUserName()</span>
+                                }
+
                                 <img class="img-profile rounded-circle"
                                      src="~/Content/AdminVersion002/img/undraw_profile.svg">
                             </a>
@@ -454,3 +454,12 @@
 </body>
 
 </html>
+
+<script>
+    $('.rounded .collapse-item').on('click',
+        function () {
+            $('.rounded ').find('a.active')
+                .removeClass('active');
+            $(this).parent('a').addClass('active');
+        });
+</script>
