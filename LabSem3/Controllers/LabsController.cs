@@ -91,7 +91,7 @@ namespace LabSem3.Controllers
         }
 
         // GET: Labs/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? id, int? page)
         {
             if (id == null)
             {
@@ -102,6 +102,9 @@ namespace LabSem3.Controllers
             {
                 return HttpNotFound();
             }
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+            ViewBag.Equipments = lab.Equipments.ToPagedList(pageNumber, pageSize);
             ViewBag.AccountId = new SelectList(db.Users, "Id", "Email", lab.AccountId);
             ViewBag.DepartmentId = new SelectList(db.Departments, "Id", "Name", lab.DepartmentId);
             return View(lab);
