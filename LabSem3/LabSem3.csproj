@@ -196,10 +196,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202206231647014_dbcontext.cs" />
-    <Compile Include="Migrations\202206231647014_dbcontext.Designer.cs">
-      <DependentUpon>202206231647014_dbcontext.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Complaint.cs" />
@@ -213,6 +209,7 @@
     <Compile Include="Models\ViewModel\AccountEditViewModel.cs" />
     <Compile Include="Models\ViewModel\AccountViewModel.cs" />
     <Compile Include="Models\ViewModel\ComplaintViewModel.cs" />
+    <Compile Include="Models\ViewModel\LoginViewModel.cs" />
     <Compile Include="Models\ViewModel\RegisterViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -2204,7 +2201,6 @@
     <Content Include="Views\Complaint\Index.cshtml" />
     <Content Include="Views\Complaint\ComplaintWaiting.cshtml" />
     <Content Include="Views\Account\Delete.cshtml" />
-    <Content Include="Views\Account\IndexAdmin.cshtml" />
     <Content Include="Views\Equipment\Index.cshtml" />
     <Content Include="Views\Equipment\Create.cshtml" />
     <Content Include="Views\Equipment\Details.cshtml" />
@@ -2216,6 +2212,8 @@
     <Content Include="Views\Document\Edit.cshtml" />
     <Content Include="Views\Document\Delete.cshtml" />
     <Content Include="Views\Schedule\Index.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2232,11 +2230,6 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202206231647014_dbcontext.resx">
-      <DependentUpon>202206231647014_dbcontext.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

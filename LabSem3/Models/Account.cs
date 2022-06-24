@@ -49,5 +49,9 @@ namespace LabSem3.Models
         public int? ScheduleId { get; set; }
         [ForeignKey("ScheduleId")]
         public virtual List<Schedule> Schedules { get; set; }
+
+        //public virtual ICollection<IdentityUserClaim> Claims { get; set; }
+        //public virtual ICollection<IdentityUserLogin> Logins { get; set; }
+        //public virtual ICollection<IdentityUserRole> UserRoles { get; set; }
     }
 }

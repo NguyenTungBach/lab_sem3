@@ -25,9 +25,11 @@ namespace LabSem3.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             // configures one-to-many relationship
+            modelBuilder.Entity<Complaint>().ToTable("Users");
+
             modelBuilder.Entity<Complaint>()
                 .HasRequired<Account>(s => s.Account)
-                .WithMany(g => g.Complaints)
+                .WithMany(s => s.Complaints)
                 .HasForeignKey<string>(s => s.AccountId).WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Lab>()
@@ -56,16 +58,10 @@ namespace LabSem3.Data
                 .WithRequired(g => g.Lab)
                 .HasForeignKey<int>(s => s.LabId).WillCascadeOnDelete(false);
 
-
-
-            //modelBuilder.Entity<Complaint>()
-            //    .HasRequired<TypeComplaint>(s => s.TypeComplaint)
-            //    .WithMany(g => g.Complaints)
-            //    .HasForeignKey<int>(s => s.TypeComplaintId).WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<IdentityUserLogin>().HasKey<string>(l => l.UserId);
+            //modelBuilder.Entity<IdentityUserLogin>().HasKey<string>(l => l.UserId);
             //modelBuilder.Entity<IdentityRole>().HasKey<string>(r => r.Id);
-            modelBuilder.Entity<IdentityUserRole>().HasKey(r => new { r.RoleId, r.UserId });
+            //modelBuilder.Entity<IdentityUserRole>().HasKey(r => new { r.RoleId, r.UserId });
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

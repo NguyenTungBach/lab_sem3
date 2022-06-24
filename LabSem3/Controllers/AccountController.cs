@@ -4,6 +4,7 @@ using LabSem3.Models;
 using LabSem3.Models.ViewModel;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -34,42 +35,85 @@ namespace LabSem3.Controllers
             
         }
 
-        public async Task<bool> Register(string Username, string Password)
+        public ActionResult Login()
         {
-            Account user = new Account()
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Login(string UserName, string Password)
+        {
+            var user = await userManager.FindAsync(UserName, Password);
+            Debug.WriteLine("user đăng nhập là ", user);
+            if (user == null)
             {
-                UserName = Username
-            };
-            
-            var result = await userManager.CreateAsync(user, Password);
-            if (result.Succeeded)
+                TempData["False"] = "Not Found Account " + UserName;
+                return View();
+            }
+            else
             {
-                var queryUser = db.Users.AsQueryable().Where(userFind => userFind.UserName.Contains(Username)).FirstOrDefault();
-                Debug.WriteLine("Tìm user có name là: ", Username);
-                Debug.WriteLine("Tạo quyền User cho user có id là: ", queryUser.Id);
-                if (queryUser == null)
+                SignInManager<Account, string> signInManager = new SignInManager<Account, string>(userManager, Request.GetOwinContext().Authentication);
+                await signInManager.SignInAsync(user, false, false);
+                Session["userId"] = user.Id;
+
+                return Redirect("/Home");
+            }
+        }
+
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Register(RegisterViewModel registerViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                Account user = new Account()
                 {
-                    ViewBag.ErrorNull = "Không tìm thấy khi queryUser";
-                    Debug.WriteLine("Tạo quyền User cho user có id là: ", queryUser.Id);
-                }
-                var check = await AddUserToRoleAsync(queryUser.Id, RoleEnum.STUDENT.ToString());
-                if (check)
+                    UserName = registerViewModel.UserName
+                };
+
+                var result = await userManager.CreateAsync(user, registerViewModel.Password);
+                if (result.Succeeded)
                 {
-                    return true;
+                    TempData["Success"] = "Create Account Success, Please Login";
+                    var queryUser = db.Users.AsQueryable().Where(userFind => userFind.UserName.Contains(registerViewModel.UserName)).FirstOrDefault();
+                    //Debug.WriteLine("Tìm user có name là: ", Username);
+                    //Debug.WriteLine("Tạo quyền User cho user có id là: ", queryUser.Id);
+                    if (queryUser == null)
+                    {
+                        TempData["False"] = "Not found Account";
+                        //Debug.WriteLine("Tạo quyền User cho user có id là: ", queryUser.Id);
+                    }
+                    var check = await AddUserToRoleAsync(queryUser.Id, RoleEnum.STUDENT.ToString());
+                    if (check)
+                    {
+                        return Redirect("/Account/Login");
+                    }
+                    else
+                    {
+                        TempData["False"] = "Not found Add Role please call Admin to help";
+                        
+                        return View();
+                    }
                 }
                 else
                 {
-                    ViewBag.Errors = "Lỗi tạo quyền";
-                    System.Diagnostics.Debug.WriteLine("Lỗi tạo quyền");
-                    return false;
+                    TempData["False"] = "Something Error when Register please call Admin to help: " + result.Errors;
+                    //System.Diagnostics.Debug.WriteLine("Something Error ", result.Errors);
+                    return View();
                 }
             }
             else
             {
-                ViewBag.Errors = result.Errors;
-                System.Diagnostics.Debug.WriteLine("Lỗi đăng ký là ", result.Errors);
-                return false;
+                TempData["False"] = "Register not valid";
+                return View();
             }
+
+            
         }
 
         public async Task<bool> AddUserToRoleAsync(string UserId, string RoleName)
@@ -98,19 +142,37 @@ namespace LabSem3.Controllers
         }
 
         // GET: Account
-        public async Task<ActionResult> Index(string UserName, int? page)
+        public async Task<ActionResult> Index(string UserName, int? page, string RoleSearch, string StartTime, string EndTime)
         {
             var account = db.Users.Include(l => l.Department).Include(l => l.Roles).OrderBy(s => s.Id).AsQueryable();
-
+            ViewBag.RoleList = db.Roles.ToList();
 
             if (UserName != null && UserName.Length > 0)
             {
                 account = account.Where(s => s.UserName.Contains(UserName));
             }
-            Debug.WriteLine(account.ToList());
+            
+            if (RoleSearch != null && RoleSearch.Length > 0)
+            {
+                account = account.Where(s => s.Roles.Any(c => c.RoleId.Contains(RoleSearch)));
+            }
+
+            if (StartTime != null && StartTime != "")
+            {
+                var startDateTime0000 = DateTime.Parse(StartTime);
+                account = account.Where(s => s.CreatedAt >= startDateTime0000);
+            }
+            if (EndTime != null && EndTime != "")
+            {
+                var endDateTime2359 = DateTime.Parse(EndTime).AddDays(1).AddTicks(-1);
+                account = account.Where(s => s.CreatedAt <= endDateTime2359);
+            }
 
             var checkAcccountList = account.ToList();
             ViewBag.UserName = UserName;
+            ViewBag.RoleSearch = RoleSearch;
+            ViewBag.StartTime = StartTime;
+            ViewBag.EndTime = EndTime;
 
             int pageSize = 10;
             int pageNumber = (page ?? 1);
@@ -118,31 +180,7 @@ namespace LabSem3.Controllers
             return View(account.ToPagedList(pageNumber, pageSize));
         }
 
-        public async Task<ActionResult> IndexAdmin(string UserName, int? page)
-        {
-            var account = db.Users.Include(l => l.Department).OrderBy(s => s.Id).AsQueryable();
-            
-            var accountIdByRoleAdminList = AccountIdByRoleList(RoleEnum.ADMIN.ToString());
-
-            //foreach (var accountIdByRoleAdmin in accountIdByRoleAdminList)
-            //{
-            //    account = account.Where(s => s.Id == (accountIdByRoleAdmin.Id));
-            //}
-
-            //account = account.Where(s => s.Roles.Contains(UserName));
-
-            if (UserName != null && UserName.Length > 0)
-            {
-                account = account.Where(s => s.UserName.Contains(UserName));
-            }
-
-            ViewBag.UserName = UserName;
-
-            int pageSize = 10;
-            int pageNumber = (page ?? 1);
-            var checkAccountList = account.ToList();
-            return View(account.ToPagedList(pageNumber, pageSize));
-        }
+        
 
         public List<Account> AccountIdByRoleList(string roleEnum)
         {
@@ -225,10 +263,8 @@ namespace LabSem3.Controllers
                         Status = 1,
                         CreatedAt = DateTime.Now
                     };
-
-                    db.Users.Add(account);
-                    db.SaveChanges();
-
+                    await userManager.CreateAsync(account, accountViewModel.Password);
+                    
 
                     foreach (var role in checkRoles)
                     {
@@ -312,6 +348,7 @@ namespace LabSem3.Controllers
                     return HttpNotFound();
                 }
                 account.UserName = UserName;
+                account.UpdatedAt = DateTime.Now;
                 account.Status = Status;
                 db.Users.AddOrUpdate(account);
                 db.SaveChanges();
@@ -351,6 +388,7 @@ namespace LabSem3.Controllers
                 return HttpNotFound();
             }
             account.Status = ((int)AccountStatusEnum.DISABLED);
+            account.DeletedAt = DateTime.Now;
             db.Users.AddOrUpdate(account);
             db.SaveChanges();
 
