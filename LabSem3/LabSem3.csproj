@@ -196,12 +196,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-
-    <Compile Include="Migrations\202206241604430_nvqMigration.cs" />
-    <Compile Include="Migrations\202206241604430_nvqMigration.Designer.cs">
-      <DependentUpon>202206241604430_nvqMigration.cs</DependentUpon>
+    <Compile Include="Migrations\202206241714384_initDb.cs" />
+    <Compile Include="Migrations\202206241714384_initDb.Designer.cs">
+      <DependentUpon>202206241714384_initDb.cs</DependentUpon>
     </Compile>
-
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Complaint.cs" />
@@ -2218,11 +2216,8 @@
     <Content Include="Views\Document\Create.cshtml" />
     <Content Include="Views\Document\Edit.cshtml" />
     <Content Include="Views\Document\Delete.cshtml" />
-
     <Content Include="Views\Schedule\Index.cshtml" />
-
     <Content Include="Views\Complaint\Edit.cshtml" />
-
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
   </ItemGroup>
@@ -2242,13 +2237,11 @@
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
-
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202206241604430_nvqMigration.resx">
-      <DependentUpon>202206241604430_nvqMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202206241714384_initDb.resx">
+      <DependentUpon>202206241714384_initDb.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
