@@ -2,6 +2,7 @@
 {
     using LabSem3.Enum;
     using LabSem3.Models;
+    using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using System;
     using System.Collections.Generic;
@@ -35,12 +36,20 @@
             roles.ForEach(s => context.Roles.Add(s));
             context.SaveChanges();
 
-            var users = new List<Account>
+            var users = new Account()
             {
-                new Account {Id="985f35a0-32c3-4476-9e28-14ddb97c33fe" ,UserName="Admin", PasswordHash="89B8B8E486421463D7E0F5CAF60FB9CB35CE169B76E657AB21FC4D1D6B093603",CreatedAt=DateTime.Now, Status=((int)AccountStatusEnum.ACTIVE)},
+                Id="985f35a0-32c3-4476-9e28-14ddb97c33fe" ,
+                UserName="Admin", 
+                PasswordHash= "APoL3ZSJ1sEF9+1DbTtIhny9zUJ4QY8EfkLNQroC7Zsku3uh6TeREnjrnbsuPOyBqQ==", 
+                SecurityStamp = "073164e1-4029-4461-b688-a48f28f3d56e",
+                CreatedAt=DateTime.Now, Status=((int)AccountStatusEnum.ACTIVE)
             };
-            users.ForEach(s => context.Users.Add(s));
+            context.Users.Add(users);
             context.SaveChanges();
+
+            var userStore = new UserStore<Account>(context);
+            var userManager = new UserManager<Account>(userStore);
+            userManager.AddToRole(users.Id, RoleEnum.ADMIN.ToString());
 
             var typeComplaints = new List<TypeComplaint>
              {
