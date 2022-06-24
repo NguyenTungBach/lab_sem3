@@ -5,6 +5,7 @@
 @{
     ViewBag.Title = "ComplaintWaiting";
     Layout = "~/Views/Shared/_LayoutLabversion002.cshtml";
+
 }
 
 <h2>Unallocated work list</h2>
@@ -23,7 +24,7 @@
         <th>
             Type Of Complain
         </th>
-        <th></th>
+        <th>Assign person in charge of work</th>
     </tr>
 
     @foreach (var item in Model)
@@ -39,19 +40,55 @@
                 @item.TypeComplaint.Name
             </td>
             <td>
-                <select class="form-control">
-                    <option value="-1">--Select--</option>
-                    @{
-                        foreach (Account vr in ViewBag.UserAll)
-                        {
-                            <option value="@vr.Id">@vr.UserName</option>
-                        }
+                <div class="row">
+                    @using (Html.BeginForm("AssignPeople", "Complaint", method: FormMethod.Post))
+                    {
+                        <input hidden type="text" name="comPlaintId" value=@item.Id />
+                        <select name="StaffId" class="form-control" style="width: 300px">
+                            <option value="-1">--Select--</option>
+                            @{
+                                List<Account> ListSp = null;
+                                switch (@item.TypeComplaintId)
+                                {
+                                    case 1:
+                                        ListSp = ViewBag.listTechnicalStaff;
+                                        break;
+                                    case 2:
+                                        ListSp = ViewBag.listTechnicalStaff;
+                                        break;
+                                    case 3:
+                                        ListSp = ViewBag.listTechnicalStaff;
+                                        break;
+                                    case 4:
+                                        ListSp = ViewBag.listTechnicalStaff;
+                                        break;
+                                    case 5:
+                                        ListSp = ViewBag.listInstructor;
+                                        break;
+                                    case 6:
+                                        ListSp = ViewBag.listTechnicalStaff;
+                                        break;
+                                    case 7:
+                                        ListSp = ViewBag.listInstructor;
+                                        break;
+                                    case 8:
+                                        ListSp = ViewBag.listInstructor;
+                                        break;
+
+                                }
+
+                                foreach (Account vr in ListSp)
+                                {
+                                    <option value="@vr.Id">@vr.UserName</option>
+                                }
+                            }
+                        </select>
+                        <button style="margin-top: 5px" type="submit" class="form-control btn btn-info">Apply</button>
                     }
-                </select>
+                </div>
             </td>
         </tr>
     }
-
 </table>
 
 <br />
@@ -59,8 +96,6 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
 
 <nav aria-label="Page navigation example">
     <ul class="pagination">
-
-        @Html.PagedListPager(Model, page => Url.Action("ComplaintWaiting", new { page}))
-
+        @Html.PagedListPager(Model, page => Url.Action("ComplaintWaiting", new { page }))
     </ul>
 </nav>

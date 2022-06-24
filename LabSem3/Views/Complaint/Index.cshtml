@@ -1,9 +1,11 @@
 ﻿@model PagedList.IPagedList<LabSem3.Models.Complaint>
+@using LabSem3.Enum
 @using PagedList.Mvc;
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutLabversion002.cshtml";
+
 }
 
 <h2>List All Complaints</h2>
@@ -11,6 +13,24 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+<form action="/Complaint/Index" method="get" class="d-none d-sm-inline-block form-inline navbar-search mb-4">
+    <div class="input-group">
+        <select id="inputState" class="form-control mr-4" name="statusCheck">
+            <option selected value="-1">Status...</option>
+            @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ComplaintStatusEnum)))
+            {
+                <option value="@item.Value">@item.Text</option>
+            }
+        </select>
+        <input value="@ViewBag.keyWord" name="keyWord" type="text" class="form-control bg-default small" placeholder="Search for..."
+               aria-label="Search" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+            <button class="btn btn-primary" type="submit">
+                <i class="fas fa-search fa-sm"></i>
+            </button>
+        </div>
+    </div>
+</form><br>
 <table class="table">
     <tr>
         <th>
@@ -18,12 +38,6 @@
         </th>
         <th>
             Detail
-        </th>
-        <th>
-            Reason
-        </th>
-        <th>
-            Solution
         </th>
         <th>
             Status
@@ -44,20 +58,20 @@
                 @item.Detail
             </td>
             <td>
-                @item.Reason
+                @foreach (var item2 in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ComplaintStatusEnum)))
+                {
+                    if (item.Status == Int32.Parse(item2.Value))
+                    {
+                        @item2.Text
+                        break;
+                    }
+                }
             </td>
             <td>
-                @item.Solution
-            </td>
-            <td>
-                @item.Status
-            </td>
-            <td>
-                @item.TypeComplaintId
+                @item.TypeComplaint.Name
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.Id })
             </td>
         </tr>
