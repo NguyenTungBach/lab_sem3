@@ -50,6 +50,7 @@ namespace LabSem3.Models
             this.TypeComplaintId = complaintViewModel.TypeComplaintId;
             this.Title = complaintViewModel.Title;
             this.Detail = complaintViewModel.Detail;
+            this.Status = 4;
         }
     }
 }
