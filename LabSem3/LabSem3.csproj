@@ -183,6 +183,7 @@
     <Compile Include="Controllers\EquipmentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LabsController.cs" />
+    <Compile Include="Controllers\ScheduleController.cs" />
     <Compile Include="Data\LabSem3Context.cs" />
     <Compile Include="Enum\AccountStatusEnum.cs" />
     <Compile Include="Enum\ComplaintStatusEnum.cs" />
@@ -195,9 +196,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202206241419271_Kien.cs" />
-    <Compile Include="Migrations\202206241419271_Kien.Designer.cs">
-      <DependentUpon>202206241419271_Kien.cs</DependentUpon>
+    <Compile Include="Migrations\202206241714384_initDb.cs" />
+    <Compile Include="Migrations\202206241714384_initDb.Designer.cs">
+      <DependentUpon>202206241714384_initDb.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
@@ -2166,6 +2167,8 @@
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -2192,7 +2195,6 @@
     <Content Include="Views\Labs\Index.cshtml" />
     <Content Include="Views\Labs\ViewSuccess.cshtml" />
     <Content Include="Views\Labs\ViewError.cshtml" />
-    <Content Include="Views\Shared\_LayoutLabs.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Account\Details.cshtml" />
     <Content Include="Views\Account\Create.cshtml" />
@@ -2214,6 +2216,8 @@
     <Content Include="Views\Document\Create.cshtml" />
     <Content Include="Views\Document\Edit.cshtml" />
     <Content Include="Views\Document\Delete.cshtml" />
+    <Content Include="Views\Schedule\Index.cshtml" />
+    <Content Include="Views\Complaint\Edit.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
   </ItemGroup>
@@ -2234,8 +2238,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202206241419271_Kien.resx">
-      <DependentUpon>202206241419271_Kien.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202206241714384_initDb.resx">
+      <DependentUpon>202206241714384_initDb.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -1,70 +1,128 @@
-﻿@model IEnumerable<LabSem3.Models.Document>
-
+﻿@model PagedList.IPagedList<LabSem3.Models.Document>
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Index";
 }
+
 
 <h2>Index</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+<div style="margin-left: 10px; margin-bottom:20px">
+    <form action="/Document/Index" method="get" class="d-none d-sm-inline-block form-inline navbar-search">
+        <div class="">
+            <div>
+                <div class="row">
+                    <div style="margin-right: 20px">
+                        <div style="text-align: left">Search</div>
+                        <div class="input-group">
+                            <input value="@ViewBag.Search" name="Search" type="search" class="form-control bg-default border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-right: 20px">
+                        <div style="text-align: left">StartTime</div>
+                        <div class="input-group">
+                            <input value="@ViewBag.StartTime" name="StartTime" type="date" class="form-control bg-default border-0 small" aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-right: 20px">
+                        <div style="text-align: left">EndTime</div>
+                        <div class="input-group">
+                            <input value="@ViewBag.EndTime" name="EndTime" type="date" class="form-control bg-default border-0 small" aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div>
+        </div>
+    </form>
+</div>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Title)
+            Title
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Detail)
+            Detail
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Status)
+            Status
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CreatedAt)
+            CreatAt
         </th>
         @*<th>
-            @Html.DisplayNameFor(model => model.UpdatedAt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DeletedAt)
-        </th>*@
+                @Html.DisplayNameFor(model => model.UpdatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeletedAt)
+            </th>*@
         <th>
             Equipment Name
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Detail)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>
-        <td>
-            @string.Format("{0:dd/MM/yyyy}", item.CreatedAt)
-            
-        </td>
-        @*<td>
-            @Html.DisplayFor(modelItem => item.UpdatedAt)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DeletedAt)
-        </td>*@
-        <td>
-            @Html.DisplayFor(modelItem => item.Equipment.Name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Detail)
+            </td>
+            <td>
+                @foreach (var statusItem in EnumHelper.GetSelectList(typeof(LabSem3.Enum.DocumentStatusEnum)))
+                {
+                    @(Int32.Parse(statusItem.Value) == item.Status ? statusItem.Text : "" )
+                }
+            </td>
+            <td>
+                @string.Format("{0:dd/MM/yyyy}", item.CreatedAt)
+
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.UpdatedAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeletedAt)
+                </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Equipment.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
 
 </table>
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, Search = ViewBag.Search, StartTime = ViewBag.StartTime, EndTime = ViewBag.EndTime }))
+
+
+
+
