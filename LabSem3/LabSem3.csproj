@@ -195,9 +195,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202206231524527_Context.cs" />
-    <Compile Include="Migrations\202206231524527_Context.Designer.cs">
-      <DependentUpon>202206231524527_Context.cs</DependentUpon>
+    <Compile Include="Migrations\202206231623457_abcc.cs" />
+    <Compile Include="Migrations\202206231623457_abcc.Designer.cs">
+      <DependentUpon>202206231623457_abcc.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
@@ -2165,6 +2165,8 @@
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -2191,7 +2193,6 @@
     <Content Include="Views\Labs\Index.cshtml" />
     <Content Include="Views\Labs\ViewSuccess.cshtml" />
     <Content Include="Views\Labs\ViewError.cshtml" />
-    <Content Include="Views\Shared\_LayoutLabs.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Account\Details.cshtml" />
     <Content Include="Views\Account\Create.cshtml" />
@@ -2214,6 +2215,7 @@
     <Content Include="Views\Document\Create.cshtml" />
     <Content Include="Views\Document\Edit.cshtml" />
     <Content Include="Views\Document\Delete.cshtml" />
+    <Content Include="Views\Complaint\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2232,8 +2234,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202206231524527_Context.resx">
-      <DependentUpon>202206231524527_Context.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202206231623457_abcc.resx">
+      <DependentUpon>202206231623457_abcc.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
