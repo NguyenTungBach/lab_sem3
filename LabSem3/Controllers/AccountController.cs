@@ -168,7 +168,7 @@ namespace LabSem3.Controllers
                 account = account.Where(s => s.CreatedAt <= endDateTime2359);
             }
 
-            var checkAcccountList = account.ToList();
+            
             ViewBag.UserName = UserName;
             ViewBag.RoleSearch = RoleSearch;
             ViewBag.StartTime = StartTime;

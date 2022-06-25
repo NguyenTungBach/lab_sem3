@@ -120,8 +120,8 @@
                      data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Departments:</h6>
-                        <a class="collapse-item active" href="/Departments/Index">List</a>
-                        <a class="collapse-item" href="/Departments/Create">Create</a>
+                        <a class="collapse-item active" href="/Department/Index">List</a>
+                        <a class="collapse-item" href="/Department/Create">Create</a>
                     </div>
                 </div>
             </li>
@@ -372,6 +372,8 @@
                                 @if (Request.IsAuthenticated)
                                 {
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">@User.Identity.GetUserName()</span>
+                                @*<span class="mr-2 d-none d-lg-inline text-gray-600 small">@User.Identity.GetUserId()</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">@User.IsInRole("Admin")</span>*@
                                 }
 
                                 <img class="img-profile rounded-circle"

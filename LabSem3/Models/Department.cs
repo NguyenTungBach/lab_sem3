@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
+﻿
+using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -36,5 +37,7 @@ namespace LabSem3.Models
         public string AccountId { get; set; }
         [ForeignKey("AccountId")]
         public virtual Account Account { get; set; }
+
+        
     }
 }
