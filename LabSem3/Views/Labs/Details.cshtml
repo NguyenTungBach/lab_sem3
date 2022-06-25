@@ -19,6 +19,52 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">List Equiptment</h6>
+            <form action="/Labs/Details/@Model.Id" method="get" class="d-none d-sm-inline-block form-inline navbar-search">
+                <div class="">
+                    <div>
+                        <div class="row">
+                            <div style="margin-right: 20px">
+                                <div style="text-align: left">Search</div>
+                                <div class="input-group">
+                                    <input value="@ViewBag.Search" name="search" type="search" class="form-control bg-default border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="submit">
+                                            <i class="fas fa-search fa-sm"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="margin-right: 20px">
+                                <div style="text-align: left">Status</div>
+                                <div class="input-group">
+                                    <select class="form-control" id="Status" name="Status">
+                                        <option selected value="">-- Choose Status -- </option>
+                                        @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.EquipmentStatusEnum)))
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            @*<div style="margin-right: 20px">
+                                <div style="text-align: left">EndTime</div>
+                                <div class="input-group">
+                                    <input value="@ViewBag.EndTime" name="EndTime" type="date" class="form-control bg-default border-0 small" aria-label="Search" aria-describedby="basic-addon2">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="submit">
+                                            <i class="fas fa-search fa-sm"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>*@
+                        </div>
+
+                    </div>
+                </div>
+                <div>
+                </div>
+            </form>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -39,7 +85,7 @@
                                         <td class="sorting_1">@equipment.Id</td>
                                         <td>@equipment.Name</td>
                                         <td>
-                                            <img src="https://vn-live-01.slatic.net/p/0e9e38e9e2304eae2f0ecdf59432572d.jpg" class="img-thumbnail" alt="Alternate Text" />
+                                            <img src="@equipment.Thumbnail" class="img-thumbnail" alt="Alternate Text" />
                                         </td>
                                         <td>@equipment.TypeEquipment.Name</td>
                                         <td>
@@ -68,7 +114,7 @@
                     </div>
                     Page @(ViewBag.Equipments.PageCount < ViewBag.Equipments.PageNumber ? 0 : ViewBag.Equipments.PageNumber) of @ViewBag.Equipments.PageCount
                     @Html.PagedListPager((IPagedList)ViewBag.Equipments, page => Url.Action("Details",
-                        new { id = Model.Id, page }))
+                        new { id = Model.Id, page , search = ViewBag.Search, status = ViewBag.Status, typeEquipment= ViewBag.Type }))
                 </div>
             </div>
         </div>
