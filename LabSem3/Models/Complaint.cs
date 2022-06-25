@@ -24,8 +24,14 @@ namespace LabSem3.Models
         [DataType(DataType.Text)]
         public string Note { get; set; }
         public int Status { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime? CreatedAt { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime? UpdatedAt { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime? DeletedAt { get; set; }
 
         public string AccountId { get; set; }
@@ -50,6 +56,7 @@ namespace LabSem3.Models
             this.TypeComplaintId = complaintViewModel.TypeComplaintId;
             this.Title = complaintViewModel.Title;
             this.Detail = complaintViewModel.Detail;
+            this.Status = 4;
         }
     }
 }

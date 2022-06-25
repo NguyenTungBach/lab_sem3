@@ -27,10 +27,12 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-            </div>
+            <select class="form-control col-2" style="margin-left: 10px" id="Status" name="Status">
+                @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.DocumentStatusEnum)))
+                {
+                    <option value="@item.Value" @(Int32.Parse(item.Value) == Model.Status ? "selected" : "")>@item.Text</option>
+                }
+            </select>
         </div>
 
         @* <div class="form-group">
@@ -73,7 +75,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.TypeEquipmentId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <label class="control-label col-md-2" for="TypeEquipmentId">TypeEquipment Name</label>
             <div class="col-md-10">
                 @*@Html.EditorFor(model => model.TypeEquipmentId, new { htmlAttributes = new { @class = "form-control" } })*@
                 <select id="TypeEquipmentId" name="TypeEquipmentId">

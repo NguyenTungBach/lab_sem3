@@ -1,4 +1,5 @@
 ﻿using LabSem3.Data;
+using LabSem3.Enum;
 using LabSem3.Models;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,8 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using PagedList;
+using PagedList.Mvc;
 
 namespace LabSem3.Controllers
 {
@@ -18,14 +21,36 @@ namespace LabSem3.Controllers
         }
 
         // GET: Equipment
-        public ActionResult Index()
+        public ActionResult Index(string Search, int? page, string StartTime, string EndTime)
         {
-            var listEquipment = db.Equipments.ToList();
-            return View(listEquipment);
+
+            var listEquipment = db.Equipments.OrderBy(s=> s.Id).AsQueryable();
+            if (Search != null && Search.Length > 0)
+            {
+                listEquipment = listEquipment.Where(s => s.Name.Contains(Search));
+            }
+            if (StartTime != null && StartTime != "")
+            {
+                var startDateTime0000 = DateTime.Parse(StartTime);
+                listEquipment = listEquipment.Where(s => s.CreatedAt >= startDateTime0000);
+            }
+            if (EndTime != null && EndTime != "")
+            {
+                var endDateTime2359 = DateTime.Parse(EndTime).AddDays(1).AddTicks(-1);
+                listEquipment = listEquipment.Where(s => s.CreatedAt <= endDateTime2359);
+            }
+            ViewBag.Search = Search;
+            ViewBag.StartTime = StartTime;
+            ViewBag.EndTime = EndTime;
+            int PageSize = 10;
+            int PageNumber = (page ?? 1);
+
+            return View(listEquipment.ToPagedList(PageNumber, PageSize)); ;
         }
+        /*db.Equipments.Where(x => x.Name.StartsWith(search) || search == null).ToPagedList(k ?? 1, 3)*/
 
         // GET: Equipment/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? id)    
         {
             if (id == null)
             {
@@ -54,7 +79,8 @@ namespace LabSem3.Controllers
             try
             {
                 // TODO: Add insert logic here
-
+                equipment.Status = ((int)DocumentStatusEnum.AVAILABLE);
+                equipment.CreatedAt = DateTime.Now;
                 db.Equipments.Add(equipment);
                 db.SaveChanges();
                 return RedirectToAction("Index");

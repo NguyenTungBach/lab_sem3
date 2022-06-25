@@ -20,6 +20,7 @@
     <link href="~/Content/AdminVersion002/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="~/Content/css_bach/cssPagination.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet" />
+    @*<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>*@
     @RenderSection("links", required: false)
 </head>
 
@@ -119,8 +120,8 @@
                      data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Departments:</h6>
-                        <a class="collapse-item active" href="/Departments/Index">List</a>
-                        <a class="collapse-item" href="/Departments/Create">Create</a>
+                        <a class="collapse-item active" href="/Department/Index">List</a>
+                        <a class="collapse-item" href="/Department/Create">Create</a>
                     </div>
                 </div>
             </li>
@@ -465,3 +466,5 @@
             $(this).parent('a').addClass('active');
         });
 </script>
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>

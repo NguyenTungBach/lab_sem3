@@ -1,4 +1,4 @@
-﻿namespace LabSem3.Migrations
+namespace LabSem3.Migrations
 {
     using LabSem3.Enum;
     using LabSem3.Models;
@@ -16,7 +16,6 @@
         {
             AutomaticMigrationsEnabled = false;
         }
-
         protected override void Seed(LabSem3.Data.LabSem3Context context)
         {
             //  This method will be called after migrating to the latest version.
@@ -38,11 +37,12 @@
 
             var users = new Account()
             {
-                Id="985f35a0-32c3-4476-9e28-14ddb97c33fe" ,
-                UserName="Admin", 
-                PasswordHash= "APoL3ZSJ1sEF9+1DbTtIhny9zUJ4QY8EfkLNQroC7Zsku3uh6TeREnjrnbsuPOyBqQ==", 
+                Id = "985f35a0-32c3-4476-9e28-14ddb97c33fe",
+                UserName = "Admin",
+                PasswordHash = "APoL3ZSJ1sEF9+1DbTtIhny9zUJ4QY8EfkLNQroC7Zsku3uh6TeREnjrnbsuPOyBqQ==",
                 SecurityStamp = "073164e1-4029-4461-b688-a48f28f3d56e",
-                CreatedAt=DateTime.Now, Status=((int)AccountStatusEnum.ACTIVE)
+                CreatedAt = DateTime.Now,
+                Status = ((int)AccountStatusEnum.ACTIVE)
             };
             context.Users.Add(users);
             context.SaveChanges();
