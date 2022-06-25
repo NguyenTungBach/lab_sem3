@@ -72,9 +72,10 @@
                 <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 171px;">
 
                     <select id="selected" onchange="updatedStatus()" class="custom-select">
+                        <option selected> -- Status -- </option>
                         @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.EquipmentStatusEnum)))
                         {
-                            <option value="@item.Value" @(Int32.Parse(item.Value) == Model.Status ? "selected" : "")>@item.Text</option>
+                            <option value="@item.Value">@item.Text</option>
                         }
                     </select>
 
@@ -161,16 +162,12 @@
                             type: "POST",
 
             data: { id: s, status: value },
- 
-                             success: function (data) {
-                             alert(data);
-                                  },
-                             error: function (xhr) {
-                             alert('error');
-                                     }
-                                 });
+        });
+                window.location.reload(true);
             })
+         
         }
+       
     }
     var array = new Set;
     document.getElementById('checkAll').onclick = function () {

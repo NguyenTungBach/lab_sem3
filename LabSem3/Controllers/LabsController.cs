@@ -67,6 +67,7 @@ namespace LabSem3.Controllers
             }
             int pageSize = 10;
             int pageNumber = (page ?? 1);
+            ViewBag.TypeEquipments = db.TypeEquipments.ToList();
             ViewBag.Search = search;
             ViewBag.StartTime = status;
             ViewBag.Type = typeEquipment;
