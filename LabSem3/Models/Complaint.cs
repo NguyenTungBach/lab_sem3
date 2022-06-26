@@ -24,8 +24,14 @@ namespace LabSem3.Models
         [DataType(DataType.Text)]
         public string Note { get; set; }
         public int Status { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime? CreatedAt { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime? UpdatedAt { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime? DeletedAt { get; set; }
 
         public string AccountId { get; set; }
@@ -39,6 +45,10 @@ namespace LabSem3.Models
         public int? TypeComplaintId { get; set; }
         [ForeignKey("TypeComplaintId")]
         public virtual TypeComplaint TypeComplaint { get; set; }
+
+        public int? EquipmentId { get; set; }
+        [ForeignKey("EquipmentId")]
+        public virtual Equipment Equipment { get; set; }
 
         public Complaint()
         {

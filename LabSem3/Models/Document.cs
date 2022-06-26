@@ -21,15 +21,18 @@ namespace LabSem3.Models
        
         public int Status { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime? CreatedAt { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime? UpdatedAt { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime? DeletedAt { get; set; }
 
-        public int EquipmentId { get; set; }
-        [ForeignKey("EquipmentId")]
-        public virtual Equipment Equipment { get; set; }
+        public int? TypeEquipmentId { get; set; }
+        [ForeignKey("TypeEquipmentId")]
+        public virtual TypeEquipment TypeEquipment { get; set; }
 
     }
 }

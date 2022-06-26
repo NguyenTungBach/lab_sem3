@@ -1,0 +1,102 @@
+﻿@model LabSem3.Models.ViewModel.DepartmentViewModel.DepartmentEditViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <h4>DepartmentEditViewModel</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="control-label col-md-2">
+            Account HOD
+        </div>
+        <select class="form-control col-2" style="margin-left: 10px" id="HodId" name="HodId">
+            @foreach (var item in ViewBag.AccountsHOD)
+            {
+                <option value="@item.Id" @(item.Id == Model.HodId ? "selected" : "")>@item.UserName</option>
+            }
+        </select>
+        @Html.ValidationMessageFor(model => model.HodId, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        <div class="control-label col-md-2">
+            Lab
+        </div>
+        <select class="form-control col-2" style="margin-left: 10px" id="LabId" name="LabId">
+            @foreach (var item in ViewBag.Labs)
+            {
+                <option value="@item.Id" @(item.Id == Model.LabId ? "selected" : "")>@item.Id</option>
+            }
+        </select>
+        @Html.ValidationMessageFor(model => model.LabId, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        <div class="control-label col-md-2">
+            Account Instructor
+        </div>
+        <select class="form-control col-2" style="margin-left: 10px" id="AccountId" name="AccountId">
+            @foreach (var item in ViewBag.AccountsINSTRUCTOR)
+            {
+                <option value="@item.Id" @(item.Id == Model.AccountId ? "selected" : "")>@item.UserName</option>
+            }
+        </select>
+        @Html.ValidationMessageFor(model => model.AccountId, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        <div class="control-label col-md-2">
+            Status
+        </div>
+        <select class="form-control col-2" style="margin-left: 10px" id="Status" name="Status">
+            @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.DepartmentStatusEnum)))
+            {
+                <option value="@item.Value" @(Int32.Parse(item.Value) == Model.Status ? "selected" : "")>@item.Text</option>
+            }
+        </select>
+
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

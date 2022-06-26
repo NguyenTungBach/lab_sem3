@@ -42,9 +42,21 @@ namespace LabSem3.Controllers
         }
 
         // GET: Labs/Details/5
-        public ActionResult Details(int? id, int? page)
+        public ActionResult Details(String search, int? status,int? typeEquipment,int? id, int? page)
         {
-            if (id == null)
+            var listEquipment = db.Equipments.Where(s => s.LabId == id).AsQueryable();
+            if (search != null && search.Length > 0)
+            {
+                listEquipment = listEquipment.Where(s => s.Name.Contains(search));
+            }
+            if(status != null)
+            {
+                listEquipment = listEquipment.Where(s => s.Status == status);
+            }
+            if(typeEquipment != null){
+                listEquipment = listEquipment.Where(s => s.TypeEquipmentId == typeEquipment);
+            }
+            if (id == null && id != 4)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -53,9 +65,14 @@ namespace LabSem3.Controllers
             {
                 return HttpNotFound();
             }
-            int pageSize = 3;
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
-            ViewBag.Equipments = lab.Equipments.ToPagedList(pageNumber, pageSize);
+            ViewBag.TypeEquipments = db.TypeEquipments.ToList();
+            ViewBag.Search = search;
+            ViewBag.StartTime = status;
+            ViewBag.Type = typeEquipment;
+            ViewBag.Equipments = listEquipment.ToList().ToPagedList(pageNumber, pageSize);
+            //ViewBag.Equipments = lab.Equipments.ToPagedList(pageNumber, pageSize);
             return View(lab);
         }
 
@@ -91,7 +108,7 @@ namespace LabSem3.Controllers
         }
 
         // GET: Labs/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? id, int? page)
         {
             if (id == null)
             {
@@ -102,9 +119,22 @@ namespace LabSem3.Controllers
             {
                 return HttpNotFound();
             }
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            ViewBag.Equipments = lab.Equipments.ToPagedList(pageNumber, pageSize);
             ViewBag.AccountId = new SelectList(db.Users, "Id", "Email", lab.AccountId);
             ViewBag.DepartmentId = new SelectList(db.Departments, "Id", "Name", lab.DepartmentId);
             return View(lab);
+        }
+
+       
+        [HttpPost]
+        public JsonResult UpdatedStatus(int id,int status)
+        {
+            Equipment equipment = db.Equipments.Find(id);
+            equipment.Status = status;
+            db.SaveChanges();
+            return Json("Save sucesss!!");
         }
 
         // POST: Labs/Edit/5
@@ -114,15 +144,14 @@ namespace LabSem3.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Status,CreatedAt,UpdatedAt,DeletedAt,DepartmentId,EquipmentId,AccountId,ScheduleId")] Lab lab)
         {
-            if (ModelState.IsValid)
-            {
-                db.Entry(lab).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+            var lab1 = db.Labs.Find(lab.Id);
+            lab1.UpdatedAt = DateTime.Now;
+            lab1.Status = lab.Status;
+            lab1.DepartmentId = lab1.DepartmentId;
+            db.SaveChanges();
             ViewBag.AccountId = new SelectList(db.Users, "Id", "Email", lab.AccountId);
             ViewBag.DepartmentId = new SelectList(db.Departments, "Id", "Name", lab.DepartmentId);
-            return View(lab);
+            return Redirect("/Labs/Index");
         }
 
         // GET: Labs/Delete/5

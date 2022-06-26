@@ -1,0 +1,188 @@
+﻿@model PagedList.IPagedList<LabSem3.Models.Department>
+@using PagedList.Mvc;
+@using Microsoft.AspNet.Identity
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["False"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["False"]
+    </div>
+}
+
+<div style="margin-left: 10px; margin-bottom:20px">
+    <form action="/Department/Index" method="get" class="d-none d-sm-inline-block form-inline navbar-search">
+        <div class="">
+            <div>
+                <div class="row">
+                    <div style="margin-right: 20px">
+                        <div style="text-align: left">Search</div>
+                        <div class="input-group">
+                            <input value="@ViewBag.Name" name="Name" type="search" class="form-control bg-default border-0 small" placeholder="Search for..."
+                                   aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-right: 20px">
+                        <div style="text-align: left">Lab</div>
+                        <div class="">
+                            <select id="LabSearch" name="LabSearch" class="form-control">
+                                <option @(ViewBag.LabSearch == null ? "selected" : "")>Choose lab search</option>
+                                @foreach (var lab in ViewBag.LabList)
+                                {
+                                    <option value="@lab.Id" @(lab.Id == ViewBag.LabSearch ? "selected" : "")>@lab.Id</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div style="margin-right: 20px">
+                        <div style="text-align: left">Hod</div>
+                        <div class="">
+                            <select id="HodSearch" name="HodSearch" class="form-control">
+                                <option value="" @(ViewBag.HodSearch == "" ? "selected" : "")>Choose Hod search</option>
+                                @foreach (var hod in ViewBag.HodList)
+                                {
+                                    <option value="@hod.Id" @(hod.Id == ViewBag.HodSearch ? "selected" : "")>@hod.UserName</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div style="margin-right: 20px">
+                        <div style="text-align: left">Instructor</div>
+                        <div class="">
+                            <select id="InstructorSearch" name="InstructorSearch" class="form-control">
+                                <option value="" @(ViewBag.InstructorSearch == "" ? "selected" : "")>Choose Instructor search</option>
+                                @foreach (var instructor in ViewBag.InstructorList)
+                                {
+                                    <option value="@instructor.Id" @(instructor.Id == ViewBag.HodSearch ? "selected" : "")>@instructor.UserName</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="margin-right: 20px">
+                        <div style="text-align: left">StartTime</div>
+                        <div class="input-group">
+                            <input value="@ViewBag.StartTime" name="StartTime" type="date" class="form-control bg-default border-0 small"
+                                   aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-right: 20px">
+                        <div style="text-align: left">EndTime</div>
+                        <div class="input-group">
+                            <input value="@ViewBag.EndTime" name="EndTime" type="date" class="form-control bg-default border-0 small"
+                                   aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+        </div>
+    </form>
+
+</div>
+<table class="table">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Location
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+            CreatedAt
+        </th>
+        <th>
+            Hod
+        </th>
+        <th>
+            LabId
+        </th>
+        <th>
+            Account
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location)
+            </td>
+            <td>
+                    @foreach (var departmentStatus in EnumHelper.GetSelectList(typeof(LabSem3.Enum.DepartmentStatusEnum)))
+                    {
+                        if (Int32.Parse(departmentStatus.Value) == item.Status)
+                        {
+                            @departmentStatus.Text
+                        }
+                    }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Hod.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LabId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Account.UserName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, Name = ViewBag.Name, InstructorSearch = ViewBag.InstructorSearch, HodSearch = ViewBag.HodSearch, LabSearch = ViewBag.LabSearch, StartTime = ViewBag.StartTime, EndTime = ViewBag.EndTime }))
+
+    </ul>
+</nav>
