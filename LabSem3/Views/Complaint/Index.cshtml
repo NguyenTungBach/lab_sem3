@@ -15,11 +15,11 @@
 </p>
 <form action="/Complaint/Index" method="get" class="d-none d-sm-inline-block form-inline navbar-search mb-4">
     <div class="input-group">
-        <select id="inputState" class="form-control mr-4" name="statusCheck">
+        <select class="form-control mr-4" name="statusCheck">
             <option selected value="-1">Status...</option>
             @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ComplaintStatusEnum)))
             {
-                <option value="@item.Value">@item.Text</option>
+                <option @(ViewBag.statusCheck == Int32.Parse(item.Value) ? "selected" : " ") value="@item.Value">@item.Text</option>
             }
         </select>
         <input value="@ViewBag.keyWord" name="keyWord" type="text" class="form-control bg-default small" placeholder="Search for..."
