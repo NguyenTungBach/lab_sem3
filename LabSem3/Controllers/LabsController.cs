@@ -42,9 +42,21 @@ namespace LabSem3.Controllers
         }
 
         // GET: Labs/Details/5
-        public ActionResult Details(int? id, int? page)
+        public ActionResult Details(String search, int? status,int? typeEquipment,int? id, int? page)
         {
-            if (id == null)
+            var listEquipment = db.Equipments.Where(s => s.LabId == id).AsQueryable();
+            if (search != null && search.Length > 0)
+            {
+                listEquipment = listEquipment.Where(s => s.Name.Contains(search));
+            }
+            if(status != null)
+            {
+                listEquipment = listEquipment.Where(s => s.Status == status);
+            }
+            if(typeEquipment != null){
+                listEquipment = listEquipment.Where(s => s.TypeEquipmentId == typeEquipment);
+            }
+            if (id == null && id != 4)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -53,9 +65,14 @@ namespace LabSem3.Controllers
             {
                 return HttpNotFound();
             }
-            int pageSize = 3;
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
-            ViewBag.Equipments = lab.Equipments.ToPagedList(pageNumber, pageSize);
+            ViewBag.TypeEquipments = db.TypeEquipments.ToList();
+            ViewBag.Search = search;
+            ViewBag.StartTime = status;
+            ViewBag.Type = typeEquipment;
+            ViewBag.Equipments = listEquipment.ToList().ToPagedList(pageNumber, pageSize);
+            //ViewBag.Equipments = lab.Equipments.ToPagedList(pageNumber, pageSize);
             return View(lab);
         }
 
@@ -102,7 +119,7 @@ namespace LabSem3.Controllers
             {
                 return HttpNotFound();
             }
-            int pageSize = 3;
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
             ViewBag.Equipments = lab.Equipments.ToPagedList(pageNumber, pageSize);
             ViewBag.AccountId = new SelectList(db.Users, "Id", "Email", lab.AccountId);
