@@ -10,6 +10,21 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["False"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["False"]
+    </div>
+}
+
 <div style="margin-left: 10px; margin-bottom:20px">
     <form action="/Document/Index" method="get" class="d-none d-sm-inline-block form-inline navbar-search">
         <div class="">
@@ -109,7 +124,7 @@
                     @Html.DisplayFor(modelItem => item.DeletedAt)
                 </td>*@
             <td>
-                @Html.DisplayFor(modelItem => item.Equipment.Name)
+                @Html.DisplayFor(modelItem => item.TypeEquipment.Name)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |

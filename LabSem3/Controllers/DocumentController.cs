@@ -9,7 +9,7 @@ using LabSem3.Models;
 using LabSem3.Enum;
 using PagedList;
 using PagedList.Mvc;
-
+using System.Data.Entity.Migrations;
 
 namespace LabSem3.Controllers
 {
@@ -65,7 +65,7 @@ namespace LabSem3.Controllers
         // GET: Documet/Create
         public ActionResult Create()
         {
-            ViewBag.Equipments = db.Equipments.ToList();
+            ViewBag.TypeEquipments = db.TypeEquipments.ToList();
             return View();
         }
 
@@ -80,6 +80,7 @@ namespace LabSem3.Controllers
                 document.CreatedAt = DateTime.Now;
                 db.Document.Add(document);
                 db.SaveChanges();
+                TempData["Success"] = "Create " + document.Title + " Success ";
                 return RedirectToAction("Index");
             }
             catch
@@ -101,7 +102,7 @@ namespace LabSem3.Controllers
                 return HttpNotFound();
             }
             
-            ViewBag.Equipment = db.Equipments.ToList();
+            ViewBag.TypeEquipments = db.TypeEquipments.ToList();
             return View(document);
         }
 
@@ -117,8 +118,10 @@ namespace LabSem3.Controllers
                 DocumnetEdit.Detail = document.Detail;
                 DocumnetEdit.Status = document.Status;
                 DocumnetEdit.UpdatedAt = DateTime.Now;
-                DocumnetEdit.EquipmentId = document.EquipmentId;
+                DocumnetEdit.TypeEquipmentId = document.TypeEquipmentId;
+                db.Document.AddOrUpdate(DocumnetEdit);
                 db.SaveChanges();
+                TempData["Success"] = "Edit " + document.Title + " Success ";
                 return RedirectToAction("Index");
             }
             catch
@@ -150,8 +153,10 @@ namespace LabSem3.Controllers
             {
                 // TODO: Add delete logic here
                 Document document = db.Document.Find(id);
-                db.Document.Remove(document);
+                document.Status = ((int)DocumentStatusEnum.DISABLE);
+                db.Document.AddOrUpdate(document);
                 db.SaveChanges();
+                TempData["Success"] = "Delete " + document.Title + " Success ";
                 return RedirectToAction("Index");
             }
             catch

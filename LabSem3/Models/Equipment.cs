@@ -31,6 +31,10 @@ namespace LabSem3.Models
         [ForeignKey("LabId")]
         public virtual Lab Lab { get; set; }
 
+        public int? DocumentId { get; set; }
+        [ForeignKey("DocumentId")]
+        public virtual Document Document { get; set; }
+
         public int TypeEquipmentId { get; set; }
         [ForeignKey("TypeEquipmentId")]
         public virtual TypeEquipment TypeEquipment { get; set; }

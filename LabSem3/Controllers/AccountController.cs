@@ -395,5 +395,11 @@ namespace LabSem3.Controllers
             TempData["Success"] = "Delete Account Success";
             return RedirectToAction("Index");
         }
+
+        public ActionResult Logout()
+        {
+            HttpContext.GetOwinContext().Authentication.SignOut();
+            return Redirect("/Account/Login");
+        }
     }
 }
