@@ -16,5 +16,7 @@ namespace LabSem3.Models
         public int EquipmentId { get; set; }
         [ForeignKey("ComplaintId")]
         public virtual List<Equipment> Equipments { get; set; }
+
+        
     }
 }

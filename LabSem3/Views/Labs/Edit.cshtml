@@ -56,89 +56,166 @@
 
     </div>
 }
-<div class="col-sm-12">
-    <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
-        <thead>
-            <tr role="row">
-                <th>
-                    <input type="checkbox" name="name" id="checkAll" value="" />
-                </th>
-                <th class="sorting sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 100px;">Equipment Id</th>
-                <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 150px;">Name</th>
-                <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 150px;">Thumbnail</th>
-                <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 150px;">Type Equipment</th>
-                <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 150px;">CreatedAt</th>
-                <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 189px;">UpdatedAt</th>
-                <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 171px;">
+<div class="card shadow mb-4">
+    <div>
+        <div class="card-header py-3">
+            <h6 class=" font-weight-bold text-primary" style="margin-bottom:10px">List Equiptment</h6>
+            <form action="/Labs/Edit/@Model.Id" method="get" class="d-none d-sm-inline-block form-inline navbar-search">
+                <div class="">
+                    <div>
+                        <div class="row">
+                            <div style="margin:0 10px">
+                                <div style="text-align: left">Search</div>
+                                <div class="input-group">
+                                    <input name="search" type="search" class="form-control bg-default border-2 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
 
-                    <select id="selected" onchange="updatedStatus()" class="custom-select">
-                        <option selected> -- Status -- </option>
-                        @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.EquipmentStatusEnum)))
-                        {
-                            <option value="@item.Value">@item.Text</option>
-                        }
-                    </select>
+                                </div>
+                            </div>
 
-                </th>
-                <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 171px;">Action</th>
-            </tr>
-        </thead>
-        <tfoot>
-            <tr>
-                <th><input type="checkbox" name="name" value="" /></th>
-                <th rowspan="1" colspan="1">Equipment Id</th>
-                <th rowspan="1" colspan="1">Name</th>
-                <th rowspan="1" colspan="1">Thumbnailt</th>
-                <th rowspan="1" colspan="1">Type Equipment</th>
-                <th rowspan="1" colspan="1">CreatedAt</th>
-                <th rowspan="1" colspan="1">UpdatedAt</th>
-                <th rowspan="1" colspan="1">Status</th>
-                <th rowspan="1" colspan="1">Action</th>
-            </tr>
-        </tfoot>
-        <tbody>
-            @foreach (var equipment in ViewBag.Equipments)
-            {
-                <tr class="odd">
-                    <td>
-                        <input type="checkbox" onchange="getId(@equipment.Id)" id="checkElement" name="checkElement" value="" />
-                    </td>
-                    <td class="sorting_1" id="equiptId">@equipment.Id</td>
-                    <td>@equipment.Name</td>
-                    <td>
-                        <img src="https://vn-live-01.slatic.net/p/0e9e38e9e2304eae2f0ecdf59432572d.jpg" class="img-thumbnail" alt="Alternate Text" />
-                    </td>
-                    <td>@equipment.TypeEquipment.Name</td>
-                    <td>
-                        @equipment.CreatedAt
-                    </td>
-                    <td>
-                        @equipment.UpdatedAt
-                    </td>
-                    <td>
-                        @switch (equipment.Status)
-                        {
-                            case 1:
-                                <div>GOOD</div>
-                                            break;
-                                        case 0:
-                                <div>BAD</div>
-                                break;
-                        }
-                    </td>
-                    <td>
-                        <a><i class="fa-solid fa-info"></i></a>
-                        <a style="margin:0 10px"><i class="fa-solid fa-pen-to-square"></i></a>
-                        <a href="#"><i class="fa-solid fa-trash-can"></i></a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                            <div style="margin-right: 20px">
+                                <div style="text-align: left">Status</div>
+                                <div class="input-group">
+                                    <select class="form-control" id="Status" name="Status">
+                                        <option selected value="">-- Choose Status -- </option>
+                                        @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.EquipmentStatusEnum)))
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div style="margin-right: 20px">
+                                <div style="text-align: left">Type Equipments</div>
+                                <div class="input-group">
+                                    <select class="form-control" id="typeEquipment" name="typeEquipment">
+                                        <option selected value="">-- Choose Type Equipments -- </option>
+                                        @foreach (var typeEquipments in ViewBag.TypeEquipments)
+                                        {
+                                            <option value="@typeEquipments.Id">@typeEquipments.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div style="margin-right: 20px">
+                                <div style="text-align: left">StartTime</div>
+                                <div class="input-group">
+                                    <input value="@ViewBag.StartTime" name="startTime" type="date" class="form-control bg-default border-2 small" aria-label="Search" aria-describedby="basic-addon2">
+
+                                </div>
+                            </div>
+                            <div style="margin-right: 20px">
+                                <div style="text-align: left">EndTime</div>
+                                <div class="input-group">
+                                    <input value="@ViewBag.EndTime" name="endTime" type="date" class="form-control bg-default border-2 small" aria-label="Search" aria-describedby="basic-addon2">
+
+                                </div>
+                            </div>
+                            <div style="margin-top:23px">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <div class="dataTables_wrapper dt-bootstrap4">
+                <div class="col-sm-12">
+                    <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                        <thead>
+                            <tr role="row">
+                                <th>
+                                    <input type="checkbox" name="name" id="checkAll" value="" />
+                                </th>
+                                <th class="sorting sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 100px;">Equipment Id</th>
+                                <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 150px;">Name</th>
+                                <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 150px;">Thumbnail</th>
+                                <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 150px;">Type Equipment</th>
+                                <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 150px;">CreatedAt</th>
+                                <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 189px;">UpdatedAt</th>
+                                <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 171px;">
+
+                                    <select id="selected" onchange="updatedStatus()" class="custom-select">
+                                        <option selected> -- Status -- </option>
+                                        @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.EquipmentStatusEnum)))
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
+                                    </select>
+
+                                </th>
+                                <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 171px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th><input type="checkbox" name="name" value="" /></th>
+                                <th rowspan="1" colspan="1">Equipment Id</th>
+                                <th rowspan="1" colspan="1">Name</th>
+                                <th rowspan="1" colspan="1">Thumbnailt</th>
+                                <th rowspan="1" colspan="1">Type Equipment</th>
+                                <th rowspan="1" colspan="1">CreatedAt</th>
+                                <th rowspan="1" colspan="1">UpdatedAt</th>
+                                <th rowspan="1" colspan="1">Status</th>
+                                <th rowspan="1" colspan="1">Action</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            @foreach (var equipment in ViewBag.Equipments)
+                            {
+                                <tr class="odd">
+                                    <td>
+                                        <input type="checkbox" onchange="getId(@equipment.Id)" id="checkElement" name="checkElement" value="" />
+                                    </td>
+                                    <td class="sorting_1" id="equiptId">@equipment.Id</td>
+                                    <td>@equipment.Name</td>
+                                    <td>
+                                        <img src="@equipment.Thumbnail" class="img-thumbnail" alt="Alternate Text" />
+                                    </td>
+                                    <td>@equipment.TypeEquipment.Name</td>
+                                    <td>
+                                        @equipment.CreatedAt
+                                    </td>
+                                    <td>
+                                        @equipment.UpdatedAt
+                                    </td>
+                                    <td>
+                                        @switch (equipment.Status)
+                                        {
+                                            case 1:
+                                                <div>GOOD</div>
+                                                break;
+                                            case 0:
+                                                <div>BAD</div>
+                                                break;
+                                        }
+                                    </td>
+                                    <td>
+                                        <a><i class="fa-solid fa-info"></i></a>
+                                        <a style="margin:0 10px"><i class="fa-solid fa-pen-to-square"></i></a>
+                                        <a href="#"><i class="fa-solid fa-trash-can"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
         Page @(ViewBag.Equipments.PageCount < ViewBag.Equipments.PageNumber ? 0 : ViewBag.Equipments.PageNumber) of @ViewBag.Equipments.PageCount
         @Html.PagedListPager((IPagedList)ViewBag.Equipments, page => Url.Action("Edit",
-            new { id = Model.Id, page }))
+            new { id = Model.Id, page, search = ViewBag.Search, status = ViewBag.Status, typeEquipment = ViewBag.Type, startTime = ViewBag.StartTime, endTime = ViewBag.EndTime }))
 
         <div>
             @Html.ActionLink("Back to List", "Index")

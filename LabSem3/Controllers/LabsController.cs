@@ -35,14 +35,39 @@ namespace LabSem3.Controllers
 
 
         // GET: Labs
-        public ActionResult Index()
+        public ActionResult Index(int? page, int? status, string startTime, string endTime,int? departmentId)
         {
             var labs = db.Labs.Include(l => l.Account).Include(l => l.Department);
-            return View(labs.ToList());
+            if (startTime != null && startTime != "")
+            {
+                var startDateTime0000 = DateTime.Parse(startTime);
+                labs = labs.Where(s => s.CreatedAt >= startDateTime0000);
+            }
+            if (endTime != null && endTime != "")
+            {
+                var endDateTime2359 = DateTime.Parse(endTime).AddDays(1).AddTicks(-1);
+                labs = labs.Where(s => s.CreatedAt <= endDateTime2359);
+            }
+            if(departmentId!= null)
+            {
+                labs = labs.Where(s => s.DepartmentId == departmentId);
+            }
+            if(status != null)
+            {
+                labs = labs.Where(s => s.Status == status);
+            }
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+            ViewBag.Department = db.Departments.ToList();
+            ViewBag.StartTime = startTime;
+            ViewBag.EndTime = endTime;
+            ViewBag.DepartmentId = departmentId;
+            ViewBag.Status = status;
+            return View(labs.ToList().ToPagedList(pageNumber,pageSize));
         }
 
         // GET: Labs/Details/5
-        public ActionResult Details(String search, int? status,int? typeEquipment,int? id, int? page)
+        public ActionResult Details(string search, int? status,int? typeEquipment,int? id, int? page,string startTime, string endTime)
         {
             var listEquipment = db.Equipments.Where(s => s.LabId == id).AsQueryable();
             if (search != null && search.Length > 0)
@@ -55,6 +80,16 @@ namespace LabSem3.Controllers
             }
             if(typeEquipment != null){
                 listEquipment = listEquipment.Where(s => s.TypeEquipmentId == typeEquipment);
+            }
+            if (startTime != null && startTime != "")
+            {
+                var startDateTime0000 = DateTime.Parse(startTime);
+                listEquipment = listEquipment.Where(s => s.CreatedAt >= startDateTime0000);
+            }
+            if (endTime != null && endTime != "")
+            {
+                var endDateTime2359 = DateTime.Parse(endTime).AddDays(1).AddTicks(-1);
+                listEquipment = listEquipment.Where(s => s.CreatedAt <= endDateTime2359);
             }
             if (id == null && id != 4)
             {
@@ -69,7 +104,9 @@ namespace LabSem3.Controllers
             int pageNumber = (page ?? 1);
             ViewBag.TypeEquipments = db.TypeEquipments.ToList();
             ViewBag.Search = search;
-            ViewBag.StartTime = status;
+            ViewBag.Status = status;
+            ViewBag.StartTime = startTime;
+            ViewBag.EndTime = endTime;
             ViewBag.Type = typeEquipment;
             ViewBag.Equipments = listEquipment.ToList().ToPagedList(pageNumber, pageSize);
             //ViewBag.Equipments = lab.Equipments.ToPagedList(pageNumber, pageSize);
@@ -108,8 +145,31 @@ namespace LabSem3.Controllers
         }
 
         // GET: Labs/Edit/5
-        public ActionResult Edit(int? id, int? page)
+        public ActionResult Edit(int? id, int? page, string search, int? status, int? typeEquipment, string startTime, string endTime)
         {
+            var listEquipment = db.Equipments.Where(s => s.LabId == id).AsQueryable();
+            if (search != null && search.Length > 0)
+            {
+                listEquipment = listEquipment.Where(s => s.Name.Contains(search));
+            }
+            if (status != null)
+            {
+                listEquipment = listEquipment.Where(s => s.Status == status);
+            }
+            if (typeEquipment != null)
+            {
+                listEquipment = listEquipment.Where(s => s.TypeEquipmentId == typeEquipment);
+            }
+            if (startTime != null && startTime != "")
+            {
+                var startDateTime0000 = DateTime.Parse(startTime);
+                listEquipment = listEquipment.Where(s => s.CreatedAt >= startDateTime0000);
+            }
+            if (endTime != null && endTime != "")
+            {
+                var endDateTime2359 = DateTime.Parse(endTime).AddDays(1).AddTicks(-1);
+                listEquipment = listEquipment.Where(s => s.CreatedAt <= endDateTime2359);
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -121,7 +181,13 @@ namespace LabSem3.Controllers
             }
             int pageSize = 10;
             int pageNumber = (page ?? 1);
-            ViewBag.Equipments = lab.Equipments.ToPagedList(pageNumber, pageSize);
+            ViewBag.TypeEquipments = db.TypeEquipments.ToList();
+            ViewBag.Search = search;
+            ViewBag.Status = status;
+            ViewBag.StartTime = startTime;
+            ViewBag.EndTime = endTime;
+            ViewBag.Type = typeEquipment;
+            ViewBag.Equipments = listEquipment.ToList().ToPagedList(pageNumber, pageSize);
             ViewBag.AccountId = new SelectList(db.Users, "Id", "Email", lab.AccountId);
             ViewBag.DepartmentId = new SelectList(db.Departments, "Id", "Name", lab.DepartmentId);
             return View(lab);

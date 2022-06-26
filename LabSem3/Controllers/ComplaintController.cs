@@ -30,8 +30,8 @@ namespace LabSem3.Controllers
             roleManager = new RoleManager<IdentityRole>(roleStore); // giống Service, xử lý các vấn đề liên quan đến logic
         }
         // GET: Complaint
-        public ActionResult Index(string keyWord, int? page)
-        {
+        public ActionResult Index(string keyWord, int? statusCheck,  int? page) {
+            
             var result2 = db.Complaints.OrderBy(s => s.Id).AsQueryable();
 
             if (!string.IsNullOrEmpty(keyWord))
@@ -39,11 +39,18 @@ namespace LabSem3.Controllers
                 result2 = result2.Where(s => s.Title.Contains(keyWord) || s.Detail.Contains(keyWord));
             }
 
+            if (statusCheck != -1 && statusCheck != null)
+            {
+                result2 = result2.Where(s => s.Status == statusCheck);
+            }
+
             //if (statusCheck != -1)
             //{
             //    result2 = result2.Where(s => s.Status == statusCheck);
             //}
-            
+
+            ViewBag.statusCheck = statusCheck;
+
             ViewBag.keyWord = keyWord;
 
             int pageSize = 10;

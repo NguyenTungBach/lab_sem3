@@ -46,6 +46,10 @@ namespace LabSem3.Models
         [ForeignKey("TypeComplaintId")]
         public virtual TypeComplaint TypeComplaint { get; set; }
 
+        public int? EquipmentId { get; set; }
+        [ForeignKey("EquipmentId")]
+        public virtual Equipment Equipment { get; set; }
+
         public Complaint()
         {
             
