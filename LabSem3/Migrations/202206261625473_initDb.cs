@@ -3,7 +3,7 @@ namespace LabSem3.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class NVQCheck : DbMigration
+    public partial class initDb : DbMigration
     {
         public override void Up()
         {
