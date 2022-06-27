@@ -35,10 +35,10 @@ namespace LabSem3.Controllers
             
         }
 
-        public ActionResult Login()
-        {
-            return View();
-        }
+        //public ActionResult Login()
+        //{
+        //    return View("");
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -48,8 +48,8 @@ namespace LabSem3.Controllers
             Debug.WriteLine("user đăng nhập là ", user);
             if (user == null)
             {
-                TempData["False"] = "Not Found Account " + UserName;
-                return View();
+                TempData["False"] = "Account - Not Found" + UserName;
+                return View("Login1");
             }
             else
             {
@@ -91,7 +91,7 @@ namespace LabSem3.Controllers
                     var check = await AddUserToRoleAsync(queryUser.Id, RoleEnum.STUDENT.ToString());
                     if (check)
                     {
-                        return Redirect("/Account/Login");
+                        return Redirect("/Account/Login1");
                     }
                     else
                     {
@@ -395,6 +395,12 @@ namespace LabSem3.Controllers
             TempData["Success"] = "Delete Account Success";
             return RedirectToAction("Index");
         }
+
+        public ActionResult Login1()
+        {
+            return View();
+        }
+
 
         public ActionResult Logout()
         {

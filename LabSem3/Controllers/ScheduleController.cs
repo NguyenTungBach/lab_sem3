@@ -1,6 +1,11 @@
 ﻿using LabSem3.Data;
+using LabSem3.Enum;
+using LabSem3.Models;
+using LabSem3.Models.ViewModel.ScheduleViewModel;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -30,23 +35,58 @@ namespace LabSem3.Controllers
         // GET: Schedule/Create
         public ActionResult Create()
         {
+            ViewBag.Labs = db.Labs.ToList();
+            var roleINSTRUCTOR = db.Roles.Where(s => s.Name.Contains(RoleEnum.INSTRUCTOR.ToString())).FirstOrDefault();
+            ViewBag.InstructorList = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleINSTRUCTOR.Id))).ToList(); ;
             return View();
         }
 
         // POST: Schedule/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(ScheduleCreateViewModel scheduleCreateViewModel)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add insert logic here
+                var startTime = scheduleCreateViewModel.StartTime;
+                var endTime = scheduleCreateViewModel.EndTime;
 
-                return RedirectToAction("Index");
+                var scheduleDay = endTime.Subtract(startTime).Days + 1;
+
+                var checkSlots = scheduleCreateViewModel.SlotNumberArray.Split(',');
+
+                for (int i = 0; i < scheduleDay; i++)
+                {
+                    var startDateTime0000 = DateTime.Parse(startTime.ToString());
+                    var endDateTime2359 = DateTime.Parse(startTime.AddDays(i).AddTicks(-1).ToString());
+
+                    var checkDuplicateDate = db.Schedules.Where(s => s.DateBoking >= startDateTime0000 && s.DateBoking <= endDateTime2359).FirstOrDefault();
+                    if(checkDuplicateDate != null)
+                    {
+                        TempData["False"] = "Create Schedule False";
+                        return RedirectToAction("Index");
+                    }
+                }
+
+                for (int i = 0; i < scheduleDay; i++)
+                {
+                    foreach (var slot in checkSlots)
+                    {
+                        Schedule schedule = new Schedule()
+                        {
+                            DateBoking = startTime.AddDays(i),
+                            SlotNumber = Int32.Parse(slot),
+                            Status = ((int)ScheduleStatusEnum.AVAILABLE),
+                            CreatedAt = DateTime.Now,
+                            LabId = scheduleCreateViewModel.LabId,
+                            InstructorId = scheduleCreateViewModel.InstructorId,
+                        };
+                        db.Schedules.AddOrUpdate(schedule);
+                        db.SaveChanges();
+                    }
+                }
+                TempData["Success"] = "Create Schedule Success";
             }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Index");
         }
 
         // GET: Schedule/Edit/5

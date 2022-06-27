@@ -194,12 +194,13 @@
     <Compile Include="Enum\LabStatusEnum.cs" />
     <Compile Include="Enum\RoleEnum.cs" />
     <Compile Include="Enum\ScheduleStatusEnum.cs" />
+    <Compile Include="Enum\SlotNumberEnum.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202206261608298_Context.cs" />
-    <Compile Include="Migrations\202206261608298_Context.Designer.cs">
-      <DependentUpon>202206261608298_Context.cs</DependentUpon>
+    <Compile Include="Migrations\202206271033581_Context.cs" />
+    <Compile Include="Migrations\202206271033581_Context.Designer.cs">
+      <DependentUpon>202206271033581_Context.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
@@ -217,6 +218,7 @@
     <Compile Include="Models\ViewModel\DepartmentViewModel\DepartmentEditViewModel.cs" />
     <Compile Include="Models\ViewModel\LoginViewModel.cs" />
     <Compile Include="Models\ViewModel\RegisterViewModel.cs" />
+    <Compile Include="Models\ViewModel\ScheduleViewModel\ScheduleCreateViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1942,6 +1944,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\css_bach\cssPagination.css" />
+    <Content Include="Content\css_bach\Login.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -2220,12 +2223,14 @@
     <Content Include="Views\Document\Delete.cshtml" />
     <Content Include="Views\Schedule\Index.cshtml" />
     <Content Include="Views\Complaint\Edit.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\Login1.cshtml" />
+    <Content Include="Views\Shared\_LayoutCleanForLoginRegister.cshtml" />
     <Content Include="Views\Department\Index.cshtml" />
     <Content Include="Views\Department\Details.cshtml" />
     <Content Include="Views\Department\Edit.cshtml" />
     <Content Include="Views\Department\Delete.cshtml" />
+    <Content Include="Views\Schedule\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2244,8 +2249,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202206261608298_Context.resx">
-      <DependentUpon>202206261608298_Context.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202206271033581_Context.resx">
+      <DependentUpon>202206271033581_Context.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

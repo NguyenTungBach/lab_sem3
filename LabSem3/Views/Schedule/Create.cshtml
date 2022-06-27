@@ -1,0 +1,219 @@
+﻿@model LabSem3.Models.ViewModel.ScheduleViewModel.ScheduleCreateViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>ScheduleCreateViewModel</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*<div class="form-group">
+                <div class="control-label col-md-2">
+                    SlotNumber
+                </div>
+                <select class="form-control col-2" style="margin-left: 10px" id="SlotNumber" name="SlotNumber">
+                    @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.SlotNumberEnum)))
+                    {
+                        <option value="@item.Value">
+                            @switch (Int32.Parse(item.Value))
+                            {
+                                case 0:
+                                    <span>@item.Text (8:00-10:00)</span>
+                                    break;
+                                case 1:
+                                    <span>@item.Text (10:00-12:00)</span>
+                                    break;
+                                case 2:
+                                    <span>@item.Text (12:00-13:30)</span>
+                                    break;
+                                case 3:
+                                    <span>@item.Text (13:30-15:30)</span>
+                                    break;
+                                case 4:
+                                    <span>@item.Text (15:30-17:30)</span>
+                                    break;
+                                case 5:
+                                    <span>@item.Text (17:30-19:30)</span>
+                                    break;
+                                case 6:
+                                    <span>@item.Text (19:30-21:30)</span>
+                                    break;
+                            }
+                        </option>
+                    }
+                </select>
+            </div>*@
+
+        <div class="form-group">
+            <div class="control-label col-md-2">
+                SlotNumber
+            </div>
+            @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.SlotNumberEnum)))
+            {
+                <div class="col-md-10">
+                    <div>
+                        <input type="checkbox" value="@item.Value" id="@item.Text" class="slotCheck">
+                        <label class="form-check-label" for="@item.Text">
+                            @switch (Int32.Parse(item.Value))
+                            {
+                                case 0:
+                                    <span>@item.Text (8:00-10:00)</span>
+                                    break;
+                                case 1:
+                                    <span>@item.Text (10:00-12:00)</span>
+                                    break;
+                                case 2:
+                                    <span>@item.Text (12:00-13:30)</span>
+                                    break;
+                                case 3:
+                                    <span>@item.Text (13:30-15:30)</span>
+                                    break;
+                                case 4:
+                                    <span>@item.Text (15:30-17:30)</span>
+                                    break;
+                                case 5:
+                                    <span>@item.Text (17:30-19:30)</span>
+                                    break;
+                                case 6:
+                                    <span>@item.Text (19:30-21:30)</span>
+                                    break;
+                            }
+                        </label>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SlotNumberArray, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.SlotNumberArray, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SlotNumberArray, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="control-label col-md-2">
+                Labs
+            </div>
+            <select class="form-control col-2" style="margin-left: 10px" id="LabId" name="LabId">
+                @foreach (var item in ViewBag.Labs)
+                {
+                    <option value="@item.Id">Lab @item.Id - @item.Department.Name</option>
+                }
+            </select>
+            @Html.ValidationMessageFor(model => model.LabId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            <div class="control-label col-md-2">
+                Account Instructor
+            </div>
+            <select class="form-control col-2" style="margin-left: 10px" id="InstructorId" name="InstructorId">
+                @foreach (var item in ViewBag.InstructorList)
+                {
+                    <option value="@item.Id">@item.UserName</option>
+                }
+            </select>
+            @Html.ValidationMessageFor(model => model.InstructorId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script>
+    
+
+    const selectStatus = $('.slotCheck');
+    //$(document).ready(function () {
+    //    let array = new Set();
+    //    for (let i = 0; i < selectStatus.length; i++) { // Kiểm tra từng selectStatus
+    //        if (selectStatus[i].checked && $(this).val() == "WAITING") {
+    //            selectStatus.prop('checked', false);
+    //            $(this).prop('checked', true);
+    //            array.add("WAITING"); // thì đưa vào Set
+    //        }
+    //        if (selectStatus[i].checked && $(this).val() != "WAITING") { // Nếu có selectStatus được check
+    //            array.add(selectStatus[i].value); // thì đưa vào Set
+    //        }
+    //    }
+    //    $('#arrayRole').val(Array.from(array));
+    //});
+
+    selectStatus.on('click', function () {
+        let array = new Set();
+        let value = this.value;
+        let checkWait = true; // kiểm tra có wait không
+        for (let i = 0; i < selectStatus.length; i++) { // Kiểm tra từng selectStatus
+            if (selectStatus[i].checked) { // Nếu có selectStatus được check
+                array.add(selectStatus[i].value); // thì đưa vào Set
+            }
+        }
+
+        if ($(this).prop('checked')) {
+            //for (let i = 0; i < selectStatus.length; i++) { // Kiểm tra từng selectStatus
+            //    if (selectStatus[i].checked && selectStatus[i].value == "WAITING") { // Nếu có selectStatus được check
+            //        checkWait = true;
+            //        $(this).prop('checked', false); // nếu trong tất cả có wait thì bỏ check
+            //        array = new Set();
+            //        array.add("WAITING"); // thì đưa vào Set
+            //    }
+            //}
+            // kiểm tra có check status = wait không
+            //if (value == "WAITING") {
+            //    checkWait = true;
+            //    array = new Set();
+            //    selectStatus.prop('checked', false);
+            //    $(this).prop('checked', true);
+            //    array.add("WAITING"); // thì đưa vào Set
+            //}
+            if (!checkWait) { // nếu kiểm tra tất cả mà không có wait
+                array.add(value); // thì thêm vào mảng
+            }
+        } else {
+            if (array.has(value)) {
+                array.delete(value);
+            }
+        }
+        console.log('array la: ' + Array.from(array));
+        $('#SlotNumberArray').val(Array.from(array));
+    });
+</script>

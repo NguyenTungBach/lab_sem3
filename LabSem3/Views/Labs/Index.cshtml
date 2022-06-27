@@ -1,4 +1,5 @@
-﻿@model IEnumerable<LabSem3.Models.Lab>
+﻿@model PagedList.IPagedList<LabSem3.Models.Lab>
+@using PagedList.Mvc;
 
 @{
     ViewBag.Title = "Index";
@@ -10,9 +11,60 @@
         <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
     </div>
     <div class="card-body">
-        <div class="table-responsive">
+        <div >
             <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                <div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="dataTable_length"><label>Show <select name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"><div id="dataTable_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="dataTable"></label></div></div></div><div class="row">
+                <form action="/Labs/Index">
+                    <div class="row " style="margin-bottom:10px">
+                    
+
+                        <div style="margin:0 10px">
+                            <div style="text-align: left">Department</div>
+                            <div class="input-group">
+                                <select class="form-control" id="departmentId" name="departmentId">
+                                    <option selected value="">-- Choose Department -- </option>
+                                    @foreach (var item in ViewBag.Department)
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="margin-right: 20px">
+                            <div style="text-align: left">Status</div>
+                            <div class="input-group">
+                                <select class="form-control" id="Status" name="Status">
+                                    <option selected value="">-- Choose Status -- </option>
+                                    @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.LabStatusEnum)))
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="margin-right: 20px">
+                            <div style="text-align: left">StartTime</div>
+                            <div class="input-group">
+                                <input value="@ViewBag.StartTime" name="startTime" type="date" class="form-control bg-default border-2 small" aria-label="Search" aria-describedby="basic-addon2">
+
+                            </div>
+                        </div>
+                        <div style="margin-right: 20px">
+                            <div style="text-align: left">EndTime</div>
+                            <div class="input-group">
+                                <input value="@ViewBag.EndTime" name="endTime" type="date" class="form-control bg-default border-2 small" aria-label="Search" aria-describedby="basic-addon2">
+
+                            </div>
+                        </div>
+                        <div style="margin-top:23px">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fas fa-search fa-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                     <div class="row">
                     <div class="col-sm-12">
                         <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
                             <thead>
@@ -31,30 +83,34 @@
                                         <td>@lab.UpdatedAt</td>
                                         <td>
                                             @switch (lab.Status)
-                                                    {
-                                                        case 1:
+                                            {
+                                                case 1:
                                                     <div>ACTIVE</div>
-                                                            break;
-                                                        case -1:
-                                        <div>INACTIVE</div>
-                                                            break;
-                                                        case 0:
-                                        <div>MAINTENANCE</div>
+                                                    break;
+                                                case -1:
+                                                    <div>INACTIVE</div>
+                                                    break;
+                                                case 0:
+                                                    <div>MAINTENANCE</div>
                                                     break;
                                             }
                                         </td>
                                         <td>
                                             <a href="/Labs/Details/@lab.Id"><i class="fa-solid fa-info"></i></a>
                                             <a style="margin:0 10px" href="/Labs/Edit/@lab.Id"><i class="fa-solid fa-pen-to-square"></i></a>
-                                            <a href="#"><i class="fa-solid fa-trash-can"></i></a>
+                                            <a href="/Labs/Delete/@lab.Id"><i class="fa-solid fa-trash-can"></i></a>
                                         </td>
                                     </tr>
                                 }
                             </tbody>
                         </table>
                     </div>
-                </div><div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite">Showing 1 to 10 of 57 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="dataTable_previous"><a href="#" aria-controls="dataTable" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="dataTable" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="2" tabindex="0" class="page-link">2</a></li><li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="3" tabindex="0" class="page-link">3</a></li><li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="4" tabindex="0" class="page-link">4</a></li><li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="5" tabindex="0" class="page-link">5</a></li><li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="6" tabindex="0" class="page-link">6</a></li><li class="paginate_button page-item next" id="dataTable_next"><a href="#" aria-controls="dataTable" data-dt-idx="7" tabindex="0" class="page-link">Next</a></li></ul></div></div></div>
+                </div>
             </div>
         </div>
     </div>
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+        new { page, search = ViewBag.Search, status = ViewBag.Status, departmentId = ViewBag.DepartmentId, startTime = ViewBag.StartTime, endTime = ViewBag.EndTime }))
 </div>

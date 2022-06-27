@@ -56,7 +56,22 @@
                                     </select>
                                 </div>
                             </div>
-                            <div style="margin-top:23px" >
+
+                            <div style="margin-right: 20px">
+                                <div style="text-align: left">StartTime</div>
+                                <div class="input-group">
+                                    <input value="@ViewBag.StartTime" name="startTime" type="date" class="form-control bg-default border-2 small" aria-label="Search" aria-describedby="basic-addon2">
+                               
+                                </div>
+                            </div>
+                            <div style="margin-right: 20px">
+                                <div style="text-align: left">EndTime</div>
+                                <div class="input-group">
+                                    <input value="@ViewBag.EndTime" name="endTime" type="date" class="form-control bg-default border-2 small" aria-label="Search" aria-describedby="basic-addon2">
+                               
+                                </div>
+                            </div>
+                            <div style="margin-top:23px">
                                 <button class="btn btn-primary" type="submit">
                                     <i class="fas fa-search fa-sm"></i>
                                 </button>
@@ -118,7 +133,7 @@
                     </div>
                     Page @(ViewBag.Equipments.PageCount < ViewBag.Equipments.PageNumber ? 0 : ViewBag.Equipments.PageNumber) of @ViewBag.Equipments.PageCount
                     @Html.PagedListPager((IPagedList)ViewBag.Equipments, page => Url.Action("Details",
-                        new { id = Model.Id, page , search = ViewBag.Search, status = ViewBag.Status, typeEquipment= ViewBag.Type }))
+                        new { id = Model.Id, page , search = ViewBag.Search, status = ViewBag.Status, typeEquipment= ViewBag.Type, startTime = ViewBag.StartTime, endTime = ViewBag.EndTime }))
                 </div>
             </div>
         </div>
