@@ -37,6 +37,9 @@ namespace LabSem3.Data
                 .WithMany(g => g.Labs)
                 .HasForeignKey<string>(s => s.AccountId).WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<Account>()
+                .HasOptional<Department>(s => s.Department)
+                .WithRequired(g => g.Hod);
 
             modelBuilder.Entity<Schedule>()
                 .HasRequired<Account>(s => s.Instructor)

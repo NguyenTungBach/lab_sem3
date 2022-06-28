@@ -61,19 +61,6 @@
 
     <div class="form-group">
         <div class="control-label col-md-2">
-            Account Instructor
-        </div>
-        <select class="form-control col-2" style="margin-left: 10px" id="AccountId" name="AccountId">
-            @foreach (var item in ViewBag.AccountsINSTRUCTOR)
-            {
-                <option value="@item.Id" @(item.Id == Model.AccountId ? "selected" : "")>@item.UserName</option>
-            }
-        </select>
-        @Html.ValidationMessageFor(model => model.AccountId, "", new { @class = "text-danger" })
-    </div>
-
-    <div class="form-group">
-        <div class="control-label col-md-2">
             Status
         </div>
         <select class="form-control col-2" style="margin-left: 10px" id="Status" name="Status">

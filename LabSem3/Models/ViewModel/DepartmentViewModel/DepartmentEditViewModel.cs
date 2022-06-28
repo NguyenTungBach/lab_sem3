@@ -15,11 +15,10 @@ namespace LabSem3.Models.ViewModel.DepartmentViewModel
         [DisplayName("Name")]
         [Required(ErrorMessage = "UserName Required")]
         public string Name { get; set; }
-        [Required(ErrorMessage = "UserName Required")]
+        [Required(ErrorMessage = "Location Required")]
         public string Location { get; set; }
         public string HodId { get; set; }
-        public int LabId { get; set; }
-        public string AccountId { get; set; }
+        public int? LabId { get; set; }
         public int Status { get; set; }
 
         public DepartmentEditViewModel()
@@ -34,7 +33,7 @@ namespace LabSem3.Models.ViewModel.DepartmentViewModel
             Status = department.Status;
             HodId = department.HodId;
             LabId = department.LabId;
-            AccountId = department.HodId;
+
         }
     }
 }

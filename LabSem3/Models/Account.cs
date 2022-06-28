@@ -39,7 +39,7 @@ namespace LabSem3.Models
         public virtual List<Lab> Labs { get; set; }
 
         public int? DepartmentId { get; set; }
-        [ForeignKey("DepartmentId")]
+        //[ForeignKey("DepartmentId")]
         public virtual Department Department { get; set; }
 
         public int? ComplaintId { get; set; }

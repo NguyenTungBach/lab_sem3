@@ -320,8 +320,6 @@ namespace LabSem3.Controllers
         {
             if (ModelState.IsValid)
             {
-                
-
                 var checkRoles = Role.Split(',');
                 var roleList = db.Roles.ToList();
 
