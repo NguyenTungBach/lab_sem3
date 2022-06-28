@@ -21,7 +21,7 @@ namespace LabSem3.Controllers
             db = new LabSem3Context();
         }
         // GET: Documet
-        public ActionResult Index(string Search, int? page, string StartTime, string EndTime)
+        public ActionResult Index(int? statusCheck, int? EquipmentId, int? TypeEquipmentCheck, string Search, int? page, string StartTime, string EndTime)
         {
             var listDocument = db.Document.OrderBy(s => s.Id).AsQueryable();
             if (Search != null && Search.Length > 0)
@@ -38,7 +38,17 @@ namespace LabSem3.Controllers
                 var endDateTime2359 = DateTime.Parse(EndTime).AddDays(1).AddTicks(-1);
                 listDocument = listDocument.Where(s => s.CreatedAt <= endDateTime2359);
             }
-            ViewBag.Search = Search;
+            if (TypeEquipmentCheck != null)
+            {
+                listDocument = listDocument.Where(s => s.TypeEquipmentId == TypeEquipmentCheck);
+            }
+            if (statusCheck != -1 && statusCheck != null)
+            {
+                listDocument = listDocument.Where(s => s.Status == statusCheck);
+            }
+          
+            ViewBag.statusCheck = statusCheck;
+            ViewBag.TypeEquipmentList = db.TypeEquipments.ToList();
             ViewBag.StartTime = StartTime;
             ViewBag.EndTime = EndTime;
             int Pagesize = 10;

@@ -1,6 +1,6 @@
 ﻿@model PagedList.IPagedList<LabSem3.Models.Equipment>
 @using PagedList.Mvc;
-
+@using Microsoft.AspNet.Identity
 @{
     ViewBag.Title = "Index";
 }
@@ -10,11 +10,54 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+
 <div style="margin-left: 10px; margin-bottom:20px">
     <form action="/Equipment/Index" method="get" class="d-none d-sm-inline-block form-inline navbar-search">
         <div class="">
             <div>
                 <div class="row">
+                    @*statusCheck*@
+                    <div style="margin-right: 20px">
+                        <div style="text-align: left">Status</div>
+                        <div class="input-group">
+                            <select class="form-control mr-4" name="statusCheck">
+                                <option selected value="-1">Status...</option>
+                                @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.EquipmentStatusEnum)))
+                                {
+                                    <option @(ViewBag.statusCheck == Int32.Parse(item.Value) ? "selected" : " ") value="@item.Value">@item.Text</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    @*labIdcheck*@
+                    <div style="margin-right: 20px">
+                        <div style="text-align: left">Lab Id</div>
+                        <div class="labIdCheck">
+                            <select id="labIdCheck" name="labIdCheck" class="form-control">
+                                <option @(ViewBag.labIdCheck == null ? "selected" : "")>Choose LabId Search</option>
+                                @foreach (var lab in ViewBag.LabList)
+                                {
+                                    <option value="@lab.Id" @(lab.Id == ViewBag.labIdCheck ? "selected" : "")>@lab.Id</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    @*TypeEquipmentCheck*@
+                    <div style="margin-right: 20px">
+                        <div style="text-align: left">Type Equipment Name</div>
+                        <div class="TypeEquipmentCheck">
+                            <select id="TypeEquipmentCheck" name="TypeEquipmentCheck" class="form-control">
+                                <option @(ViewBag.TypeEquipmentCheck == null ? "selected" : "")>Choose TypeEquipment Search</option>
+                                @foreach (var TypeEqupment in ViewBag.TypeEquipmentList)
+                                {
+                                    <option value="@TypeEqupment.Id" @(TypeEqupment.Id == ViewBag.TypeEquipmentCheck ? "selected" : "")>@TypeEqupment.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    @*Search*@
                     <div style="margin-right: 20px">
                         <div style="text-align: left">Search</div>
                         <div class="input-group">
@@ -26,7 +69,7 @@
                             </div>
                         </div>
                     </div>
-                    
+                    @*StartTime*@
                     <div style="margin-right: 20px">
                         <div style="text-align: left">StartTime</div>
                         <div class="input-group">
@@ -38,6 +81,7 @@
                             </div>
                         </div>
                     </div>
+                    @*EndTime*@
                     <div style="margin-right: 20px">
                         <div style="text-align: left">EndTime</div>
                         <div class="input-group">
@@ -60,6 +104,9 @@
 <table class="table">
     <tr>
         <th>
+            @Html.DisplayNameFor(model => model.First().Id)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.First().Name)
         </th>
         <th>
@@ -69,11 +116,11 @@
             @Html.DisplayNameFor(model => model.First().CreatedAt)
         </th>
         @*<th>
-                @Html.DisplayNameFor(model => model.UpdatedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DeletedAt)
-            </th>*@
+            @Html.DisplayNameFor(model => model.UpdatedAt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DeletedAt)
+        </th>*@
         <th>
             @Html.DisplayNameFor(model => model.First().LabId)
         </th>
@@ -85,37 +132,40 @@
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @foreach (var statusItem in EnumHelper.GetSelectList(typeof(LabSem3.Enum.EquipmentStatusEnum)))
-                {
-                    @(Int32.Parse(statusItem.Value) == item.Status ? statusItem.Text : "" )
-                }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.UpdatedAt)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DeletedAt)
-                </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.LabId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TypeEquipment.Name)
-            </td>
-            <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                </td>
-        </tr>
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Id)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Name)
+    </td>
+    <td>
+        @foreach (var statusItem in EnumHelper.GetSelectList(typeof(LabSem3.Enum.EquipmentStatusEnum)))
+        {
+            @(Int32.Parse(statusItem.Value) == item.Status ? statusItem.Text : "" )
+        }
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.CreatedAt)
+    </td>
+    @*<td>
+            @Html.DisplayFor(modelItem => item.UpdatedAt)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DeletedAt)
+        </td>*@
+    <td>
+        @Html.DisplayFor(modelItem => item.LabId)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.TypeEquipment.Name)
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+    </td>
+</tr>
     }
 
 </table>
@@ -123,4 +173,4 @@
 *@
 
 Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-@Html.PagedListPager(Model, page => Url.Action("Index", new { page, Search = ViewBag.Search,  StartTime = ViewBag.StartTime, EndTime = ViewBag.EndTime }))
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, Search = ViewBag.Search, StartTime = ViewBag.StartTime, EndTime = ViewBag.EndTime }))
