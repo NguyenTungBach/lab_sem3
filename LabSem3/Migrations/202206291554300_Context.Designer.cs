@@ -13,7 +13,7 @@ namespace LabSem3.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "202206281651484_Context"; }
+            get { return "202206291554300_Context"; }
         }
         
         string IMigrationMetadata.Source

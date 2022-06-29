@@ -30,8 +30,7 @@ namespace LabSem3.Migrations
                  new IdentityRole {Name=RoleEnum.HOD.ToString()},
                  new IdentityRole {Name=RoleEnum.INSTRUCTOR.ToString()},
                  new IdentityRole {Name=RoleEnum.TECHNICAL_STAFF.ToString()},
-                 new IdentityRole {Name=RoleEnum.STUDENT.ToString()},
-                 new IdentityRole {Name=RoleEnum.WAITING.ToString()},
+                 new IdentityRole {Name=RoleEnum.STUDENT.ToString()}
              };
             roles.ForEach(s => context.Roles.Add(s));
             context.SaveChanges();
@@ -44,89 +43,87 @@ namespace LabSem3.Migrations
                 SecurityStamp = "073164e1-4029-4461-b688-a48f28f3d56e",
                 CreatedAt = DateTime.Now,
                 Status = ((int)AccountStatusEnum.ACTIVE)
-            }; // mat khau: 123456
+            }; 
             context.Users.Add(admin);
             //context.SaveChanges();
+
+            var teachnical = new Account
+            {
+                Id = "e76f7071-b3f5-4534-bf99-f742e8f166ba",
+                UserName = "BachTeachnical",
+                PasswordHash = "APSceC0cT3FARylo63i5LZnKHa4amur2UHena83xssHwRflksqA7fENrohYxI2qh0A==",
+                SecurityStamp = "52be9763-d51e-4ecc-9dd4-8d4fa1f96de0",
+                CreatedAt = DateTime.Now,
+                Status = ((int)AccountStatusEnum.ACTIVE)
+            };
+            context.Users.Add(teachnical);
+
+            var instructor = new Account
+            {
+                Id = "37f3ebde-4c4c-4c9e-b5a4-09207e0c459f",
+                UserName = "BachINSTRUCTOR",
+                PasswordHash = "AHqta8CBa2Czza+wyWMr6cZiqudnVs3axF0HsN2w4EOeCv/aqVEIGnx6dvUiWs0k2Q==",
+                SecurityStamp = "0fbbb4ae-9867-4c7d-be82-0e233cce5a18",
+                CreatedAt = DateTime.Now,
+                Status = ((int)AccountStatusEnum.ACTIVE)
+            };
+            context.Users.Add(instructor);
+
+            var student = new Account
+            {
+                Id = "cf579deb-021c-48b9-87ba-962117bb2e89",
+                UserName = "BachSTUDENT",
+                PasswordHash = "ACKqCAxFhE7o27QSFEkUyjkaoWoXPUyBPdoi0YmRXNnUm9PoDQgKQNtYUAzBovY88w==",
+                SecurityStamp = "adfb7b76-2e4c-4568-94bf-ce13c57a870d",
+                CreatedAt = DateTime.Now,
+                Status = ((int)AccountStatusEnum.ACTIVE)
+            };
+            context.Users.Add(student);
 
             var hod1 = new Account()
             {
                 Id = "24bf0f99-ed6e-42aa-a723-e4deb44701f7",
-                UserName = "Bach",
+                UserName = "BachHOD",
                 PasswordHash = "AGBV5w9sFLrK4UmiEIiAr18meFKX71xJmgPFlURTKNGfplnAnsNpL7JFU1S3+X+9qg==",
                 SecurityStamp = "dd9326d7-3f4c-43fd-9f9d-328b54e2d271",
                 CreatedAt = DateTime.Now,
                 Status = ((int)AccountStatusEnum.ACTIVE)
-            }; // mat khau: 123123
+            }; 
             context.Users.Add(hod1);
             //context.SaveChanges();
 
             var hod2 = new Account()
             {
                 Id = "25b45644-ca54-4758-8e31-9620afcdaa96",
-                UserName = "Kien",
+                UserName = "KienHOD",
                 PasswordHash = "AObhBDFwccL+DtydEZGEzzqvWERYyxHPU/T74EVQE3ukE5iSyCWSo5rXLdVn8Wd9uA==",
                 SecurityStamp = "9ec44d14-0748-4d8e-af2a-d7f8e057bf9e",
                 CreatedAt = DateTime.Now,
                 Status = ((int)AccountStatusEnum.ACTIVE)
-            }; // mat khau: 123123
+            }; 
             context.Users.Add(hod2);
             //context.SaveChanges();
 
             var hod3 = new Account()
             {
                 Id = "f25157a3-90ea-4191-afd2-13eb8631d838",
-                UserName = "Quy",
+                UserName = "QuyHOD",
                 PasswordHash = "ABzGGqJYuo2Z+P2jueo2sL1EbLJPRQs/1IPc8fU4nvlqjAad9A0v/qES9jQhZyPKVA== ",
                 SecurityStamp = "ec3c265a-d735-46c5-9b21-a1828421095b",
                 CreatedAt = DateTime.Now,
                 Status = ((int)AccountStatusEnum.ACTIVE)
-            };// mat khau: 123456
+            };
             context.Users.Add(hod3);
             context.SaveChanges();
 
-            //var users = new List<Account>()
-            //{
-            //    new Account {
-            //        Id = "985f35a0-32c3-4476-9e28-14ddb97c33fe",
-            //        UserName = "Admin",
-            //        PasswordHash = "APoL3ZSJ1sEF9+1DbTtIhny9zUJ4QY8EfkLNQroC7Zsku3uh6TeREnjrnbsuPOyBqQ==",
-            //        SecurityStamp = "073164e1-4029-4461-b688-a48f28f3d56e",
-            //        CreatedAt = DateTime.Now,
-            //        Status = ((int)AccountStatusEnum.ACTIVE)
-            //    }, // mat khau: 123456
-
-            //    new Account {
-            //        Id = "24bf0f99-ed6e-42aa-a723-e4deb44701f7",
-            //        UserName = "Bach",
-            //        PasswordHash = "AGBV5w9sFLrK4UmiEIiAr18meFKX71xJmgPFlURTKNGfplnAnsNpL7JFU1S3+X+9qg==",
-            //        SecurityStamp = "dd9326d7-3f4c-43fd-9f9d-328b54e2d271",
-            //        CreatedAt = DateTime.Now,
-            //        Status = ((int)AccountStatusEnum.ACTIVE)
-            //    }, // mat khau: 123123
-            //    new Account {
-            //        Id = "25b45644-ca54-4758-8e31-9620afcdaa96",
-            //        UserName = "Kien",
-            //        PasswordHash = "AObhBDFwccL+DtydEZGEzzqvWERYyxHPU/T74EVQE3ukE5iSyCWSo5rXLdVn8Wd9uA==",
-            //        SecurityStamp = "9ec44d14-0748-4d8e-af2a-d7f8e057bf9e",
-            //        CreatedAt = DateTime.Now,
-            //        Status = ((int)AccountStatusEnum.ACTIVE)
-            //    }, // mat khau: 123123
-
-            //    new Account {
-            //        Id = "f25157a3-90ea-4191-afd2-13eb8631d838",
-            //        UserName = "Quy",
-            //        PasswordHash = "ABzGGqJYuo2Z+P2jueo2sL1EbLJPRQs/1IPc8fU4nvlqjAad9A0v/qES9jQhZyPKVA== ",
-            //        SecurityStamp = "ec3c265a-d735-46c5-9b21-a1828421095b",
-            //        CreatedAt = DateTime.Now,
-            //        Status = ((int)AccountStatusEnum.ACTIVE)
-            //    }, // mat khau: 123456
-            //};
-            //users.ForEach(s => context.Users.Add(s));
-            //context.SaveChanges();
+            
 
             var userStore = new UserStore<Account>(context);
             var userManager = new UserManager<Account>(userStore);
             userManager.AddToRole("985f35a0-32c3-4476-9e28-14ddb97c33fe", RoleEnum.ADMIN.ToString());
+            userManager.AddToRole("37f3ebde-4c4c-4c9e-b5a4-09207e0c459f", RoleEnum.INSTRUCTOR.ToString());
+            userManager.AddToRole("e76f7071-b3f5-4534-bf99-f742e8f166ba", RoleEnum.TECHNICAL_STAFF.ToString());
+            userManager.AddToRole("cf579deb-021c-48b9-87ba-962117bb2e89", RoleEnum.STUDENT.ToString());
             userManager.AddToRole("24bf0f99-ed6e-42aa-a723-e4deb44701f7", RoleEnum.HOD.ToString());
             userManager.AddToRole("25b45644-ca54-4758-8e31-9620afcdaa96", RoleEnum.HOD.ToString());
             userManager.AddToRole("f25157a3-90ea-4191-afd2-13eb8631d838", RoleEnum.HOD.ToString());

@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using LabSem3.Models.ViewModel;
+using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace LabSem3.Models
@@ -52,11 +53,23 @@ namespace LabSem3.Models
 
         public Complaint()
         {
-            
+
         }
 
         public Complaint(ComplaintViewModel complaintViewModel)
         {
+            if (!complaintViewModel.EquipmentId.IsNullOrWhiteSpace())
+            {
+                int result;
+                if (Int32.TryParse(complaintViewModel.EquipmentId, out result))
+                {
+                    this.EquipmentId = result;
+                }
+            }
+            else
+            {
+                this.EquipmentId = 2;
+            }
             this.TypeComplaintId = complaintViewModel.TypeComplaintId;
             this.Title = complaintViewModel.Title;
             this.Detail = complaintViewModel.Detail;
