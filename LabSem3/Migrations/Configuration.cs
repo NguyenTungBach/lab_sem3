@@ -18,6 +18,7 @@ namespace LabSem3.Migrations
         }
         protected override void Seed(LabSem3.Data.LabSem3Context context)
         {
+            //context.Database.ExecuteSqlCommand("TRUNCATE TABLE [TableName]");
             //  This method will be called after migrating to the latest version.
 
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method
@@ -35,7 +36,7 @@ namespace LabSem3.Migrations
             roles.ForEach(s => context.Roles.Add(s));
             context.SaveChanges();
 
-            var users = new Account()
+            var admin = new Account
             {
                 Id = "985f35a0-32c3-4476-9e28-14ddb97c33fe",
                 UserName = "Admin",
@@ -43,13 +44,92 @@ namespace LabSem3.Migrations
                 SecurityStamp = "073164e1-4029-4461-b688-a48f28f3d56e",
                 CreatedAt = DateTime.Now,
                 Status = ((int)AccountStatusEnum.ACTIVE)
-            };
-            context.Users.Add(users);
+            }; // mat khau: 123456
+            context.Users.Add(admin);
+            //context.SaveChanges();
+
+            var hod1 = new Account()
+            {
+                Id = "24bf0f99-ed6e-42aa-a723-e4deb44701f7",
+                UserName = "Bach",
+                PasswordHash = "AGBV5w9sFLrK4UmiEIiAr18meFKX71xJmgPFlURTKNGfplnAnsNpL7JFU1S3+X+9qg==",
+                SecurityStamp = "dd9326d7-3f4c-43fd-9f9d-328b54e2d271",
+                CreatedAt = DateTime.Now,
+                Status = ((int)AccountStatusEnum.ACTIVE)
+            }; // mat khau: 123123
+            context.Users.Add(hod1);
+            //context.SaveChanges();
+
+            var hod2 = new Account()
+            {
+                Id = "25b45644-ca54-4758-8e31-9620afcdaa96",
+                UserName = "Kien",
+                PasswordHash = "AObhBDFwccL+DtydEZGEzzqvWERYyxHPU/T74EVQE3ukE5iSyCWSo5rXLdVn8Wd9uA==",
+                SecurityStamp = "9ec44d14-0748-4d8e-af2a-d7f8e057bf9e",
+                CreatedAt = DateTime.Now,
+                Status = ((int)AccountStatusEnum.ACTIVE)
+            }; // mat khau: 123123
+            context.Users.Add(hod2);
+            //context.SaveChanges();
+
+            var hod3 = new Account()
+            {
+                Id = "f25157a3-90ea-4191-afd2-13eb8631d838",
+                UserName = "Quy",
+                PasswordHash = "ABzGGqJYuo2Z+P2jueo2sL1EbLJPRQs/1IPc8fU4nvlqjAad9A0v/qES9jQhZyPKVA== ",
+                SecurityStamp = "ec3c265a-d735-46c5-9b21-a1828421095b",
+                CreatedAt = DateTime.Now,
+                Status = ((int)AccountStatusEnum.ACTIVE)
+            };// mat khau: 123456
+            context.Users.Add(hod3);
             context.SaveChanges();
+
+            //var users = new List<Account>()
+            //{
+            //    new Account {
+            //        Id = "985f35a0-32c3-4476-9e28-14ddb97c33fe",
+            //        UserName = "Admin",
+            //        PasswordHash = "APoL3ZSJ1sEF9+1DbTtIhny9zUJ4QY8EfkLNQroC7Zsku3uh6TeREnjrnbsuPOyBqQ==",
+            //        SecurityStamp = "073164e1-4029-4461-b688-a48f28f3d56e",
+            //        CreatedAt = DateTime.Now,
+            //        Status = ((int)AccountStatusEnum.ACTIVE)
+            //    }, // mat khau: 123456
+
+            //    new Account {
+            //        Id = "24bf0f99-ed6e-42aa-a723-e4deb44701f7",
+            //        UserName = "Bach",
+            //        PasswordHash = "AGBV5w9sFLrK4UmiEIiAr18meFKX71xJmgPFlURTKNGfplnAnsNpL7JFU1S3+X+9qg==",
+            //        SecurityStamp = "dd9326d7-3f4c-43fd-9f9d-328b54e2d271",
+            //        CreatedAt = DateTime.Now,
+            //        Status = ((int)AccountStatusEnum.ACTIVE)
+            //    }, // mat khau: 123123
+            //    new Account {
+            //        Id = "25b45644-ca54-4758-8e31-9620afcdaa96",
+            //        UserName = "Kien",
+            //        PasswordHash = "AObhBDFwccL+DtydEZGEzzqvWERYyxHPU/T74EVQE3ukE5iSyCWSo5rXLdVn8Wd9uA==",
+            //        SecurityStamp = "9ec44d14-0748-4d8e-af2a-d7f8e057bf9e",
+            //        CreatedAt = DateTime.Now,
+            //        Status = ((int)AccountStatusEnum.ACTIVE)
+            //    }, // mat khau: 123123
+
+            //    new Account {
+            //        Id = "f25157a3-90ea-4191-afd2-13eb8631d838",
+            //        UserName = "Quy",
+            //        PasswordHash = "ABzGGqJYuo2Z+P2jueo2sL1EbLJPRQs/1IPc8fU4nvlqjAad9A0v/qES9jQhZyPKVA== ",
+            //        SecurityStamp = "ec3c265a-d735-46c5-9b21-a1828421095b",
+            //        CreatedAt = DateTime.Now,
+            //        Status = ((int)AccountStatusEnum.ACTIVE)
+            //    }, // mat khau: 123456
+            //};
+            //users.ForEach(s => context.Users.Add(s));
+            //context.SaveChanges();
 
             var userStore = new UserStore<Account>(context);
             var userManager = new UserManager<Account>(userStore);
-            userManager.AddToRole(users.Id, RoleEnum.ADMIN.ToString());
+            userManager.AddToRole("985f35a0-32c3-4476-9e28-14ddb97c33fe", RoleEnum.ADMIN.ToString());
+            userManager.AddToRole("24bf0f99-ed6e-42aa-a723-e4deb44701f7", RoleEnum.HOD.ToString());
+            userManager.AddToRole("25b45644-ca54-4758-8e31-9620afcdaa96", RoleEnum.HOD.ToString());
+            userManager.AddToRole("f25157a3-90ea-4191-afd2-13eb8631d838", RoleEnum.HOD.ToString());
 
             var typeComplaints = new List<TypeComplaint>
              {
@@ -94,26 +174,12 @@ namespace LabSem3.Migrations
 
             var departments = new List<Department>
              {
-                 new Department {Id= 1, Name="Ha Noi Center", Location="Ha Noi", Status=((int)DepartmentStatusEnum.ACTIVE),CreatedAt=DateTime.Now,UpdatedAt=DateTime.Now},
-                 new Department {Id= 2, Name="Ho Chi Minh Center", Location="Ho Chi Minh City", Status=((int)DepartmentStatusEnum.ACTIVE),CreatedAt=DateTime.Now,UpdatedAt=DateTime.Now},
-                 new Department {Id= 3, Name="Da Nang Center", Location="Da Nang", Status=((int)DepartmentStatusEnum.ACTIVE),CreatedAt=DateTime.Now,UpdatedAt=DateTime.Now}
+                 new Department {Id= 1, Name="Ha Noi Center", Location="Ha Noi", Status=((int)DepartmentStatusEnum.ACTIVE),CreatedAt=DateTime.Now,UpdatedAt=DateTime.Now, Hod=hod1},
+                 new Department {Id= 2, Name="Ho Chi Minh Center", Location="Ho Chi Minh City", Status=((int)DepartmentStatusEnum.ACTIVE),CreatedAt=DateTime.Now,UpdatedAt=DateTime.Now, Hod=hod2},
+                 new Department {Id= 3, Name="Da Nang Center", Location="Da Nang", Status=((int)DepartmentStatusEnum.ACTIVE),CreatedAt=DateTime.Now,UpdatedAt=DateTime.Now, Hod=hod3}
              };
             departments.ForEach(s => context.Departments.Add(s));
             context.SaveChanges();
-
-   
-
-            //var Equipment = new List<Equipment>
-            //{
-            //    new Equipment { Id = 1, Name = "Student stations" , Status = 1, TypeEquipmentId = 1, LabId =2},
-            //    new Equipment { Id = 2, Name = "Management Station", Status = 2, TypeEquipmentId = 1, LabId =2},
-            //    new Equipment { Id = 3, Name = "Server", Status = 3, TypeEquipmentId = 1,LabId =2},
-            //    new Equipment { Id = 4, Name = "Switch", Status = 4, TypeEquipmentId = 1, LabId =2},
-            //    new Equipment { Id = 5, Name = "Other equipment", Status = 5,TypeEquipmentId = 1, LabId =2 }
-            //};
-
-            //Equipment.ForEach(s => context.Equipments.Add(s));
-            //context.SaveChanges();
 
             var lab = new List<Lab>
             {

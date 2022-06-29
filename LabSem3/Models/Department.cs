@@ -27,17 +27,13 @@ namespace LabSem3.Models
         public DateTime? DeletedAt { get; set; }
 
         public string HodId { get; set; }
-        [ForeignKey("HodId")]
+        //[ForeignKey("HodId")]
+        //[InverseProperty("Department")]
         public virtual Account Hod { get; set; }
 
-        public int LabId { get; set; }
+        public int? LabId { get; set; }
         [ForeignKey("LabId")]
         public virtual List<Lab> Labs { get; set; }
 
-        public string AccountId { get; set; }
-        [ForeignKey("AccountId")]
-        public virtual Account Account { get; set; }
-
-        
     }
 }

@@ -148,7 +148,15 @@
                 }
             </td>
             <td>
-                @item.Status
+                @foreach (var accountStatus in EnumHelper.GetSelectList(typeof(LabSem3.Enum.AccountStatusEnum)))
+                {
+                    if(Int32.Parse(accountStatus.Value) == item.Status)
+                    {
+                        @accountStatus.Text
+                    }
+
+                }
+
             </td>
             <td>
                 @string.Format("{0:dd/MM/yyyy hh:mm}", item.CreatedAt)

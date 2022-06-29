@@ -66,19 +66,7 @@
                             </select>
                         </div>
                     </div>
-                    <div style="margin-right: 20px">
-                        <div style="text-align: left">Instructor</div>
-                        <div class="">
-                            <select id="InstructorSearch" name="InstructorSearch" class="form-control">
-                                <option value="" @(ViewBag.InstructorSearch == "" ? "selected" : "")>Choose Instructor search</option>
-                                @foreach (var instructor in ViewBag.InstructorList)
-                                {
-                                    <option value="@instructor.Id" @(instructor.Id == ViewBag.HodSearch ? "selected" : "")>@instructor.UserName</option>
-                                }
-                            </select>
-                        </div>
-                    </div>
-
+                    
                     <div style="margin-right: 20px">
                         <div style="text-align: left">StartTime</div>
                         <div class="input-group">
@@ -131,9 +119,7 @@
         <th>
             LabId
         </th>
-        <th>
-            Account
-        </th>
+        
         <th></th>
     </tr>
 
@@ -164,9 +150,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.LabId)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Account.UserName)
-            </td>
+            
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                 @Html.ActionLink("Details", "Details", new { id = item.Id }) |

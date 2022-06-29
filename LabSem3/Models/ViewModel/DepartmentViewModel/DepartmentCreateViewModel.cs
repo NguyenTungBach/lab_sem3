@@ -7,7 +7,7 @@ using System.Web;
 
 namespace LabSem3.Models.ViewModel.DepartmentViewModel
 {
-    public class DepartmentEditViewModel
+    public class DepartmentCreateViewModel
     {
         [DisplayName("Id")]
         [Required(ErrorMessage = "Id Required")]
@@ -18,22 +18,5 @@ namespace LabSem3.Models.ViewModel.DepartmentViewModel
         [Required(ErrorMessage = "Location Required")]
         public string Location { get; set; }
         public string HodId { get; set; }
-        public int? LabId { get; set; }
-        public int Status { get; set; }
-
-        public DepartmentEditViewModel()
-        {
-
-        }
-        public DepartmentEditViewModel(Department department)
-        {
-            Id = department.Id;
-            Name = department.Name;
-            Location = department.Location;
-            Status = department.Status;
-            HodId = department.HodId;
-            LabId = department.LabId;
-
-        }
     }
 }

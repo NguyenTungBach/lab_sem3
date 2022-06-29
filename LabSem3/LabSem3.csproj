@@ -198,9 +198,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202206271033581_Context.cs" />
-    <Compile Include="Migrations\202206271033581_Context.Designer.cs">
-      <DependentUpon>202206271033581_Context.cs</DependentUpon>
+    <Compile Include="Migrations\202206281651484_Context.cs" />
+    <Compile Include="Migrations\202206281651484_Context.Designer.cs">
+      <DependentUpon>202206281651484_Context.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
@@ -215,6 +215,7 @@
     <Compile Include="Models\ViewModel\AccountEditViewModel.cs" />
     <Compile Include="Models\ViewModel\AccountViewModel.cs" />
     <Compile Include="Models\ViewModel\ComplaintViewModel.cs" />
+    <Compile Include="Models\ViewModel\DepartmentViewModel\DepartmentCreateViewModel.cs" />
     <Compile Include="Models\ViewModel\DepartmentViewModel\DepartmentEditViewModel.cs" />
     <Compile Include="Models\ViewModel\LoginViewModel.cs" />
     <Compile Include="Models\ViewModel\RegisterViewModel.cs" />
@@ -2231,6 +2232,7 @@
     <Content Include="Views\Department\Edit.cshtml" />
     <Content Include="Views\Department\Delete.cshtml" />
     <Content Include="Views\Schedule\Create.cshtml" />
+    <Content Include="Views\Department\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2249,8 +2251,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202206271033581_Context.resx">
-      <DependentUpon>202206271033581_Context.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202206281651484_Context.resx">
+      <DependentUpon>202206281651484_Context.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

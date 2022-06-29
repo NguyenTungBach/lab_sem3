@@ -7,13 +7,17 @@ namespace LabSem3.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class Context : IMigrationMetadata
+    public sealed partial class dbcontext : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Context));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(dbcontext));
         
         string IMigrationMetadata.Id
         {
-            get { return "202206271033581_Context"; }
+<<<<<<< HEAD:LabSem3/Migrations/202206281328030_Context.Designer.cs
+            get { return "202206281328030_Context"; }
+=======
+            get { return "202206281930539_dbcontext"; }
+>>>>>>> b840dcb049ecbb332f383bb4ea50b6b78812750c:LabSem3/Migrations/202206281930539_dbcontext.Designer.cs
         }
         
         string IMigrationMetadata.Source

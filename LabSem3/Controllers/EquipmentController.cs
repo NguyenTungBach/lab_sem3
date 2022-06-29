@@ -21,7 +21,7 @@ namespace LabSem3.Controllers
         }
 
         // GET: Equipment
-        public ActionResult Index(string Search, int? page, string StartTime, string EndTime)
+        public ActionResult Index(int? TypeEquipmentCheck, int? labIdCheck, string Search, int? statusCheck,  int? page, string StartTime, string EndTime)
         {
 
             var listEquipment = db.Equipments.OrderBy(s=> s.Id).AsQueryable();
@@ -39,6 +39,24 @@ namespace LabSem3.Controllers
                 var endDateTime2359 = DateTime.Parse(EndTime).AddDays(1).AddTicks(-1);
                 listEquipment = listEquipment.Where(s => s.CreatedAt <= endDateTime2359);
             }
+            if (statusCheck != -1 && statusCheck != null)
+            {
+                listEquipment = listEquipment.Where(s => s.Status == statusCheck);
+            }
+            if (labIdCheck != null)
+            {
+                listEquipment = listEquipment.Where(s => s.LabId == labIdCheck);
+            }
+            if(TypeEquipmentCheck != null)
+            {
+                listEquipment = listEquipment.Where(s => s.TypeEquipmentId == TypeEquipmentCheck);
+            }
+
+            ViewBag.TypeEquipmentList = db.TypeEquipments.ToList();
+            ViewBag.LabList = db.Labs.ToList();
+            ViewBag.statusCheck = statusCheck;
+            ViewBag.labIdCheck = labIdCheck;
+            ViewBag.TypeEquipmentCheck = TypeEquipmentCheck;
             ViewBag.Search = Search;
             ViewBag.StartTime = StartTime;
             ViewBag.EndTime = EndTime;

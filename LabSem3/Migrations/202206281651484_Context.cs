@@ -66,8 +66,6 @@ namespace LabSem3.Migrations
                         UserName = c.String(nullable: false, maxLength: 256),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Departments", t => t.DepartmentId)
-                .Index(t => t.DepartmentId)
                 .Index(t => t.UserName, unique: true, name: "UserNameIndex");
             
             CreateTable(
@@ -94,15 +92,13 @@ namespace LabSem3.Migrations
                         CreatedAt = c.DateTime(),
                         UpdatedAt = c.DateTime(),
                         DeletedAt = c.DateTime(),
-                        HodId = c.String(maxLength: 128),
-                        LabId = c.Int(nullable: false),
-                        AccountId = c.String(maxLength: 128),
+                        HodId = c.String(),
+                        LabId = c.Int(),
+                        Hod_Id = c.String(nullable: false, maxLength: 128),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AspNetUsers", t => t.AccountId)
-                .ForeignKey("dbo.AspNetUsers", t => t.HodId)
-                .Index(t => t.HodId)
-                .Index(t => t.AccountId);
+                .ForeignKey("dbo.AspNetUsers", t => t.Hod_Id)
+                .Index(t => t.Hod_Id);
             
             CreateTable(
                 "dbo.Labs",
@@ -251,7 +247,7 @@ namespace LabSem3.Migrations
             DropForeignKey("dbo.Users", "AccountId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.AspNetUsers", "DepartmentId", "dbo.Departments");
+            DropForeignKey("dbo.Departments", "Hod_Id", "dbo.AspNetUsers");
             DropForeignKey("dbo.Schedules", "LabId", "dbo.Labs");
             DropForeignKey("dbo.Schedules", "InstructorId", "dbo.AspNetUsers");
             DropForeignKey("dbo.Equipments", "LabId", "dbo.Labs");
@@ -260,8 +256,6 @@ namespace LabSem3.Migrations
             DropForeignKey("dbo.Equipments", "TypeEquipmentId", "dbo.TypeEquipments");
             DropForeignKey("dbo.Labs", "DepartmentId", "dbo.Departments");
             DropForeignKey("dbo.Labs", "AccountId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.Departments", "HodId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.Departments", "AccountId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
@@ -275,11 +269,9 @@ namespace LabSem3.Migrations
             DropIndex("dbo.Equipments", new[] { "LabId" });
             DropIndex("dbo.Labs", new[] { "AccountId" });
             DropIndex("dbo.Labs", new[] { "DepartmentId" });
-            DropIndex("dbo.Departments", new[] { "AccountId" });
-            DropIndex("dbo.Departments", new[] { "HodId" });
+            DropIndex("dbo.Departments", new[] { "Hod_Id" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
-            DropIndex("dbo.AspNetUsers", new[] { "DepartmentId" });
             DropIndex("dbo.Users", new[] { "EquipmentId" });
             DropIndex("dbo.Users", new[] { "TypeComplaintId" });
             DropIndex("dbo.Users", new[] { "SupportedId" });
