@@ -43,6 +43,9 @@
             Status
         </th>
         <th>
+            Equipment/Software ID
+        </th>
+        <th>
             Type Of Complain
         </th>
         <th></th>
@@ -50,31 +53,34 @@
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @item.Title
-            </td>
-            <td>
-                @item.Detail
-            </td>
-            <td>
-                @foreach (var item2 in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ComplaintStatusEnum)))
-                {
-                    if (item.Status == Int32.Parse(item2.Value))
-                    {
-                        @item2.Text
-                        break;
-                    }
-                }
-            </td>
-            <td>
-                @item.TypeComplaint.Name
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
+<tr>
+    <td>
+        @item.Title
+    </td>
+    <td>
+        @item.Detail
+    </td>
+    <td>
+        @foreach (var item2 in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ComplaintStatusEnum)))
+        {
+            if (item.Status == Int32.Parse(item2.Value))
+            {
+                @item2.Text
+                break;
+            }
+        }
+    </td>
+    <td>
+        @item.EquipmentId
+    </td>
+    <td>
+        @item.TypeComplaint.Name
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+    </td>
+</tr>
     }
 
 </table>
