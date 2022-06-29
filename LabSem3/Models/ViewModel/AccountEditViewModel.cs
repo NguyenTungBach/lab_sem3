@@ -16,6 +16,7 @@ namespace LabSem3.Models.ViewModel
 
         [DisplayName("UserName")]
         [Required(ErrorMessage = "UserName Required")]
+        [RegularExpression(@"^\S*$", ErrorMessage = "No white space allowed")]
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "Role Required")]

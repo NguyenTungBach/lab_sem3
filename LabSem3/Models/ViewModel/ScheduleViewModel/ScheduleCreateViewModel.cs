@@ -20,7 +20,6 @@ namespace LabSem3.Models.ViewModel.ScheduleViewModel
         public String SlotNumberArray { get; set; }
 
         public int LabId { get; set; }
-        
 
         public string InstructorId { get; set; }
 

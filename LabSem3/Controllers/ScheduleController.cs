@@ -51,6 +51,32 @@ namespace LabSem3.Controllers
                 var endTime = scheduleCreateViewModel.EndTime;
 
                 var scheduleDay = endTime.Subtract(startTime).Days + 1;
+                if(scheduleDay <= 0)
+                {
+                    ViewBag.Labs = db.Labs.ToList();
+                    var roleINSTRUCTOR = db.Roles.Where(s => s.Name.Contains(RoleEnum.INSTRUCTOR.ToString())).FirstOrDefault();
+                    ViewBag.InstructorList = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleINSTRUCTOR.Id))).ToList(); ;
+                    TempData["False"] = "End Date can't less than Start Date";
+                    return View();
+                }
+
+                if(DateTime.Now.Subtract(startTime).Days + 1 <= 0)
+                {
+                    ViewBag.Labs = db.Labs.ToList();
+                    var roleINSTRUCTOR = db.Roles.Where(s => s.Name.Contains(RoleEnum.INSTRUCTOR.ToString())).FirstOrDefault();
+                    ViewBag.InstructorList = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleINSTRUCTOR.Id))).ToList(); ;
+                    TempData["False"] = "Start Date can't less than Date Now";
+                    return View();
+                }
+
+                if(scheduleCreateViewModel.InstructorId == null )
+                {
+                    ViewBag.Labs = db.Labs.ToList();
+                    var roleINSTRUCTOR = db.Roles.Where(s => s.Name.Contains(RoleEnum.INSTRUCTOR.ToString())).FirstOrDefault();
+                    ViewBag.InstructorList = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleINSTRUCTOR.Id))).ToList(); ;
+                    TempData["False"] = "Instructor can't be null";
+                    return View();
+                }
 
                 var checkSlots = scheduleCreateViewModel.SlotNumberArray.Split(',');
 
@@ -84,7 +110,7 @@ namespace LabSem3.Controllers
                         db.SaveChanges();
                     }
                 }
-                TempData["Success"] = "Create Schedule Success";
+                TempData["Success"] = "Create Schedule " + scheduleCreateViewModel.StartTime + " - " + scheduleCreateViewModel.EndTime + " Success";
             }
             return RedirectToAction("Index");
         }
