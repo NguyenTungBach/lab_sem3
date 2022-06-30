@@ -19,6 +19,8 @@ namespace LabSem3.Controllers
         {
             db = new LabSem3Context();
         }
+
+        [Authorize(Roles = "ADMIN,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
         // GET: Schedule
         public ActionResult Index()
         {
@@ -26,12 +28,14 @@ namespace LabSem3.Controllers
             return View(listSchedule);
         }
 
+        [Authorize(Roles = "ADMIN")]
         // GET: Schedule/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
+        [Authorize(Roles = "ADMIN")]
         // GET: Schedule/Create
         public ActionResult Create()
         {
@@ -41,6 +45,7 @@ namespace LabSem3.Controllers
             return View();
         }
 
+        [Authorize(Roles = "ADMIN")]
         // POST: Schedule/Create
         [HttpPost]
         public ActionResult Create(ScheduleCreateViewModel scheduleCreateViewModel)
@@ -51,6 +56,32 @@ namespace LabSem3.Controllers
                 var endTime = scheduleCreateViewModel.EndTime;
 
                 var scheduleDay = endTime.Subtract(startTime).Days + 1;
+                if(scheduleDay <= 0)
+                {
+                    ViewBag.Labs = db.Labs.ToList();
+                    var roleINSTRUCTOR = db.Roles.Where(s => s.Name.Contains(RoleEnum.INSTRUCTOR.ToString())).FirstOrDefault();
+                    ViewBag.InstructorList = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleINSTRUCTOR.Id))).ToList(); ;
+                    TempData["False"] = "End Date can't less than Start Date";
+                    return View();
+                }
+
+                if(DateTime.Now.Subtract(startTime).Days + 1 <= 0)
+                {
+                    ViewBag.Labs = db.Labs.ToList();
+                    var roleINSTRUCTOR = db.Roles.Where(s => s.Name.Contains(RoleEnum.INSTRUCTOR.ToString())).FirstOrDefault();
+                    ViewBag.InstructorList = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleINSTRUCTOR.Id))).ToList(); ;
+                    TempData["False"] = "Start Date can't less than Date Now";
+                    return View();
+                }
+
+                if(scheduleCreateViewModel.InstructorId == null )
+                {
+                    ViewBag.Labs = db.Labs.ToList();
+                    var roleINSTRUCTOR = db.Roles.Where(s => s.Name.Contains(RoleEnum.INSTRUCTOR.ToString())).FirstOrDefault();
+                    ViewBag.InstructorList = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleINSTRUCTOR.Id))).ToList(); ;
+                    TempData["False"] = "Instructor can't be null";
+                    return View();
+                }
 
                 var checkSlots = scheduleCreateViewModel.SlotNumberArray.Split(',');
 
@@ -84,17 +115,19 @@ namespace LabSem3.Controllers
                         db.SaveChanges();
                     }
                 }
-                TempData["Success"] = "Create Schedule Success";
+                TempData["Success"] = "Create Schedule " + scheduleCreateViewModel.StartTime + " - " + scheduleCreateViewModel.EndTime + " Success";
             }
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "ADMIN,INSTRUCTOR")]
         // GET: Schedule/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
+        [Authorize(Roles = "ADMIN,INSTRUCTOR")]
         // POST: Schedule/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
@@ -111,12 +144,14 @@ namespace LabSem3.Controllers
             }
         }
 
+        [Authorize(Roles = "ADMIN")]
         // GET: Schedule/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
+        [Authorize(Roles = "ADMIN")]
         // POST: Schedule/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)

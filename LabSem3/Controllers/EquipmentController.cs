@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using PagedList;
 using PagedList.Mvc;
+using System.Data.Entity.Migrations;
 
 namespace LabSem3.Controllers
 {
@@ -20,10 +21,11 @@ namespace LabSem3.Controllers
             db = new LabSem3Context();
         }
 
+        [Authorize(Roles = "ADMIN,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
         // GET: Equipment
         public ActionResult Index(int? TypeEquipmentCheck, int? labIdCheck, string Search, int? statusCheck,  int? page, string StartTime, string EndTime)
         {
-
+            
             var listEquipment = db.Equipments.OrderBy(s=> s.Id).AsQueryable();
             if (Search != null && Search.Length > 0)
             {
@@ -67,6 +69,7 @@ namespace LabSem3.Controllers
         }
         /*db.Equipments.Where(x => x.Name.StartsWith(search) || search == null).ToPagedList(k ?? 1, 3)*/
 
+        [Authorize(Roles = "ADMIN,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
         // GET: Equipment/Details/5
         public ActionResult Details(int? id)    
         {
@@ -82,6 +85,7 @@ namespace LabSem3.Controllers
             return View(equipment);
         }
 
+        [Authorize(Roles = "ADMIN")]
         // GET: Equipment/Create
         public ActionResult Create()
         {
@@ -90,6 +94,7 @@ namespace LabSem3.Controllers
             return View();
         }
 
+        [Authorize(Roles = "ADMIN")]
         // POST: Equipment/Create
         [HttpPost]
         public ActionResult Create(Equipment equipment)
@@ -109,6 +114,7 @@ namespace LabSem3.Controllers
             }
         }
 
+        [Authorize(Roles = "ADMIN")]
         // GET: Equipment/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -127,6 +133,7 @@ namespace LabSem3.Controllers
 
         }
 
+        [Authorize(Roles = "ADMIN")]
         // POST: Equipment/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -149,6 +156,7 @@ namespace LabSem3.Controllers
             }
         }
 
+        [Authorize(Roles = "ADMIN")]
         // GET: Equipment/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -164,6 +172,7 @@ namespace LabSem3.Controllers
             return View(equipment);
         }
 
+        [Authorize(Roles = "ADMIN")]
         // POST: Equipment/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -173,7 +182,9 @@ namespace LabSem3.Controllers
             {
                 // TODO: Add delete logic here
                 Equipment equipment = db.Equipments.Find(id);
-                db.Equipments.Remove(equipment);
+                equipment.Status = ((int)EquipmentStatusEnum.BAD);
+                //db.Equipments.Remove(equipment);
+                db.Equipments.AddOrUpdate(equipment);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

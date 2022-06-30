@@ -29,6 +29,8 @@ namespace LabSem3.Controllers
             RoleStore<IdentityRole> roleStore = new RoleStore<IdentityRole>(db); // create, update, delete giống UserModel
             roleManager = new RoleManager<IdentityRole>(roleStore); // giống Service, xử lý các vấn đề liên quan đến logic
         }
+
+        [Authorize(Roles = "ADMIN,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
         // GET: Complaint
         public ActionResult Index(string keyWord, int? statusCheck,  int? page) {
             
@@ -58,6 +60,7 @@ namespace LabSem3.Controllers
             return View(result2.ToPagedList(pageNumber, pageSize));
         }
 
+        [Authorize(Roles = "ADMIN,HOD")]
         public ActionResult ComplaintWaiting(int? page)
         {
             var listTechnicalStaff = new List<Account>();
@@ -89,6 +92,7 @@ namespace LabSem3.Controllers
             return View(result2.ToPagedList(pageNumber, pageSize));
         }
 
+        [Authorize(Roles = "ADMIN")]
         [HttpPost]
         //[ValidateAntiForgeryToken]
         public ActionResult AssignPeople(int comPlaintId, string StaffId)
@@ -100,12 +104,14 @@ namespace LabSem3.Controllers
             return Redirect("/Complaint/ComplaintWaiting");
         }
 
+        [Authorize(Roles = "ADMIN,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
         // GET: Complaint/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
+        [Authorize(Roles = "HOD,STUDENT")]
         // GET: Complaint/Create
         public ActionResult Create()
         {
@@ -113,6 +119,7 @@ namespace LabSem3.Controllers
             return View();
         }
 
+        [Authorize(Roles = "HOD,STUDENT")]
         // POST: Complaint/Create
         [HttpPost]
         public ActionResult Create(ComplaintViewModel complaintViewModel)
@@ -134,12 +141,14 @@ namespace LabSem3.Controllers
             }
         }
 
+        [Authorize(Roles = "ADMIN,INSTRUCTOR,TECHNICAL_STAFF")]
         // GET: Complaint/Edit/5
         public ActionResult Edit(int id)
         {
             return View(db.Complaints.Find(id));
         }
 
+        [Authorize(Roles = "ADMIN,INSTRUCTOR,TECHNICAL_STAFF")]
         // POST: Complaint/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, Complaint complaintNew)
@@ -158,12 +167,14 @@ namespace LabSem3.Controllers
             }
         }
 
+        [Authorize(Roles = "ADMIN")]
         // GET: Complaint/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
+        [Authorize(Roles = "ADMIN")]
         // POST: Complaint/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)

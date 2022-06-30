@@ -5,7 +5,12 @@
 }
 
 <h2>Create</h2>
-
+@if (TempData["False"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["False"]
+    </div>
+}
 
 @using (Html.BeginForm())
 {
@@ -160,23 +165,38 @@
 
 <script src="~/Scripts/jquery-3.4.1.js"></script>
 <script>
-    
 
-    const selectStatus = $('.slotCheck');
-    //$(document).ready(function () {
-    //    let array = new Set();
-    //    for (let i = 0; i < selectStatus.length; i++) { // Kiểm tra từng selectStatus
-    //        if (selectStatus[i].checked && $(this).val() == "WAITING") {
-    //            selectStatus.prop('checked', false);
-    //            $(this).prop('checked', true);
-    //            array.add("WAITING"); // thì đưa vào Set
-    //        }
-    //        if (selectStatus[i].checked && $(this).val() != "WAITING") { // Nếu có selectStatus được check
-    //            array.add(selectStatus[i].value); // thì đưa vào Set
-    //        }
-    //    }
-    //    $('#arrayRole').val(Array.from(array));
-    //});
+
+    const selectStatus = $(".slotCheck");
+        $(document).ready(function () {
+        var checkStatus = document.querySelectorAll(".slotCheck");
+        var checkArray = document.getElementById('SlotNumberArray').value.split(',');
+        
+        if (checkArray.length > 0) {
+            checkArray.forEach(s => {
+                checkStatus.forEach(h => {
+                if (s == h.value) {
+                    //console.log("check h: " + h.value)
+
+                    h.checked = true
+                }
+            })
+        });
+        }
+
+        //let array = new Set();
+        //for (let i = 0; i < selectStatus.length; i++) { // Kiểm tra từng selectStatus
+        //    if (selectStatus[i].checked) {
+        //        selectStatus.prop('checked', false);
+        //        $(this).prop('checked', true);
+        //        //array.add("WAITING"); // thì đưa vào Set
+        //    }
+        //    //if (selectStatus[i].checked && $(this).val() != "WAITING") { // Nếu có selectStatus được check
+        //    //    array.add(selectStatus[i].value); // thì đưa vào Set
+        //    //}
+        //}
+        //$('#SlotNumberArray').val(Array.from(array));
+    });
 
     selectStatus.on('click', function () {
         let array = new Set();

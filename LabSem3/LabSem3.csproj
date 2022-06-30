@@ -198,9 +198,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202206281651484_Context.cs" />
-    <Compile Include="Migrations\202206281651484_Context.Designer.cs">
-      <DependentUpon>202206281651484_Context.cs</DependentUpon>
+    <Compile Include="Migrations\202206291554300_Context.cs" />
+    <Compile Include="Migrations\202206291554300_Context.Designer.cs">
+      <DependentUpon>202206291554300_Context.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
@@ -220,6 +220,7 @@
     <Compile Include="Models\ViewModel\LoginViewModel.cs" />
     <Compile Include="Models\ViewModel\RegisterViewModel.cs" />
     <Compile Include="Models\ViewModel\ScheduleViewModel\ScheduleCreateViewModel.cs" />
+    <Compile Include="Models\ViewModel\ScheduleViewModel\ScheduleEditViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -237,6 +238,7 @@
     <Content Include="Content\AdminVersion002\js\demo\datatables-demo.js" />
     <Content Include="Content\AdminVersion002\js\sb-admin-2.js" />
     <Content Include="Content\AdminVersion002\js\sb-admin-2.min.js" />
+    <Content Include="Content\AdminVersion002\RegisterForm.css" />
     <Content Include="Content\AdminVersion002\vendor\bootstrap\js\bootstrap.bundle.js" />
     <Content Include="Content\AdminVersion002\vendor\bootstrap\js\bootstrap.bundle.min.js" />
     <Content Include="Content\AdminVersion002\vendor\bootstrap\js\bootstrap.js" />
@@ -2251,8 +2253,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202206281651484_Context.resx">
-      <DependentUpon>202206281651484_Context.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202206291554300_Context.resx">
+      <DependentUpon>202206291554300_Context.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

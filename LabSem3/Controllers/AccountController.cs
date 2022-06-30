@@ -48,7 +48,7 @@ namespace LabSem3.Controllers
             Debug.WriteLine("user đăng nhập là ", user);
             if (user == null)
             {
-                TempData["False"] = "Account - Not Found" + UserName;
+                TempData["False"] = "Account - Not Found " + UserName;
                 return View("Login1");
             }
             else
@@ -116,6 +116,7 @@ namespace LabSem3.Controllers
             
         }
 
+        [Authorize(Roles = "ADMIN")]
         public async Task<bool> AddUserToRoleAsync(string UserId, string RoleName)
         {
             var user = db.Users.Find(UserId);
@@ -141,6 +142,7 @@ namespace LabSem3.Controllers
             }
         }
 
+        [Authorize(Roles = "ADMIN")]
         // GET: Account
         public async Task<ActionResult> Index(string UserName, int? page, string RoleSearch, string StartTime, string EndTime)
         {
@@ -180,28 +182,7 @@ namespace LabSem3.Controllers
             return View(account.ToPagedList(pageNumber, pageSize));
         }
 
-        
-
-        public List<Account> AccountIdByRoleList(string roleEnum)
-        {
-            
-            var listUser = db.Users.ToList();
-            var listUserByRole = new List<Account>();
-            foreach (var user in listUser)
-            {
-                var checkRole = userManager.GetRoles(user.Id).ToList();
-                foreach (var role in checkRole)
-                {
-                    if (role == roleEnum)
-                    {
-                        listUserByRole.Add(user);
-                    }
-                }
-            }
-            return listUserByRole;
-        }
-
-
+        [Authorize(Roles = "ADMIN,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
         // GET: Account/Details/5
         public ActionResult Details(string id)
         {
@@ -231,6 +212,7 @@ namespace LabSem3.Controllers
             return View(account);
         }
 
+        [Authorize(Roles = "ADMIN")]
         // GET: Account/Create
         public ActionResult Create()
         {
@@ -238,6 +220,7 @@ namespace LabSem3.Controllers
             return View();
         }
 
+        [Authorize(Roles = "ADMIN")]
         // POST: Account/Create
         [HttpPost]
         public async Task<ActionResult> Create(AccountViewModel accountViewModel)
@@ -299,6 +282,7 @@ namespace LabSem3.Controllers
             }
         }
 
+        [Authorize(Roles = "ADMIN")]
         // GET: Account/Edit/5
         public ActionResult Edit(string id)
         {
@@ -314,6 +298,7 @@ namespace LabSem3.Controllers
             return View(accountViewModel);
         }
 
+        [Authorize(Roles = "ADMIN")]
         // POST: Account/Edit/5
         [HttpPost]
         public async Task<ActionResult> EditPost(string Id, string UserName, string Role, int Status)
@@ -357,6 +342,7 @@ namespace LabSem3.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "ADMIN")]
         // GET: Account/Delete/5
         public ActionResult Delete(string id)
         {
@@ -372,6 +358,7 @@ namespace LabSem3.Controllers
             return View(account);
         }
 
+        [Authorize(Roles = "ADMIN")]
         // POST: Account/Delete/5
         [HttpPost, ActionName("Delete")]
         public ActionResult ComfirmDeleteAccount(string id)
@@ -403,7 +390,12 @@ namespace LabSem3.Controllers
         public ActionResult Logout()
         {
             HttpContext.GetOwinContext().Authentication.SignOut();
-            return Redirect("/Account/Login");
+            return Redirect("/Account/Login1");
+        }
+
+        public ActionResult RegisterNVQ()
+        {
+            return View();
         }
     }
 }

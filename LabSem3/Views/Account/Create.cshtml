@@ -87,20 +87,19 @@
     //})
 
     const selectStatus = $('.roleCheck');
-    $(document).ready(function () {
-        let array = new Set();
-        for (let i = 0; i < selectStatus.length; i++) { // Kiểm tra từng selectStatus
-            if (selectStatus[i].checked && $(this).val() == "WAITING") {
-                selectStatus.prop('checked', false);
-                $(this).prop('checked', true);
-                array.add("WAITING"); // thì đưa vào Set
-            }
-            if (selectStatus[i].checked && $(this).val() != "WAITING") { // Nếu có selectStatus được check
-                array.add(selectStatus[i].value); // thì đưa vào Set
-            }
-        }
-        $('#arrayRole').val(Array.from(array));
-    });
+    //$(document).ready(function () {
+    //    let array = new Set();
+    //    for (let i = 0; i < selectStatus.length; i++) { // Kiểm tra từng selectStatus
+    //        if (selectStatus[i].checked) {
+    //            $(this).prop('checked', true);
+    //            array.add($(this).val); // thì đưa vào Set
+    //        }
+    //        if (selectStatus[i].checked && $(this).val() != "WAITING") { // Nếu có selectStatus được check
+    //            array.add(selectStatus[i].value); // thì đưa vào Set
+    //        }
+    //    }
+    //    $('#arrayRole').val(Array.from(array));
+    //});
 
     selectStatus.on('click', function () {
         let array = new Set();
@@ -113,25 +112,25 @@
         }
 
         if ($(this).prop('checked')) {
-            for (let i = 0; i < selectStatus.length; i++) { // Kiểm tra từng selectStatus
-                if (selectStatus[i].checked && selectStatus[i].value == "WAITING") { // Nếu có selectStatus được check
-                    checkWait = true;
-                    $(this).prop('checked', false); // nếu trong tất cả có wait thì bỏ check
-                    array = new Set();
-                    array.add("WAITING"); // thì đưa vào Set
-                }
-            }
+            //for (let i = 0; i < selectStatus.length; i++) { // Kiểm tra từng selectStatus
+            //    if (selectStatus[i].checked && selectStatus[i].value == "WAITING") { // Nếu có selectStatus được check
+            //        checkWait = true;
+            //        $(this).prop('checked', false); // nếu trong tất cả có wait thì bỏ check
+            //        array = new Set();
+            //        array.add("WAITING"); // thì đưa vào Set
+            //    }
+            //}
             // kiểm tra có check status = wait không
-            if (value == "WAITING") {
-                checkWait = true;
-                array = new Set();
-                selectStatus.prop('checked', false);
-                $(this).prop('checked', true);
-                array.add("WAITING"); // thì đưa vào Set
-            }
-            if (!checkWait) { // nếu kiểm tra tất cả mà không có wait
+            //if ($(this).checked) {
+            //    //checkWait = true;
+            //    array = new Set();
+            //    //selectStatus.prop('checked', false);
+            //    $(this).prop('checked', true);
+            //    array.add("WAITING"); // thì đưa vào Set
+            //}
+            //if (!checkWait) { // nếu kiểm tra tất cả mà không có wait
                 array.add(value); // thì thêm vào mảng
-            }
+            //}
         } else {
             if (array.has(value)) {
                 array.delete(value);
