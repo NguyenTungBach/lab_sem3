@@ -392,5 +392,10 @@ namespace LabSem3.Controllers
             HttpContext.GetOwinContext().Authentication.SignOut();
             return Redirect("/Account/Login1");
         }
+
+        public ActionResult RegisterNVQ()
+        {
+            return View();
+        }
     }
 }

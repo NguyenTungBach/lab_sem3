@@ -238,6 +238,7 @@
     <Content Include="Content\AdminVersion002\js\demo\datatables-demo.js" />
     <Content Include="Content\AdminVersion002\js\sb-admin-2.js" />
     <Content Include="Content\AdminVersion002\js\sb-admin-2.min.js" />
+    <Content Include="Content\AdminVersion002\RegisterForm.css" />
     <Content Include="Content\AdminVersion002\vendor\bootstrap\js\bootstrap.bundle.js" />
     <Content Include="Content\AdminVersion002\vendor\bootstrap\js\bootstrap.bundle.min.js" />
     <Content Include="Content\AdminVersion002\vendor\bootstrap\js\bootstrap.js" />
