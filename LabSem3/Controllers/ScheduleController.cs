@@ -20,7 +20,7 @@ namespace LabSem3.Controllers
             db = new LabSem3Context();
         }
 
-        [Authorize(Roles = "Admin,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
+        [Authorize(Roles = "ADMIN,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
         // GET: Schedule
         public ActionResult Index()
         {
@@ -28,14 +28,14 @@ namespace LabSem3.Controllers
             return View(listSchedule);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // GET: Schedule/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // GET: Schedule/Create
         public ActionResult Create()
         {
@@ -45,7 +45,7 @@ namespace LabSem3.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // POST: Schedule/Create
         [HttpPost]
         public ActionResult Create(ScheduleCreateViewModel scheduleCreateViewModel)
@@ -120,14 +120,14 @@ namespace LabSem3.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = "Admin,INSTRUCTOR")]
+        [Authorize(Roles = "ADMIN,INSTRUCTOR")]
         // GET: Schedule/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        [Authorize(Roles = "Admin,INSTRUCTOR")]
+        [Authorize(Roles = "ADMIN,INSTRUCTOR")]
         // POST: Schedule/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
@@ -144,14 +144,14 @@ namespace LabSem3.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // GET: Schedule/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // POST: Schedule/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)

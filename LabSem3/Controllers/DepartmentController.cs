@@ -33,7 +33,7 @@ namespace LabSem3.Controllers
 
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // GET: Department
         public async Task<ActionResult> Index(string Name, int? page, int? LabSearch, string HodSearch, string InstructorSearch, string StartTime, string EndTime)
         {
@@ -83,7 +83,7 @@ namespace LabSem3.Controllers
             return View(department.ToPagedList(pageNumber, pageSize));
         }
 
-        [Authorize(Roles = "Admin,HOD")]
+        [Authorize(Roles = "ADMIN,HOD")]
         // GET: Department/Details/5
         public ActionResult Details(int id)
         {
@@ -95,7 +95,7 @@ namespace LabSem3.Controllers
             return View(department);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // GET: Department/Create
         public ActionResult Create()
         {
@@ -107,7 +107,7 @@ namespace LabSem3.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // POST: Department/Create
         [HttpPost]
         public ActionResult Create(DepartmentCreateViewModel departmentCreateViewModel)
@@ -140,7 +140,7 @@ namespace LabSem3.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // GET: Department/Edit/5
         public ActionResult Edit(int id)
         {
@@ -163,7 +163,7 @@ namespace LabSem3.Controllers
             return View(departmentEditViewModel);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // POST: Department/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, DepartmentEditViewModel departmentEditViewModel)
@@ -206,7 +206,7 @@ namespace LabSem3.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // GET: Department/Delete/5
         public ActionResult Delete(int id)
         {
@@ -224,7 +224,7 @@ namespace LabSem3.Controllers
 
         // POST: Department/Delete/5
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteDepartment(int id)
         {

@@ -33,7 +33,7 @@ namespace LabSem3.Controllers
         }
 
 
-        [Authorize(Roles = "Admin,HOD")]
+        [Authorize(Roles = "ADMIN,HOD")]
         // GET: Labs
         public ActionResult Index(int? page, int? status, string startTime, string endTime,int? departmentId)
         {
@@ -66,7 +66,7 @@ namespace LabSem3.Controllers
             return View(labs.ToList().ToPagedList(pageNumber,pageSize));
         }
 
-        [Authorize(Roles = "Admin,HOD")]
+        [Authorize(Roles = "ADMIN,HOD")]
         // GET: Labs/Details/5
         public ActionResult Details(string search, int? status,int? typeEquipment,int? id, int? page,string startTime, string endTime)
         {
@@ -115,7 +115,7 @@ namespace LabSem3.Controllers
         }
 
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // GET: Labs/Create
         public ActionResult Create()
         {
@@ -124,7 +124,7 @@ namespace LabSem3.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // POST: Labs/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
@@ -147,7 +147,7 @@ namespace LabSem3.Controllers
             return View(lab);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // GET: Labs/Edit/5
         public ActionResult Edit(int? id, int? page, string search, int? status, int? typeEquipment, string startTime, string endTime)
         {
@@ -197,7 +197,7 @@ namespace LabSem3.Controllers
             return View(lab);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         [HttpPost]
         public JsonResult UpdatedStatus(int id,int status)
         {
@@ -207,7 +207,7 @@ namespace LabSem3.Controllers
             return Json("Save sucesss!!");
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // POST: Labs/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
@@ -225,7 +225,7 @@ namespace LabSem3.Controllers
             return Redirect("/Labs/Index");
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // GET: Labs/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -241,7 +241,7 @@ namespace LabSem3.Controllers
             return View(lab);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // POST: Labs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

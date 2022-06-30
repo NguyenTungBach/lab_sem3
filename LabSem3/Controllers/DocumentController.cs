@@ -21,7 +21,7 @@ namespace LabSem3.Controllers
             db = new LabSem3Context();
         }
 
-        [Authorize(Roles = "Admin,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
+        [Authorize(Roles = "ADMIN,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
         // GET: Documet
         public ActionResult Index(int? statusCheck, int? EquipmentId, int? TypeEquipmentCheck, string Search, int? page, string StartTime, string EndTime)
         {
@@ -60,7 +60,7 @@ namespace LabSem3.Controllers
             return View(listDocument.ToList().ToPagedList(Pagenumber, Pagesize));
         }
 
-        [Authorize(Roles = "Admin,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
+        [Authorize(Roles = "ADMIN,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
         // GET: Documet/Details/5
         public ActionResult Details(int? id, int? page)
         {
@@ -77,7 +77,7 @@ namespace LabSem3.Controllers
             return View(document);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // GET: Documet/Create
         public ActionResult Create()
         {
@@ -85,7 +85,7 @@ namespace LabSem3.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // POST: Documet/Create
         [HttpPost]
         public ActionResult Create(Document document)
@@ -106,7 +106,7 @@ namespace LabSem3.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // GET: Documet/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -124,7 +124,7 @@ namespace LabSem3.Controllers
             return View(document);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // POST: Documet/Edit/5
         [HttpPost]
         public ActionResult Edit(Document document)
@@ -149,7 +149,7 @@ namespace LabSem3.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // GET: Documet/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -165,7 +165,7 @@ namespace LabSem3.Controllers
             return View(document);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // POST: Documet/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)

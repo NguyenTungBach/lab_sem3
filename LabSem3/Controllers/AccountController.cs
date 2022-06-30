@@ -116,7 +116,7 @@ namespace LabSem3.Controllers
             
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<bool> AddUserToRoleAsync(string UserId, string RoleName)
         {
             var user = db.Users.Find(UserId);
@@ -142,7 +142,7 @@ namespace LabSem3.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // GET: Account
         public async Task<ActionResult> Index(string UserName, int? page, string RoleSearch, string StartTime, string EndTime)
         {
@@ -182,7 +182,7 @@ namespace LabSem3.Controllers
             return View(account.ToPagedList(pageNumber, pageSize));
         }
 
-        [Authorize(Roles = "Admin,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
+        [Authorize(Roles = "ADMIN,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
         // GET: Account/Details/5
         public ActionResult Details(string id)
         {
@@ -212,7 +212,7 @@ namespace LabSem3.Controllers
             return View(account);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // GET: Account/Create
         public ActionResult Create()
         {
@@ -220,7 +220,7 @@ namespace LabSem3.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // POST: Account/Create
         [HttpPost]
         public async Task<ActionResult> Create(AccountViewModel accountViewModel)
@@ -282,7 +282,7 @@ namespace LabSem3.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // GET: Account/Edit/5
         public ActionResult Edit(string id)
         {
@@ -298,7 +298,7 @@ namespace LabSem3.Controllers
             return View(accountViewModel);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // POST: Account/Edit/5
         [HttpPost]
         public async Task<ActionResult> EditPost(string Id, string UserName, string Role, int Status)
@@ -342,7 +342,7 @@ namespace LabSem3.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // GET: Account/Delete/5
         public ActionResult Delete(string id)
         {
@@ -358,7 +358,7 @@ namespace LabSem3.Controllers
             return View(account);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         // POST: Account/Delete/5
         [HttpPost, ActionName("Delete")]
         public ActionResult ComfirmDeleteAccount(string id)
@@ -390,7 +390,7 @@ namespace LabSem3.Controllers
         public ActionResult Logout()
         {
             HttpContext.GetOwinContext().Authentication.SignOut();
-            return Redirect("/Account/Login");
+            return Redirect("/Account/Login1");
         }
     }
 }
