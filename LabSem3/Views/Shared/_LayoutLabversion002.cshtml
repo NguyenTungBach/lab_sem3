@@ -1,4 +1,24 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNet.Identity
+@{
+    bool isAdmin = false;
+    bool isHOD = false;
+    bool isInstructor = false;
+    bool isTechnicalStaff = false;
+    bool isStudent = false;
+
+    if (Request.IsAuthenticated)
+    {
+        isAdmin = User.IsInRole("ADMIN");
+        isHOD = User.IsInRole("HOD");
+        isInstructor = User.IsInRole("INSTRUCTOR");
+        isTechnicalStaff = User.IsInRole("TECHNICAL_STAFF");
+        isStudent = User.IsInRole("STUDENT");
+    }
+
+
+}
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -27,10 +47,10 @@
 <body id="page-top">
     @using Microsoft.AspNet.Identity
     <!-- Page Wrapper -->
-    <div id="wrapper">
+    <div id="wrapper" zz>
 
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul class="navbar-nav @(isTechnicalStaff ? "bg-gradient-info" : " ") @(isAdmin ? "bg-gradient-primary" : " ") @(isInstructor ? "bg-gradient-success" : " ") @(isStudent ? "bg-gradient-secondary" : " ") @(isHOD ? "bg-gradient-dark" : " ")  sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
@@ -45,9 +65,30 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="#">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span>
+                    @{
+                        if (isAdmin)
+                        {
+                            <span>Admin Management Module</span>
+                        }
+                        else if (isStudent)
+                        {
+                            <span>Student Management Module</span>
+                        }
+                        else if (isHOD)
+                        {
+                            <span>HOD Management Module</span>
+                        }
+                        else if (isInstructor)
+                        {
+                            <span>Instructor Management Module</span>
+                        }
+                        else if (isTechnicalStaff)
+                        {
+                            <span>Technical Staff Management Module</span>
+                        }
+                    }
                 </a>
             </li>
 
@@ -59,15 +100,17 @@
                 Interface
             </div>
 
+
+
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
+            <li class="nav-item" @(isAdmin ? "" : "hidden")>
                 <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
-                    aria-controls="collapseTwo">
+                   aria-controls="collapseTwo">
                     <i class="fa-solid fa-users"></i>
                     <span>Accounts Controls</span>
                 </a>
                 <div id="collapseOne" class="collapse" aria-labelledby="headingTwo"
-                        data-parent="#accordionSidebar">
+                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Account:</h6>
                         <a class="collapse-item active" href="/Account/Index">List</a>
@@ -78,100 +121,101 @@
             <hr class="sidebar-divider">
             <li class="nav-item">
                 <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
-                    aria-controls="collapseTwo">
+                   aria-controls="collapseTwo">
                     <i class="fas fa-comment"></i>
                     <span>Complaint Controls</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
-                        data-parent="#accordionSidebar">
+                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Components:</h6>
-                        <a class="collapse-item active" href="/Complaint/Index">View All Complaint</a>
-                        <a class="collapse-item" href="/Complaint/ComplaintWaiting">Complaints Waiting</a>
-                        <a class="collapse-item" href="/Complaint/Create">Add Complaint</a>
+                        <a @(isAdmin ? "" : "hidden") class="collapse-item active" href="/Complaint/Index">View All Complaint</a>
+                        <a @(isAdmin ? "" : "hidden") class="collapse-item" href="/Complaint/ComplaintWaiting">Complaints Waiting</a>
+                        <a @(isStudent || isHOD ? "" : "hidden") class="collapse-item" href="/Complaint/Create">Add Complaint</a>
                     </div>
                 </div>
             </li>
             <hr class="sidebar-divider">
             <li class="nav-item">
                 <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapse3" aria-expanded="true"
-                    aria-controls="collapseTwo">
+                   aria-controls="collapseTwo">
                     <i class="fas fa-clipboard-list"></i>
                     <span>Schedules Controls</span>
                 </a>
                 <div id="collapse3" class="collapse" aria-labelledby="headingTwo"
-                        data-parent="#accordionSidebar">
+                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Components:</h6>
                         <a class="collapse-item active" href="/Schedule/Index">List</a>
-                        <a class="collapse-item" href="/Schedule/Create">Create</a>
+                        <a @(isAdmin ? "" : "hidden") class="collapse-item" href="/Schedule/Create">Create</a>
                     </div>
                 </div>
             </li>
             <hr class="sidebar-divider">
-            <li class="nav-item">
+            <li  class="nav-item">
                 <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapse4" aria-expanded="true"
-                    aria-controls="collapseTwo">
+                   aria-controls="collapseTwo">
                     <i class="fas fa-building"></i>
                     <span>Departments Controls</span>
                 </a>
                 <div id="collapse4" class="collapse" aria-labelledby="headingTwo"
-                        data-parent="#accordionSidebar">
+                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Departments:</h6>
-                        <a class="collapse-item active" href="/Department/Index">List</a>
-                        <a class="collapse-item" href="/Department/Create">Create</a>
+                        <a  class="collapse-item active" href="/Department/Index">List</a>
+                        <a @(isAdmin ? "" : "hidden") class="collapse-item" href="/Department/Create">Create</a>
                     </div>
                 </div>
             </li>
             <hr class="sidebar-divider">
             <li class="nav-item">
                 <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapse5" aria-expanded="true"
-                    aria-controls="collapseTwo">
+                   aria-controls="collapseTwo">
                     <i class="fa-solid fa-book"></i>
                     <span>Documents Controls</span>
                 </a>
                 <div id="collapse5" class="collapse" aria-labelledby="headingTwo"
-                        data-parent="#accordionSidebar">
+                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Components:</h6>
                         <a class="collapse-item active" href="/Document/Index">List</a>
-                        <a class="collapse-item" href="/Document/Create">Create</a>
+                        <a @(isAdmin ? "" : "hidden") class="collapse-item" href="/Document/Create">Create</a>
                     </div>
                 </div>
             </li>
             <hr class="sidebar-divider">
             <li class="nav-item">
                 <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapse6" aria-expanded="true"
-                    aria-controls="collapseTwo">
+                   aria-controls="collapseTwo">
                     <i class="fa-solid fa-flask-vial"></i>
                     <span>Labs Controls</span>
                 </a>
                 <div id="collapse6" class="collapse" aria-labelledby="headingTwo"
-                        data-parent="#accordionSidebar">
+                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Lab:</h6>
                         <a class="collapse-item active" href="/Labs/Index">List</a>
-                        <a class="collapse-item" href="/Labs/Create">Create</a>
+                        <a @(isAdmin ? "" : "hidden") class="collapse-item" href="/Labs/Create">Create</a>
                     </div>
                 </div>
             </li>
             <hr class="sidebar-divider">
             <li class="nav-item">
                 <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapse7" aria-expanded="true"
-                    aria-controls="collapseTwo">
+                   aria-controls="collapseTwo">
                     <i class="fa-solid fa-computer"></i>
                     <span>Equipments Controls</span>
                 </a>
                 <div id="collapse7" class="collapse" aria-labelledby="headingTwo"
-                        data-parent="#accordionSidebar">
+                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Equipments:</h6>
                         <a class="collapse-item active" href="/Equipment/Index">List</a>
-                        <a class="collapse-item" href="/Equipment/Create">Create</a>
+                        <a @(isAdmin ? "" : "hidden") class="collapse-item" href="/Equipment/Create">Create</a>
                     </div>
                 </div>
             </li>
+
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <!-- Divider -->
@@ -211,87 +255,87 @@
                         </form>*@
 
                     <!-- Topbar Navbar -->
-                <ul class="navbar-nav ml-auto">
+                    <ul class="navbar-nav ml-auto">
 
-                    <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                    <li class="nav-item dropdown no-arrow d-sm-none">
-                        <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-search fa-fw"></i>
-                        </a>
-                        <!-- Dropdown - Messages -->
-                        <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                             aria-labelledby="searchDropdown">
-                            <form class="form-inline mr-auto w-100 navbar-search">
-                                <div class="input-group">
-                                    <input type="text" class="form-control bg-light border-0 small"
-                                           placeholder="Search for..." aria-label="Search"
-                                           aria-describedby="basic-addon2">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary" type="button">
-                                            <i class="fas fa-search fa-sm"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </li>
-
-                    @if (!Request.IsAuthenticated)
-                    {
-                        <!-- Nav Item - Alerts -->
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="/Account/Login" id="alertsDropdown" role="button">
-                                <i class="fas fa-sign-in"></i>
+                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
                             </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                 aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                               placeholder="Search for..." aria-label="Search"
+                                               aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                         </li>
-                    }
+
+                        @if (!Request.IsAuthenticated)
+                        {
+                            <!-- Nav Item - Alerts -->
+                            <li class="nav-item dropdown no-arrow mx-1">
+                                <a class="nav-link dropdown-toggle" href="/Account/Login" id="alertsDropdown" role="button">
+                                    <i class="fas fa-sign-in"></i>
+                                </a>
+                            </li>
+                        }
 
 
-                    <div class="topbar-divider d-none d-sm-block"></div>
+                        <div class="topbar-divider d-none d-sm-block"></div>
 
-                    <!-- Nav Item - User Information -->
-                    <li class="nav-item dropdown no-arrow">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                @if (Request.IsAuthenticated)
+                                {
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">@User.Identity.GetUserName()</span>
+                                    @*<span class="mr-2 d-none d-lg-inline text-gray-600 small">@User.Identity.GetUserId()</span>
+                                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">@User.IsInRole("Admin")</span>*@
+
+
+                                    <img class="img-profile rounded-circle"
+                                         src="~/Content/AdminVersion002/img/undraw_profile.svg">
+                                }
+                            </a>
                             @if (Request.IsAuthenticated)
                             {
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">@User.Identity.GetUserName()</span>
-                                @*<span class="mr-2 d-none d-lg-inline text-gray-600 small">@User.Identity.GetUserId()</span>
-                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">@User.IsInRole("Admin")</span>*@
-
-
-                                <img class="img-profile rounded-circle"
-                                     src="~/Content/AdminVersion002/img/undraw_profile.svg">
+                                <!-- Dropdown - User Information -->
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                     aria-labelledby="userDropdown">
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Profile
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Settings
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Activity Log
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="/Account/Logout" data-toggle="modal" data-target="#logoutModal">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Logout
+                                    </a>
+                                </div>
                             }
-                        </a>
-                        @if (Request.IsAuthenticated)
-                        {
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Activity Log
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="/Account/Logout" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
-                            </div>
-                        }
-                    </li>
+                        </li>
 
-                </ul>
+                    </ul>
 
                 </nav>
                 <!-- End of Topbar -->
