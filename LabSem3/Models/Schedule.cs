@@ -12,7 +12,8 @@ namespace LabSem3.Models
     {
         [Key]
         public int Id { get; set; }
-        
+
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DateBoking { get; set; }
         public int SlotNumber { get; set; }
 

@@ -2234,6 +2234,7 @@
     <Content Include="Views\Department\Delete.cshtml" />
     <Content Include="Views\Schedule\Create.cshtml" />
     <Content Include="Views\Department\Create.cshtml" />
+    <Content Include="Views\Schedule\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

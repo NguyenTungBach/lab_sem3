@@ -2,6 +2,7 @@
 using LabSem3.Enum;
 using LabSem3.Models;
 using LabSem3.Models.ViewModel.ScheduleViewModel;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -22,10 +23,44 @@ namespace LabSem3.Controllers
 
         [Authorize(Roles = "ADMIN,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
         // GET: Schedule
-        public ActionResult Index()
+        public ActionResult Index(int? SlotNumber, int? page, string InstructorId, string StartTime, string EndTime)
         {
-            var listSchedule = db.Schedules.ToList();
-            return View(listSchedule);
+
+            var listSchedule = db.Schedules.Include(s => s.Instructor).OrderBy(s => s.Id).AsQueryable();
+
+            if (SlotNumber != null)
+            {
+                listSchedule = listSchedule.Where(s => s.SlotNumber == SlotNumber);
+            }
+
+            if (InstructorId != null && InstructorId.Length > 0)
+            {
+                listSchedule = listSchedule.Where(s => s.InstructorId.Equals(InstructorId));
+            }
+
+            if (StartTime != null && StartTime != "")
+            {
+                var startDateTime0000 = DateTime.Parse(StartTime);
+                listSchedule = listSchedule.Where(s => s.DateBoking >= startDateTime0000);
+            }
+            if (EndTime != null && EndTime != "")
+            {
+                var endDateTime2359 = DateTime.Parse(EndTime).AddDays(1).AddTicks(-1);
+                listSchedule = listSchedule.Where(s => s.DateBoking <= endDateTime2359);
+            }
+
+            ViewBag.Labs = db.Labs.ToList();
+            var roleINSTRUCTOR = db.Roles.Where(s => s.Name.Contains(RoleEnum.INSTRUCTOR.ToString())).FirstOrDefault();
+            ViewBag.Instructor = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleINSTRUCTOR.Id))).ToList();
+            ViewBag.SlotNumber = SlotNumber;
+            ViewBag.InstructorId = InstructorId;
+            ViewBag.StartTime = StartTime;
+            ViewBag.EndTime = EndTime;
+
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+
+            return View(listSchedule.ToPagedList(pageNumber, pageSize));
         }
 
         [Authorize(Roles = "ADMIN")]
@@ -41,7 +76,7 @@ namespace LabSem3.Controllers
         {
             ViewBag.Labs = db.Labs.ToList();
             var roleINSTRUCTOR = db.Roles.Where(s => s.Name.Contains(RoleEnum.INSTRUCTOR.ToString())).FirstOrDefault();
-            ViewBag.InstructorList = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleINSTRUCTOR.Id))).ToList(); ;
+            ViewBag.InstructorList = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleINSTRUCTOR.Id))).ToList();
             return View();
         }
 
@@ -124,6 +159,9 @@ namespace LabSem3.Controllers
         // GET: Schedule/Edit/5
         public ActionResult Edit(int id)
         {
+            ViewBag.Labs = db.Labs.ToList();
+            var roleINSTRUCTOR = db.Roles.Where(s => s.Name.Contains(RoleEnum.INSTRUCTOR.ToString())).FirstOrDefault();
+            ViewBag.InstructorList = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleINSTRUCTOR.Id))).ToList();
             return View();
         }
 
