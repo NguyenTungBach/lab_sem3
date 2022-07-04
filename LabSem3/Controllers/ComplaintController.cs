@@ -32,7 +32,7 @@ namespace LabSem3.Controllers
 
         [Authorize(Roles = "ADMIN,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
         // GET: Complaint
-        public ActionResult Index(string keyWord, int? statusCheck,  int? page) {
+        public ActionResult Index(string SupportID, string keyWord, int? statusCheck,  int? page) {
             
             var result2 = db.Complaints.OrderBy(s => s.Id).AsQueryable();
 
@@ -44,7 +44,19 @@ namespace LabSem3.Controllers
             if (!User.IsInRole("ADMIN"))
             {
                 var userID = User.Identity.GetUserId();
-                result2 = result2.Where(s => s.AccountId == userID);
+                if (User.IsInRole(RoleEnum.INSTRUCTOR.ToString()) || User.IsInRole(RoleEnum.TECHNICAL_STAFF.ToString()))
+                {
+                    result2 = result2.Where(s => s.SupportedId.Equals(userID));
+                }
+                else
+                {
+                    result2 = result2.Where(s => s.AccountId == userID);
+                }
+            }
+
+            if (SupportID != null && SupportID.Length >0)
+            {
+                result2 = result2.Where(s => s.SupportedId.Equals(SupportID));
             }
 
             if (!string.IsNullOrEmpty(keyWord))
@@ -58,6 +70,10 @@ namespace LabSem3.Controllers
             }
 
             ViewBag.statusCheck = statusCheck;
+            ViewBag.SupportID = SupportID;
+            var roleINSTRUCTOR = db.Roles.Where(s => s.Name.Contains(RoleEnum.INSTRUCTOR.ToString())).FirstOrDefault();
+            var roleTECHNICAL = db.Roles.Where(s => s.Name.Contains(RoleEnum.TECHNICAL_STAFF.ToString())).FirstOrDefault();
+            ViewBag.Support = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleINSTRUCTOR.Id) || c.RoleId.Contains(roleTECHNICAL.Id))).ToList(); ;
 
             ViewBag.keyWord = keyWord;
 

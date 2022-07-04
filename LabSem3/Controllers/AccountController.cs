@@ -57,7 +57,7 @@ namespace LabSem3.Controllers
                 await signInManager.SignInAsync(user, false, false);
                 Session["userId"] = user.Id;
 
-                return Redirect("/Home");
+                return Redirect("/Account/Profile");
             }
         }
 
@@ -195,19 +195,21 @@ namespace LabSem3.Controllers
 
             var listUser = userManager.Users.ToList();
 
-            //var listUserByRole = new List<string>();
-            //foreach (var user in listUser)
-            //{
-            //    var checkRole = userManager.GetRoles(user.Id).ToList();
-            //    foreach (var role in checkRole)
-            //    {
-            //        if (role == RoleEnum.ADMIN.ToString())
-            //        {
-            //            listUserByRole.Add(user.UserName);
-            //        }
-            //    }
-            //}
-            //ViewBag.AccountByRole = listUserByRole;
+            return View(account);
+        }
+
+        [Authorize(Roles = "ADMIN,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
+        public ActionResult Profile()
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return HttpNotFound();
+            }
+
+            var account = db.Users.Find(User.Identity.GetUserId());
+            ViewBag.Roles = userManager.GetRoles(User.Identity.GetUserId()).ToList();
+
+            var listUser = userManager.Users.ToList();
 
             return View(account);
         }
@@ -391,6 +393,48 @@ namespace LabSem3.Controllers
         {
             HttpContext.GetOwinContext().Authentication.SignOut();
             return Redirect("/Account/Login");
+        }
+
+        [Authorize(Roles = "ADMIN,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
+        public ActionResult ChangePassword()
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return HttpNotFound();
+            }
+
+            return View();
+        }
+
+        [Authorize(Roles = "ADMIN,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
+        [HttpPost]
+        public ActionResult ChangePasswordComfirm(ChangePasswordViewModel changePasswordViewModel)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return HttpNotFound();
+            }
+
+            try
+            {
+                
+                var user = db.Users.Find(User.Identity.GetUserId());
+
+                var result = userManager.ChangePassword(user.Id, changePasswordViewModel.OldPassword, changePasswordViewModel.NewPassword);
+                if (!result.Succeeded)
+                {
+                    TempData["False"] = "Change Old Password For Account " + user.UserName + " Wrong";
+                    return Redirect("/Account/Profile");
+                }
+                //var result = userManager.ResetPasswordAsync(user.Id, token, changePasswordViewModel.Password);
+                TempData["Success"] = "Change Password For Account " + user.UserName + " Success";
+                return Redirect("/Account/Profile");
+            }
+            catch(Exception ex)
+            {
+                TempData["False"] = "Change Password For Account " + User.Identity.GetUserName() + " False: " + ex;
+                return Redirect("/Account/Profile");
+            }
         }
 
         public ActionResult RegisterNVQ()

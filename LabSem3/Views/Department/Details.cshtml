@@ -1,5 +1,5 @@
 ﻿@model LabSem3.Models.Department
-
+@using Microsoft.AspNet.Identity
 @{
     ViewBag.Title = "Details";
 }
@@ -59,11 +59,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.HodId)
+            @Html.DisplayNameFor(model => model.Hod.UserName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.HodId)
+            @Html.DisplayFor(model => model.Hod.UserName)
         </dd>
 
         <dt>
@@ -76,6 +76,9 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @if (User.IsInRole("ADMIN"))
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) <span> | </span>
+        @Html.ActionLink("Back to List", "Index")
+    }
 </p>

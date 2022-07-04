@@ -1,5 +1,6 @@
 ﻿@model PagedList.IPagedList<LabSem3.Models.Document>
 @using PagedList.Mvc;
+@using Microsoft.AspNet.Identity
 @{
     ViewBag.Title = "Index";
 }
@@ -115,12 +116,12 @@
             CreatAt
         </th>
         @*<th>
-            @Html.DisplayNameFor(model => model.UpdatedAt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DeletedAt)
-        </th>*@
-       
+                @Html.DisplayNameFor(model => model.UpdatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeletedAt)
+            </th>*@
+
         <th>
             Type Equipment Name
         </th>
@@ -129,39 +130,46 @@
 
     @foreach (var item in Model)
     {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.Title)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Detail)
-    </td>
-    <td>
-        @foreach (var statusItem in EnumHelper.GetSelectList(typeof(LabSem3.Enum.DocumentStatusEnum)))
-        {
-            @(Int32.Parse(statusItem.Value) == item.Status ? statusItem.Text : "" )
-        }
-    </td>
-    <td>
-        @string.Format("{0:dd/MM/yyyy}", item.CreatedAt)
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Detail)
+            </td>
+            <td>
+                @foreach (var statusItem in EnumHelper.GetSelectList(typeof(LabSem3.Enum.DocumentStatusEnum)))
+                {
+                    @(Int32.Parse(statusItem.Value) == item.Status ? statusItem.Text : "" )
+                }
+            </td>
+            <td>
+                @string.Format("{0:dd/MM/yyyy}", item.CreatedAt)
 
-    </td>
-    @*<td>
-            @Html.DisplayFor(modelItem => item.UpdatedAt)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DeletedAt)
-        </td>*@
-    
-    <td>
-        @Html.DisplayFor(modelItem => item.TypeEquipment.Name)
-    </td>
-    <td>
-        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-    </td>
-</tr>
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.UpdatedAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeletedAt)
+                </td>*@
+
+            <td>
+                @Html.DisplayFor(modelItem => item.TypeEquipment.Name)
+            </td>
+            <td>
+                @if (User.IsInRole("ADMIN"))
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) <span> | </span>
+                }
+                @Html.ActionLink("Details", "Details", new { id = item.Id })
+
+                @if (User.IsInRole("ADMIN"))
+                {
+                    <span> | </span> @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                }
+            </td>
+        </tr>
     }
 
 </table>

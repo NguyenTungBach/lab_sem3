@@ -1,6 +1,7 @@
 ﻿@model LabSem3.Models.Lab
 @using PagedList.Mvc;
 @using PagedList;
+@using Microsoft.AspNet.Identity
 @{
     ViewBag.Title = "Edit";
 }
@@ -221,76 +222,76 @@
             @Html.ActionLink("Back to List", "Index")
         </div>
 
-<script src="~/Scripts/jquery-3.4.1.js">
+        <script src="~/Scripts/jquery-3.4.1.js">
 
-</script>
+        </script>
 
 
         <script>
-    function updatedStatus() {
-        var select = document.getElementById('selected');
-        var value = select.options[select.selectedIndex].value;
-       
-        if (array != null) {
-            array.forEach(s => {
-        $.ajax({
-            url: "/Labs/UpdatedStatus",
-                       
+            function updatedStatus() {
+                var select = document.getElementById('selected');
+                var value = select.options[select.selectedIndex].value;
+
+                if (array != null) {
+                    array.forEach(s => {
+                        $.ajax({
+                            url: "/Labs/UpdatedStatus",
+
                             type: "POST",
 
-            data: { id: s, status: value },
-        });
-                window.location.reload(true);
-            })
-         
-        }
-       
-    }
-    var array = new Set;
-    document.getElementById('checkAll').onclick = function () {
-        var check = document.getElementById('checkAll');
-        var checkBox = document.getElementsByName('checkElement');
-        if (check.checked = true) {
-            for (var i = 0; i < checkBox.length; i++) {
-                checkBox[i].checked = true;
-            }
-            var ids = document.getElementsByClassName("sorting_1");
-            for (let id of ids) {
-                array.add(Number(id.innerHTML));
-            }
-            console.log(array)
-        }
+                            data: { id: s, status: value },
+                        });
+                        window.location.reload(true);
+                    })
 
-        //if (check.checked = true) {
-        //    for (var i = 0; i < checkBox.length; i++) {
-        //        checkBox[i].checked = false;
-        //    }
-        //}
+                }
 
-    }
-    function getId(id) {
+            }
+            var array = new Set;
+            document.getElementById('checkAll').onclick = function () {
+                var check = document.getElementById('checkAll');
+                var checkBox = document.getElementsByName('checkElement');
+                if (check.checked = true) {
+                    for (var i = 0; i < checkBox.length; i++) {
+                        checkBox[i].checked = true;
+                    }
+                    var ids = document.getElementsByClassName("sorting_1");
+                    for (let id of ids) {
+                        array.add(Number(id.innerHTML));
+                    }
+                    console.log(array)
+                }
+
+                //if (check.checked = true) {
+                //    for (var i = 0; i < checkBox.length; i++) {
+                //        checkBox[i].checked = false;
+                //    }
+                //}
+
+            }
+            function getId(id) {
                 var checkBox = document.getElementsByName('checkElement');
                 for (var i = 0; i < checkBox.length; i++) {
                     if (checkBox[i].checked == true) {
                         array.add(id);
 
                     }
-        }
-        console.log(array)
-   }
+                }
+                console.log(array)
+            }
 
 
 
-    document.getElementById('checkAll').ondblclick = function () {
-        var check = document.getElementById('checkAll');
-        var checkBox = document.getElementsByName('checkElement');;
-        check.checked = false
-            for (var i = 0; i < checkBox.length; i++) {
-                checkBox[i].checked = false;
-        }
-        array.clear();
-        console.log(array)
-    }
+            document.getElementById('checkAll').ondblclick = function () {
+                var check = document.getElementById('checkAll');
+                var checkBox = document.getElementsByName('checkElement');;
+                check.checked = false
+                for (var i = 0; i < checkBox.length; i++) {
+                    checkBox[i].checked = false;
+                }
+                array.clear();
+                console.log(array)
+            }
         </script>
 
 

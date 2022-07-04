@@ -214,6 +214,7 @@
     <Compile Include="Models\TypeEquipment.cs" />
     <Compile Include="Models\ViewModel\AccountEditViewModel.cs" />
     <Compile Include="Models\ViewModel\AccountViewModel.cs" />
+    <Compile Include="Models\ViewModel\ChangePasswordViewModel.cs" />
     <Compile Include="Models\ViewModel\ComplaintViewModel.cs" />
     <Compile Include="Models\ViewModel\DepartmentViewModel\DepartmentCreateViewModel.cs" />
     <Compile Include="Models\ViewModel\DepartmentViewModel\DepartmentEditViewModel.cs" />
@@ -2236,6 +2237,8 @@
     <Content Include="Views\Schedule\Create.cshtml" />
     <Content Include="Views\Department\Create.cshtml" />
     <Content Include="Views\Schedule\Edit.cshtml" />
+    <Content Include="Views\Account\Profile.cshtml" />
+    <Content Include="Views\Account\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

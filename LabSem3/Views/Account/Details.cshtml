@@ -1,8 +1,8 @@
 ﻿@model LabSem3.Models.Account
-
+@using Microsoft.AspNet.Identity
 @{
     ViewBag.Title = "Details";
-    
+
 }
 
 <h2>Details</h2>
@@ -60,13 +60,13 @@
             @Html.DisplayFor(model => model.DeletedAt)
         </dd>
 
-        <dt>
+        @*<dt>
             @Html.DisplayNameFor(model => model.Labs)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Labs)
-        </dd>
+        </dd>*@
 
         <dt>
             @Html.DisplayNameFor(model => model.Department)
@@ -76,13 +76,13 @@
             @Html.DisplayFor(model => model.Department)
         </dd>
 
-        <dt>
+        @*<dt>
             @Html.DisplayNameFor(model => model.Complaints)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Complaints)
-        </dd>
+        </dd>*@
 
         <dt>
             @Html.DisplayNameFor(model => model.Schedules)
@@ -102,17 +102,23 @@
         </dt>
 
         @*<dt>
-            Test Account by role
-        </dt>
-        <dt>
-            @foreach (var account in ViewBag.AccountByRole)
-            {
-                <span>@account </span>
-            }
-        </dt>*@
+                Test Account by role
+            </dt>
+            <dt>
+                @foreach (var account in ViewBag.AccountByRole)
+                {
+                    <span>@account </span>
+                }
+            </dt>*@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @if (User.IsInRole("ADMIN"))
+    {
+        if (!User.Identity.GetUserId().Equals(Model.Id))
+        {
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id })<span> | </span>
+        }
+        @Html.ActionLink("Back to List", "Index")
+    }
 </p>

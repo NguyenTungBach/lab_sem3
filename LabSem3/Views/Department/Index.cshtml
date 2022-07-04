@@ -152,9 +152,19 @@
             </td>
             
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                @if (User.IsInRole("ADMIN"))
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) <span> | </span>
+                }
+
+                @if (User.IsInRole("ADMIN") || User.IsInRole("HOD"))
+                {
+                 @Html.ActionLink("Details", "Details", new { id = item.Id })
+                }
+                @if (User.IsInRole("ADMIN"))
+                {
+            <span> | </span> @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                }
             </td>
         </tr>
     }

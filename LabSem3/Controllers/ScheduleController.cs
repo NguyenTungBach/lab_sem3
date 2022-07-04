@@ -63,7 +63,7 @@ namespace LabSem3.Controllers
             return View(listSchedule.ToPagedList(pageNumber, pageSize));
         }
 
-        [Authorize(Roles = "ADMIN")]
+        [Authorize(Roles = "ADMIN,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
         // GET: Schedule/Details/5
         public ActionResult Details(int id)
         {
