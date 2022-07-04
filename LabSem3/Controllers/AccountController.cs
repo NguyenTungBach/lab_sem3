@@ -49,7 +49,7 @@ namespace LabSem3.Controllers
             if (user == null)
             {
                 TempData["False"] = "Account - Not Found " + UserName;
-                return View("Login1");
+                return View("Login");
             }
             else
             {
@@ -91,7 +91,7 @@ namespace LabSem3.Controllers
                     var check = await AddUserToRoleAsync(queryUser.Id, RoleEnum.STUDENT.ToString());
                     if (check)
                     {
-                        return Redirect("/Account/Login1");
+                        return Redirect("/Account/Login");
                     }
                     else
                     {
@@ -381,7 +381,7 @@ namespace LabSem3.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Login1()
+        public ActionResult Login()
         {
             return View();
         }
@@ -390,7 +390,7 @@ namespace LabSem3.Controllers
         public ActionResult Logout()
         {
             HttpContext.GetOwinContext().Authentication.SignOut();
-            return Redirect("/Account/Login1");
+            return Redirect("/Account/Login");
         }
 
         public ActionResult RegisterNVQ()
