@@ -16,6 +16,7 @@ namespace LabSem3.Models.ViewModel.ScheduleViewModel
         public int SlotNumber { get; set; }
 
         public int LabId { get; set; }
+        public int Status { get; set; }
 
         public string InstructorId { get; set; }
         public ScheduleEditViewModel()

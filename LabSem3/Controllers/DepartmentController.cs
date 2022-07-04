@@ -101,7 +101,7 @@ namespace LabSem3.Controllers
         {
             var roleHOD = db.Roles.Where(s => s.Name.Contains(RoleEnum.HOD.ToString())).FirstOrDefault();
             ViewBag.AccountsHOD = db.Users.Include(l => l.Roles)
-                .Where(s => s.Roles.Any(c => c.RoleId.Contains(roleHOD.Id)) && s.Department.Name == null)
+                .Where(s => s.Roles.Any(c => c.RoleId.Equals(roleHOD.Id)) && s.Department.Name == null)
                 .ToList();
 
             return View();
