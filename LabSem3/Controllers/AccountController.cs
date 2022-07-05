@@ -36,46 +36,6 @@ namespace LabSem3.Controllers
             
         }
 
-        public ActionResult SendEmail()
-        {
-            try
-            {
-                string receiver = "hoangkien3511@gmail.com";
-                string subject = "subjectTest";
-                string message = "message Test";
-                var senderEmail = new MailAddress("bachntth2010055@fpt.edu.vn", "Bach");
-                var receiverEmail = new MailAddress(receiver, "ReceiverTest");
-                var password = "btdrbyurmfvacqcc";
-                var sub = subject;
-                var body = message;
-                var smtp = new SmtpClient
-                {
-                    Host = "smtp.gmail.com",
-                    Port = 587,
-                    EnableSsl = true,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(senderEmail.Address, password)
-                };
-                using (var mess = new MailMessage(senderEmail, receiverEmail)
-                {
-                    Subject = subject,
-                    Body = body
-                })
-                {
-                    smtp.Send(mess);
-                }
-                return Redirect("/Labs/ViewSuccess");
-                
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Error = "Some Error" + ex;
-                return Redirect("/Labs/ViewError");
-            }
-            return Redirect("/Labs/ViewError");
-        }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -85,7 +45,7 @@ namespace LabSem3.Controllers
             Debug.WriteLine("user đăng nhập là ", user);
             if (user == null)
             {
-                TempData["False"] = "Account - Not Found " + UserName;
+                TempData["False"] = "Login False With " + UserName;
                 return View("Login");
             }
             else
@@ -110,7 +70,9 @@ namespace LabSem3.Controllers
             {
                 Account user = new Account()
                 {
-                    UserName = registerViewModel.UserName
+                    UserName = registerViewModel.UserName,
+                    Email = registerViewModel.Email,
+                    CreatedAt = DateTime.Now
                 };
 
                 var result = await userManager.CreateAsync(user, registerViewModel.Password);
@@ -128,6 +90,7 @@ namespace LabSem3.Controllers
                     var check = await AddUserToRoleAsync(queryUser.Id, RoleEnum.STUDENT.ToString());
                     if (check)
                     {
+                        
                         return Redirect("/Account/Login");
                     }
                     else
@@ -282,6 +245,7 @@ namespace LabSem3.Controllers
                     Account account = new Account()
                     {
                         UserName = accountViewModel.UserName,
+                        Email = accountViewModel.Email,
                         Status = 1,
                         CreatedAt = DateTime.Now
                     };
@@ -315,8 +279,9 @@ namespace LabSem3.Controllers
                 //TempData["False"] = "Tạo tài khoản thành công";
                 return RedirectToAction("Index");
             }
-            catch
+            catch(Exception ex)
             {
+                TempData["False"] = "Create Account False " + ex;
                 return View();
             }
         }

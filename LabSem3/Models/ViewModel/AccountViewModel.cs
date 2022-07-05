@@ -20,7 +20,7 @@ namespace LabSem3.Models.ViewModel
         [Required(ErrorMessage = "Email Required")]
         [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string Email { get; set; }
-        [Required(ErrorMessage = "Full Name Required")]
+        
         public string FullName { get; set; }
         [DisplayName("Password")]
         [Required(ErrorMessage = "Password Required")]
