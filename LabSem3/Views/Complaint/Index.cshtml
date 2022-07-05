@@ -20,12 +20,24 @@
 <form action="/Complaint/Index" method="get" class="d-none d-sm-inline-block form-inline navbar-search mb-4">
     <div class="input-group">
         <select class="form-control mr-4" name="statusCheck">
-            <option selected value="-1">Status...</option>
+            <option @(ViewBag.statusCheck == -1 ? "selected" : " ") value="-1">Status...</option>
             @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ComplaintStatusEnum)))
             {
                 <option @(ViewBag.statusCheck == Int32.Parse(item.Value) ? "selected" : " ") value="@item.Value">@item.Text</option>
             }
         </select>
+        @if(User.IsInRole("ADMIN") || User.IsInRole("HOD"))
+        {
+            <select class="form-control mr-4" name="SupportId">
+                <option @(ViewBag.SupportId == null ? "selected" : " ") value="">Support...</option>
+                @foreach (var item in ViewBag.Support)
+                {
+                    <option @(ViewBag.SupportId == item.Id ? "selected" : " ") value="@item.Id">@item.UserName</option>
+                }
+            </select>
+        }
+
+
         <input value="@ViewBag.keyWord" name="keyWord" type="text" class="form-control bg-default small" placeholder="Search for..."
                aria-label="Search" aria-describedby="basic-addon2">
         <div class="input-group-append">
@@ -48,6 +60,9 @@
             Status
         </th>
         <th>
+            Support Assign
+        </th>
+        <th>
             Equipment/Software ID
         </th>
         <th>
@@ -58,34 +73,37 @@
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @item.Title
-            </td>
-            <td>
-                @item.Detail
-            </td>
-            <td>
-                @foreach (var item2 in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ComplaintStatusEnum)))
-                {
-                    if (item.Status == Int32.Parse(item2.Value))
-                    {
-                        @item2.Text
-                        break;
-                    }
-                }
-            </td>
-            <td>
-                @item.EquipmentId
-            </td>
-            <td>
-                @item.TypeComplaint.Name
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
+<tr>
+    <td>
+        @item.Title
+    </td>
+    <td>
+        @item.Detail
+    </td>
+    <td>
+        @foreach (var item2 in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ComplaintStatusEnum)))
+        {
+            if (item.Status == Int32.Parse(item2.Value))
+            {
+                @item2.Text
+                break;
+            }
+        }
+    </td>
+    <td>
+        @(item.Supporter !=null ? item.Supporter.UserName : "")
+    </td>
+    <td>
+        @item.EquipmentId
+    </td>
+    <td>
+        @item.TypeComplaint.Name
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+    </td>
+</tr>
     }
 
 </table>
@@ -96,7 +114,7 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
 <nav aria-label="Page navigation example">
     <ul class="pagination">
 
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, SupportId = ViewBag.SupportId, statusCheck = ViewBag.statusCheck, keyWord = ViewBag.keyWord }))
 
     </ul>
 </nav>

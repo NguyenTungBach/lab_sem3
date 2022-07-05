@@ -198,9 +198,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202207041504257_Context.cs" />
-    <Compile Include="Migrations\202207041504257_Context.Designer.cs">
-      <DependentUpon>202207041504257_Context.cs</DependentUpon>
+    <Compile Include="Migrations\202207041827121_Context.cs" />
+    <Compile Include="Migrations\202207041827121_Context.Designer.cs">
+      <DependentUpon>202207041827121_Context.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
@@ -214,6 +214,7 @@
     <Compile Include="Models\TypeEquipment.cs" />
     <Compile Include="Models\ViewModel\AccountEditViewModel.cs" />
     <Compile Include="Models\ViewModel\AccountViewModel.cs" />
+    <Compile Include="Models\ViewModel\ChangePasswordViewModel.cs" />
     <Compile Include="Models\ViewModel\ComplaintViewModel.cs" />
     <Compile Include="Models\ViewModel\DepartmentViewModel\DepartmentCreateViewModel.cs" />
     <Compile Include="Models\ViewModel\DepartmentViewModel\DepartmentEditViewModel.cs" />
@@ -2236,6 +2237,8 @@
     <Content Include="Views\Schedule\Create.cshtml" />
     <Content Include="Views\Department\Create.cshtml" />
     <Content Include="Views\Schedule\Edit.cshtml" />
+    <Content Include="Views\Account\Profile.cshtml" />
+    <Content Include="Views\Account\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2254,8 +2257,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202207041504257_Context.resx">
-      <DependentUpon>202207041504257_Context.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202207041827121_Context.resx">
+      <DependentUpon>202207041827121_Context.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

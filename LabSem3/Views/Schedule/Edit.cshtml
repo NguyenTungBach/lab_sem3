@@ -31,7 +31,7 @@
         {
             <div class="col-md-10">
                 <div>
-                    <input type="checkbox" value="@item.Value" id="@item.Text" class="slotCheck">
+                    <input type="checkbox" value="@item.Value" id="SlotNumber" name="SlotNumber" class="slotCheck">
                     <label class="form-check-label" for="@item.Text">
                         @switch (Int32.Parse(item.Value))
                         {
@@ -61,13 +61,19 @@
                 </div>
             </div>
         }
+
+
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.LabId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <label class="control-label col-md-2" for="DepartmentId">Lab</label>
         <div class="col-md-10">
-            @Html.EditorFor(model => model.LabId, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.LabId, "", new { @class = "text-danger" })
+            <select class="form-control" id="LabId" name="LabId">
+                @foreach (var lab in ViewBag.Labs)
+                {
+                    <option value="@lab.Id">Lab @lab.Id</option>
+                }
+            </select>
         </div>
     </div>
 
@@ -77,7 +83,7 @@
             <select class="form-control" id="Status" name="Status">
                 @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ScheduleStatusEnum)))
                 {
-                    <option value="@item.Value" @(Int32.Parse(item.Value) == Model.Status ? "selected" : "")>@item.Text</option>
+                    <option value="@item.Value">@item.Text</option>
                 }
             </select>
         </div>

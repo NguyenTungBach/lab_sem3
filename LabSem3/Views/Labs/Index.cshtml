@@ -1,6 +1,6 @@
 ﻿@model PagedList.IPagedList<LabSem3.Models.Lab>
 @using PagedList.Mvc;
-
+@using Microsoft.AspNet.Identity
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutLabversion002.cshtml";
@@ -11,11 +11,11 @@
         <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
     </div>
     <div class="card-body">
-        <div >
+        <div>
             <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
                 <form action="/Labs/Index">
                     <div class="row " style="margin-bottom:10px">
-                    
+
 
                         <div style="margin:0 10px">
                             <div style="text-align: left">Department</div>
@@ -64,7 +64,7 @@
                         </div>
                     </div>
                 </form>
-                     <div class="row">
+                <div class="row">
                     <div class="col-sm-12">
                         <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
                             <thead>
@@ -76,31 +76,37 @@
                             <tbody>
                                 @foreach (var lab in Model)
                                 {
-                                    <tr class="odd">
-                                        <td class="sorting_1">Lab @lab.Id</td>
-                                        <td>@lab.Department.Name</td>
-                                        <td>@lab.CreatedAt</td>
-                                        <td>@lab.UpdatedAt</td>
-                                        <td>
-                                            @switch (lab.Status)
-                                            {
-                                                case 1:
-                                                    <div>ACTIVE</div>
-                                                    break;
-                                                case -1:
-                                                    <div>INACTIVE</div>
-                                                    break;
-                                                case 0:
-                                                    <div>MAINTENANCE</div>
-                                                    break;
-                                            }
-                                        </td>
-                                        <td>
-                                            <a href="/Labs/Details/@lab.Id"><i class="fa-solid fa-info"></i></a>
+                                <tr class="odd">
+                                    <td class="sorting_1">Lab @lab.Id</td>
+                                    <td>@lab.Department.Name</td>
+                                    <td>@lab.CreatedAt</td>
+                                    <td>@lab.UpdatedAt</td>
+                                    <td>
+                                        @switch (lab.Status)
+                                        {
+                                            case 1:
+                                                <div>ACTIVE</div>
+                                                break;
+                                            case -1:
+                                                <div>INACTIVE</div>
+                                                break;
+                                            case 0:
+                                                <div>MAINTENANCE</div>
+                                                break;
+                                        }
+                                    </td>
+
+                                    
+                                    <td>
+                                        <a href="/Labs/Details/@lab.Id"><i class="fa-solid fa-info"></i></a>
+                                        @if (User.IsInRole("ADMIN"))
+                                        {
                                             <a style="margin:0 10px" href="/Labs/Edit/@lab.Id"><i class="fa-solid fa-pen-to-square"></i></a>
                                             <a href="/Labs/Delete/@lab.Id"><i class="fa-solid fa-trash-can"></i></a>
-                                        </td>
-                                    </tr>
+                                        }
+                                    </td>
+                                    
+                                </tr>
                                 }
                             </tbody>
                         </table>

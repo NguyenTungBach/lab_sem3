@@ -1,6 +1,7 @@
 ﻿@model  LabSem3.Models.Lab
 @using PagedList.Mvc;
 @using PagedList;
+@using Microsoft.AspNet.Identity
 @{
     ViewBag.Title = "Details";
 }
@@ -61,14 +62,14 @@
                                 <div style="text-align: left">StartTime</div>
                                 <div class="input-group">
                                     <input value="@ViewBag.StartTime" name="startTime" type="date" class="form-control bg-default border-2 small" aria-label="Search" aria-describedby="basic-addon2">
-                               
+
                                 </div>
                             </div>
                             <div style="margin-right: 20px">
                                 <div style="text-align: left">EndTime</div>
                                 <div class="input-group">
                                     <input value="@ViewBag.EndTime" name="endTime" type="date" class="form-control bg-default border-2 small" aria-label="Search" aria-describedby="basic-addon2">
-                               
+
                                 </div>
                             </div>
                             <div style="margin-top:23px">
@@ -79,7 +80,7 @@
                         </div>
 
                     </div>
-                    
+
                 </div>
                 <div>
                 </div>
@@ -121,10 +122,14 @@
                                                     break;
                                             }
                                         </td>
+                                        
                                         <td>
                                             <a href="/Equipment/Details/@equipment.Id"><i class="fa-solid fa-info"></i></a>
-                                            <a href="/Equipment/Edit/@equipment.Id" style="margin:0 10px"><i class="fa-solid fa-pen-to-square"></i></a>
-                                            <a href="/Equipment/Delete/@equipment.Id"><i class="fa-solid fa-trash-can"></i></a>
+                                            @if(User.IsInRole("ADMIN"))
+                                            {
+                                                <a href="/Equipment/Edit/@equipment.Id" style="margin:0 10px"><i class="fa-solid fa-pen-to-square"></i></a>
+                                                <a href="/Equipment/Delete/@equipment.Id"><i class="fa-solid fa-trash-can"></i></a>
+                                            }
                                         </td>
                                     </tr>
                                 }
@@ -133,7 +138,7 @@
                     </div>
                     Page @(ViewBag.Equipments.PageCount < ViewBag.Equipments.PageNumber ? 0 : ViewBag.Equipments.PageNumber) of @ViewBag.Equipments.PageCount
                     @Html.PagedListPager((IPagedList)ViewBag.Equipments, page => Url.Action("Details",
-                        new { id = Model.Id, page , search = ViewBag.Search, status = ViewBag.Status, typeEquipment= ViewBag.Type, startTime = ViewBag.StartTime, endTime = ViewBag.EndTime }))
+                        new { id = Model.Id, page, search = ViewBag.Search, status = ViewBag.Status, typeEquipment = ViewBag.Type, startTime = ViewBag.StartTime, endTime = ViewBag.EndTime }))
                 </div>
             </div>
         </div>

@@ -32,8 +32,7 @@ namespace LabSem3.Controllers
             roleManager = new RoleManager<IdentityRole>(roleStore); // giống Service, xử lý các vấn đề liên quan đến logic
         }
 
-
-        [Authorize(Roles = "ADMIN,HOD")]
+        [Authorize(Roles = "ADMIN,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
         // GET: Labs
         public ActionResult Index(int? page, int? status, string startTime, string endTime,int? departmentId)
         {
@@ -66,7 +65,7 @@ namespace LabSem3.Controllers
             return View(labs.ToList().ToPagedList(pageNumber,pageSize));
         }
 
-        [Authorize(Roles = "ADMIN,HOD")]
+        [Authorize(Roles = "ADMIN,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
         // GET: Labs/Details/5
         public ActionResult Details(string search, int? status,int? typeEquipment,int? id, int? page,string startTime, string endTime)
         {

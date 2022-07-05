@@ -1,5 +1,5 @@
 ﻿@model LabSem3.Models.Equipment
-
+@using Microsoft.AspNet.Identity
 @{
     ViewBag.Title = "Details";
 }
@@ -69,6 +69,10 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @if (User.IsInRole("ADMIN"))
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) <span> | </span>
+}
+
     @Html.ActionLink("Back to List", "Index")
 </p>

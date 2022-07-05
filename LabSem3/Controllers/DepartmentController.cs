@@ -33,7 +33,7 @@ namespace LabSem3.Controllers
 
         }
 
-        [Authorize(Roles = "ADMIN")]
+        [Authorize(Roles = "ADMIN,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
         // GET: Department
         public async Task<ActionResult> Index(string Name, int? page, int? LabSearch, string HodSearch, string InstructorSearch, string StartTime, string EndTime)
         {
@@ -83,7 +83,7 @@ namespace LabSem3.Controllers
             return View(department.ToPagedList(pageNumber, pageSize));
         }
 
-        [Authorize(Roles = "ADMIN,HOD")]
+        [Authorize(Roles = "ADMIN,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
         // GET: Department/Details/5
         public ActionResult Details(int id)
         {
