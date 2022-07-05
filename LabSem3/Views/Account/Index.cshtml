@@ -162,19 +162,19 @@
                 @string.Format("{0:dd/MM/yyyy hh:mm}", item.CreatedAt)
             </td>
             <td>
-                @if (Request.IsAuthenticated)
-                {
-                    if (@item.Id.Contains(User.Identity.GetUserId()))
-                    {
 
-                    }
-                    else
-                    {
-                        <a href="/Account/Edit?id=@item.Id">Edit</a> <span> |</span>
-                    }
+                @if (!@item.Id.Contains(User.Identity.GetUserId()))
+                {
+                <a href="/Account/Edit?id=@item.Id">Edit</a> <span> |</span>
                 }
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+
+                @Html.ActionLink("Details", "Details", new { id = item.Id })
+
+                @if (!@item.Id.Contains(User.Identity.GetUserId()))
+                {
+                <span> | </span>@Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                }
+
             </td>
         </tr>
     }

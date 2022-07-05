@@ -1,6 +1,7 @@
 ﻿@model PagedList.IPagedList<LabSem3.Models.Complaint>
 @using LabSem3.Enum
 @using PagedList.Mvc;
+@using Microsoft.AspNet.Identity
 
 @{
     ViewBag.Title = "Index";
@@ -9,10 +10,13 @@
 }
 
 <h2>List All Complaints</h2>
+@if (!@User.IsInRole("ADMIN"))
+{
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+}
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <form action="/Complaint/Index" method="get" class="d-none d-sm-inline-block form-inline navbar-search mb-4">
     <div class="input-group">
         <select class="form-control mr-4" name="statusCheck">
@@ -30,7 +34,8 @@
             </button>
         </div>
     </div>
-</form><br>
+</form>
+<br>
 <table class="table">
     <tr>
         <th>
@@ -53,34 +58,34 @@
 
     @foreach (var item in Model)
     {
-<tr>
-    <td>
-        @item.Title
-    </td>
-    <td>
-        @item.Detail
-    </td>
-    <td>
-        @foreach (var item2 in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ComplaintStatusEnum)))
-        {
-            if (item.Status == Int32.Parse(item2.Value))
-            {
-                @item2.Text
-                break;
-            }
-        }
-    </td>
-    <td>
-        @item.EquipmentId
-    </td>
-    <td>
-        @item.TypeComplaint.Name
-    </td>
-    <td>
-        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-    </td>
-</tr>
+        <tr>
+            <td>
+                @item.Title
+            </td>
+            <td>
+                @item.Detail
+            </td>
+            <td>
+                @foreach (var item2 in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ComplaintStatusEnum)))
+                {
+                    if (item.Status == Int32.Parse(item2.Value))
+                    {
+                        @item2.Text
+                        break;
+                    }
+                }
+            </td>
+            <td>
+                @item.EquipmentId
+            </td>
+            <td>
+                @item.TypeComplaint.Name
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
     }
 
 </table>
@@ -91,7 +96,7 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
 <nav aria-label="Page navigation example">
     <ul class="pagination">
 
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page}))
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
 
     </ul>
 </nav>

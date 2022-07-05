@@ -10,6 +10,72 @@
 
 <h2>Unallocated work list</h2>
 
+<!-- Modal instructor-->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="titleModal1" class="modal-title" id="exampleModalLabel"><b>Assign Instructor</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("AssignPeople", "Complaint", FormMethod.Post))
+            {
+                <input id="idComplaint" hidden="true" name="comPlaintId" class="moda_title_CaomIL" value="" />
+                <div class="modal-body">
+                    @{
+                        var ListSp = ViewBag.listInstructor;
+                        foreach (Account vr in ListSp)
+                        {
+                            <div class="form-check">
+                                @vr.UserName :   @Html.RadioButton("StaffId", @vr.Id)
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Confirm</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Modal TechnicalStaff-->
+<div class="modal fade" id="exampleModal_002" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="" class="modal-title">Assign <b>Technical Staff</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("AssignPeople", "Complaint", FormMethod.Post))
+            {
+                <input id="idComplaint002" hidden="true" name="comPlaintId" class="moda_title_CaomIL" value="" />
+                <div class="modal-body">
+                    @{
+                        var ListSp = ViewBag.listTechnicalStaff;
+                        foreach (Account vr in ListSp)
+                        {
+                            <div class="form-check">
+                                @vr.UserName :   @Html.RadioButton("StaffId", @vr.Id)
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Confirm</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
@@ -41,50 +107,7 @@
             </td>
             <td>
                 <div class="row">
-                    @using (Html.BeginForm("AssignPeople", "Complaint", method: FormMethod.Post))
-                    {
-                        <input hidden type="text" name="comPlaintId" value=@item.Id />
-                        <select name="StaffId" class="form-control" style="width: 300px">
-                            <option value="-1">--Select--</option>
-                            @{
-                                List<Account> ListSp = null;
-                                switch (@item.TypeComplaintId)
-                                {
-                                    case 1:
-                                        ListSp = ViewBag.listTechnicalStaff;
-                                        break;
-                                    case 2:
-                                        ListSp = ViewBag.listTechnicalStaff;
-                                        break;
-                                    case 3:
-                                        ListSp = ViewBag.listTechnicalStaff;
-                                        break;
-                                    case 4:
-                                        ListSp = ViewBag.listTechnicalStaff;
-                                        break;
-                                    case 5:
-                                        ListSp = ViewBag.listInstructor;
-                                        break;
-                                    case 6:
-                                        ListSp = ViewBag.listTechnicalStaff;
-                                        break;
-                                    case 7:
-                                        ListSp = ViewBag.listInstructor;
-                                        break;
-                                    case 8:
-                                        ListSp = ViewBag.listInstructor;
-                                        break;
-
-                                }
-
-                                foreach (Account vr in ListSp)
-                                {
-                                    <option value="@vr.Id">@vr.UserName</option>
-                                }
-                            }
-                        </select>
-                        <button style="margin-top: 5px" type="submit" class="form-control btn btn-info">Apply</button>
-                    }
+                    <button compId="@item.Id" data-toggle="modal" data-target="@(item.TypeComplaintId == 1 || item.TypeComplaintId == 2 || item.TypeComplaintId == 3 || item.TypeComplaintId == 4 ? "#exampleModal" : "#exampleModal_002")" style="margin-top: 5px" type="button" class="btn btn-info nvq1">Assign Staff Process</button>
                 </div>
             </td>
         </tr>
@@ -99,3 +122,18 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
         @Html.PagedListPager(Model, page => Url.Action("ComplaintWaiting", new { page }))
     </ul>
 </nav>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var buttons = document.querySelectorAll("button.nvq1");
+        buttons.forEach(function (s) {
+            s.addEventListener('click',
+                function () {
+                    var complaintID = this.getAttribute('compId');
+                    document.getElementById("idComplaint").value = `${complaintID}`;
+                    document.getElementById("idComplaint002").value = `${complaintID}`;
+                });
+        });
+
+    });
+</script>

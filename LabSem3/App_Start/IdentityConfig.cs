@@ -17,7 +17,7 @@ namespace LabSem3.App_Start
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                 //LoginPath = new PathString("/User/Login"),
-                LoginPath = new PathString("/Account/Login1"),
+                LoginPath = new PathString("/Account/Login"),
             });
         }
     }

@@ -1,5 +1,5 @@
-﻿@model IEnumerable<LabSem3.Models.Schedule>
-
+﻿@model PagedList.IPagedList<LabSem3.Models.Schedule>
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Index";
 }
@@ -23,31 +23,87 @@
         @TempData["False"]
     </div>
 }
+<div style="margin-left: 10px; margin-bottom:20px">
+    <form action="/Schedule/Index" method="get" class="d-none d-sm-inline-block form-inline navbar-search">
+        <div class="">
+            <div>
+                <div class="row">
+
+                    <div style="margin-right: 20px">
+                        <div style="text-align: left">SlotNumber</div>
+                        <div class="input-group">
+                            <select class="form-control mr-4" name="SlotNumber">
+                                <option @(ViewBag.SlotNumber == null ? "selected" : "")>SlotNumber...</option>
+                                @foreach (var slot in EnumHelper.GetSelectList(typeof(LabSem3.Enum.SlotNumberEnum)))
+                                {
+                                    <option @(ViewBag.SlotNumber == Int32.Parse(slot.Value) ? "selected" : " ") value=@Int32.Parse(slot.Value)>@slot.Text</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="margin-right: 20px">
+                        <div style="text-align: left">Instructor</div>
+                        <div>
+                            <select id="InstructorId" name="InstructorId" class="form-control">
+                                <option value="" @(ViewBag.InstructorId == null ? "selected" : "")>Choose Instructor</option>
+                                @foreach (var instructor in ViewBag.Instructor)
+                                {
+                                    <option value="@instructor.Id" @(instructor.Id == ViewBag.InstructorId ? "selected" : "")>@instructor.UserName</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="margin-right: 20px">
+                        <div style="text-align: left">StartTime</div>
+                        <div class="input-group">
+                            <input value="@ViewBag.StartTime" name="StartTime" type="date" class="form-control bg-default border-0 small" aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-right: 20px">
+                        <div style="text-align: left">EndTime</div>
+                        <div class="input-group">
+                            <input value="@ViewBag.EndTime" name="EndTime" type="date" class="form-control bg-default border-0 small" aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div>
+        </div>
+    </form>
+</div>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.DateBoking)
+            DateBoking
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.SlotNumber)
+            SlotNumber
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Status)
+            Status
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </th>
-        @*<th>
-            @Html.DisplayNameFor(model => model.UpdatedAt)
+            CreatedAt
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DeletedAt)
-        </th>*@
-        <th>
-            @Html.DisplayNameFor(model => model.LabId)
+            Lab
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.InstructorId)
+            Instructor
         </th>
         <th></th>
     </tr>
@@ -59,25 +115,39 @@
                 @Html.DisplayFor(modelItem => item.DateBoking)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.SlotNumber)
+                @foreach (var slot in EnumHelper.GetSelectList(typeof(LabSem3.Enum.SlotNumberEnum)))
+                {
+                    if (Int32.Parse(slot.Value) == item.SlotNumber)
+                    {
+                        @slot.Text
+                    }
+                }
+
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Status)
+                @foreach (var status in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ScheduleStatusEnum)))
+                {
+                    if (Int32.Parse(status.Value) == item.Status)
+                    {
+                        @status.Text
+                    }
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedAt)
             </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.UpdatedAt)
+
+            <td>
+                @foreach (var lab in ViewBag.Labs)
+                {
+                    if (lab.Id == item.LabId)
+                    {
+                        <span>Lab @lab.Id</span>
+                    }
+                }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DeletedAt)
-            </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.LabId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InstructorId)
+                @Html.DisplayFor(modelItem => item.Instructor.UserName)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
@@ -88,3 +158,5 @@
     }
 
 </table>
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, SlotNumber = ViewBag.SlotNumber, InstructorId = ViewBag.InstructorId, StartTime = ViewBag.StartTime, EndTime = ViewBag.EndTime }))

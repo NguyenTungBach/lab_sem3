@@ -36,6 +36,17 @@ namespace LabSem3.Controllers
             
             var result2 = db.Complaints.OrderBy(s => s.Id).AsQueryable();
 
+            if (!User.Identity.IsAuthenticated)
+            {
+                return HttpNotFound();
+            }
+
+            if (!User.IsInRole("ADMIN"))
+            {
+                var userID = User.Identity.GetUserId();
+                result2 = result2.Where(s => s.AccountId == userID);
+            }
+
             if (!string.IsNullOrEmpty(keyWord))
             {
                 result2 = result2.Where(s => s.Title.Contains(keyWord) || s.Detail.Contains(keyWord));
@@ -45,11 +56,6 @@ namespace LabSem3.Controllers
             {
                 result2 = result2.Where(s => s.Status == statusCheck);
             }
-
-            //if (statusCheck != -1)
-            //{
-            //    result2 = result2.Where(s => s.Status == statusCheck);
-            //}
 
             ViewBag.statusCheck = statusCheck;
 
@@ -124,9 +130,14 @@ namespace LabSem3.Controllers
         [HttpPost]
         public ActionResult Create(ComplaintViewModel complaintViewModel)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return HttpNotFound();
+            }
+
             var newComPlaint = new Complaint(complaintViewModel)
             {
-                AccountId = "985f35a0-32c3-4476-9e28-14ddb97c33fe"
+                AccountId = User.Identity.GetUserId()
             };
 
             db.Complaints.Add(newComPlaint);

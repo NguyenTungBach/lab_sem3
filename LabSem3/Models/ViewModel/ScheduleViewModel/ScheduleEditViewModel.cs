@@ -9,16 +9,14 @@ namespace LabSem3.Models.ViewModel.ScheduleViewModel
     public class ScheduleEditViewModel
     {
         [DataType(DataType.Date)]
-        [Required(ErrorMessage = "StartTime Required")]
-        public DateTime StartTime { get; set; }
-        [DataType(DataType.Date)]
-        [Required(ErrorMessage = "EndTime Required")]
-        public DateTime EndTime { get; set; }
-
-        [Required(ErrorMessage = "SlotNumberArray Required")]
-        public String SlotNumberArray { get; set; }
+        [Required(ErrorMessage = "DateBoking Required")]
+        public DateTime DateBoking { get; set; }
+        
+        [Required(ErrorMessage = "SlotNumber Required")]
+        public int SlotNumber { get; set; }
 
         public int LabId { get; set; }
+        public int Status { get; set; }
 
         public string InstructorId { get; set; }
         public ScheduleEditViewModel()
