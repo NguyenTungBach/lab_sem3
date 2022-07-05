@@ -23,6 +23,7 @@ namespace LabSem3.Models
 
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime? Birthday { get; set; }
+        public string FullName { get; set; }
         public int Status { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]

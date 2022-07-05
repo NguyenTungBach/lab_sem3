@@ -24,13 +24,12 @@
     <h4>Account</h4>
     <hr />
     <dl class="dl-horizontal">
-
         <dt>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
+            @Html.DisplayNameFor(model => model.Thumbnail)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.PhoneNumber)
+            <img height="200px" src="@Model.Thumbnail" />
         </dd>
 
         <dt>
@@ -42,11 +41,58 @@
         </dd>
 
         <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FullName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FullName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Birthday)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Birthday)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.Status)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Status)
+            @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.AccountStatusEnum)))
+            {
+                if (Model.Status == Int32.Parse(item.Value))
+                {
+                    @item.Text
+                }
+            }
+
         </dd>
 
         <dt>
@@ -74,28 +120,30 @@
         </dd>
 
         @*<dt>
-                @Html.DisplayNameFor(model => model.Labs)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Labs)
-            </dd>*@
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Department)
+            @Html.DisplayNameFor(model => model.Labs)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Department.Name)
-        </dd>
-
-        @*<dt>
-                @Html.DisplayNameFor(model => model.Complaints)
+            @Html.DisplayFor(model => model.Labs)
+        </dd>*@
+        @if (User.IsInRole("HOD"))
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Department)
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.Complaints)
-            </dd>*@
+                @Html.DisplayFor(model => model.Department.Name)
+            </dd>
+        }
+
+        @*<dt>
+            @Html.DisplayNameFor(model => model.Complaints)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Complaints)
+        </dd>*@
 
         @*<dt>
             @Html.DisplayNameFor(model => model.Schedules)
@@ -113,18 +161,10 @@
                 <span>@role </span>
             }
         </dt>
-
-        @*<dt>
-                Test Account by role
-            </dt>
-            <dt>
-                @foreach (var account in ViewBag.AccountByRole)
-                {
-                    <span>@account </span>
-                }
-            </dt>*@
     </dl>
 </div>
 <p>
     @Html.ActionLink("ChangePassword", "ChangePassword", new { id = Model.Id })
+    <br />
+    @Html.ActionLink("ChangeProfile", "ChangeProfile", new { id = Model.Id })
 </p>

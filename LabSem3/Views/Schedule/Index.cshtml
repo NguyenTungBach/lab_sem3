@@ -1,5 +1,6 @@
 ﻿@model PagedList.IPagedList<LabSem3.Models.Schedule>
 @using PagedList.Mvc;
+@using Microsoft.AspNet.Identity
 @{
     ViewBag.Title = "Index";
 }
@@ -150,9 +151,11 @@
                 @Html.DisplayFor(modelItem => item.Instructor.UserName)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                @if(User.IsInRole("ADMIN")){
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) <span> | </span>
+                    @*@Html.ActionLink("Details", "Details", new { id = item.Id }) |*@
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                }
             </td>
         </tr>
     }

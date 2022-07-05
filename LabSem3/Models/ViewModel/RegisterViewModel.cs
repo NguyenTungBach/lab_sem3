@@ -23,10 +23,10 @@ namespace LabSem3.Models.ViewModel
         [Compare("Password", ErrorMessage = "Confirm password doesn't match, Type again !")]
         public string ComfirmPassword { get; set; }
 
-        [DataType(DataType.Date)]
-        public DateTime? Birthday { get; set; }
-        public string Thumbnail { get; set; }
-        public string Address { get; set; }
-        public string Age { get; set; }
+        //[DataType(DataType.Date)]
+        //public DateTime? Birthday { get; set; }
+        //public string Thumbnail { get; set; }
+        //public string Address { get; set; }
+        //public string Age { get; set; }
     }
 }
