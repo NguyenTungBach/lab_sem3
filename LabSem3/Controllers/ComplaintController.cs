@@ -168,6 +168,7 @@ namespace LabSem3.Controllers
                 using (var mess = new MailMessage(senderEmail, receiverEmail)
                 {
                     Subject = subject,
+                    IsBodyHtml = true,
                     Body = body
                 })
                 {
@@ -221,11 +222,16 @@ namespace LabSem3.Controllers
             {
                 var typeComplaint = db.TypeComplaints.Find(newComPlaint.TypeComplaintId);
                 TempData["Success"] = "Create Complaint " + typeComplaint.Name + " Success";
-                
-                var message = "Id Complaint: " + "\n" + newComPlaint.Id + "\n"
-                               + "Title: " + "\n" + newComPlaint.Title + "\n"
-                               + "Detail: " + "\n" + newComPlaint.Detail + "\n";
 
+                //var message = "Id Complaint: " + "\n" + newComPlaint.Id + "\n"
+                //               + "Title: " + "\n" + newComPlaint.Title + "\n"
+                //               + "Detail: " + "\n" + newComPlaint.Detail + "\n";
+
+                var message = System.IO.File.ReadAllText(Server.MapPath("~/TemplateMail/CreateComplaintMail.html"));
+                message = message.Replace("{{Id}}", newComPlaint.Id.ToString());
+                message = message.Replace("{{typeComplaintName}}", typeComplaint.Name);
+                message = message.Replace("{{Title}}", newComPlaint.Title);
+                message = message.Replace("{{Detail}}", newComPlaint.Detail);
                 SendEmail(AccountEmailSend, typeComplaint.Name, message);
                 return Redirect("Index");
             }
