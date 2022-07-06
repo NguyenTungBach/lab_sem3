@@ -37,7 +37,8 @@
             <option @(ViewBag.statusCheck == -1 ? "selected" : " ") value="-1">Status...</option>
             @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ComplaintStatusEnum)))
             {
-                <option @(ViewBag.statusCheck == Int32.Parse(item.Value) ? "selected" : " ") value="@item.Value">@item.Text</option>
+                <option @(!User.IsInRole("ADMIN") && item.Text == "UNASSIGN" ? "hidden" : "" )  @(ViewBag.statusCheck == Int32.Parse(item.Value) ? "selected" : " ") value="@item.Value">@item.Text</option>
+                
             }
         </select>
         @if (User.IsInRole("ADMIN") || User.IsInRole("HOD"))
