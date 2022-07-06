@@ -4,9 +4,9 @@
     ViewBag.Title = "Delete";
 }
 
-<h2>Delete</h2>
+<h2 style="font-weight: bold;">Delete</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3 style="color: red;">Are you sure you want to delete this?</h3>
 <div>
     <h4>Document</h4>
     <hr />
@@ -44,12 +44,79 @@
         </dd>
 
     </dl>
+    </br>
+    <dl class="dl-horizontal">
+        <div class="panel-body inf-content">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="table-responsive">
+                        <table class="table table-user-information">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-user  text-primary"></span>
+                                            Title
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        @Model.Title
+                                    </td>
+                                </tr>
 
-    @using (Html.BeginForm()) {
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-cloud text-primary"></span>
+                                            Detail
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        @Model.Detail
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-envelope text-primary"></span>
+                                            Status
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        @Model.Status
+                                    </td>
+                                </tr>
+                              
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-envelope text-primary"></span>
+                                            TypeEquipment Name
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        @Html.DisplayFor(model => model.TypeEquipment.Name)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    </td>
+                                    <td class="text-primary">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <input style=" background-color: antiquewhite; border-color: skyblue;" type="submit" value="Delete" class="btn btn-default" /> |
             @Html.ActionLink("Back to List", "Index")
         </div>
     }

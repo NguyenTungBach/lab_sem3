@@ -129,11 +129,16 @@ namespace LabSem3.Controllers
                 processComplaint.Status = 2;
                 processComplaint.SupportedId = StaffId;
                 var supporter = db.Users.Find(StaffId);
+                var accountComplaint = db.Users.Find(processComplaint.AccountId);
                 var typeComplaint = db.TypeComplaints.Find(processComplaint.TypeComplaintId);
 
-                var message = "Id Complaint: " + "\n" + comPlaintId + "\n"
-                               + "Title: " + "\n" + processComplaint.Title + "\n"
-                               + "Detail: " + "\n" + processComplaint.Detail + "\n";
+                var message = System.IO.File.ReadAllText(Server.MapPath("~/TemplateMail/AssignComplaintMail.html"));
+                message = message.Replace("{{Id}}", processComplaint.Id.ToString());
+                message = message.Replace("{{TypeComplaintName}}", typeComplaint.Name);
+                message = message.Replace("{{SupporterUserName}}", supporter.UserName);
+                message = message.Replace("{{AccountComplaint}}", accountComplaint.UserName);
+                message = message.Replace("{{Title}}", processComplaint.Title);
+                message = message.Replace("{{Detail}}", processComplaint.Detail);
 
                 SendEmail(supporter.Email, typeComplaint.Name, message);
                 TempData["Success"] = "Assign Account " + supporter.UserName + " Success";
@@ -168,6 +173,7 @@ namespace LabSem3.Controllers
                 using (var mess = new MailMessage(senderEmail, receiverEmail)
                 {
                     Subject = subject,
+                    IsBodyHtml = true,
                     Body = body
                 })
                 {
@@ -189,7 +195,8 @@ namespace LabSem3.Controllers
         // GET: Complaint/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var complaintDetail = db.Complaints.Find(id);
+            return View(complaintDetail);
         }
 
         [Authorize(Roles = "HOD,STUDENT")]
@@ -221,11 +228,31 @@ namespace LabSem3.Controllers
             {
                 var typeComplaint = db.TypeComplaints.Find(newComPlaint.TypeComplaintId);
                 TempData["Success"] = "Create Complaint " + typeComplaint.Name + " Success";
-                
-                var message = "Id Complaint: " + "\n" + newComPlaint.Id + "\n"
-                               + "Title: " + "\n" + newComPlaint.Title + "\n"
-                               + "Detail: " + "\n" + newComPlaint.Detail + "\n";
+                var accountComplaint = db.Users.Find(newComPlaint.AccountId);
 
+                var message = System.IO.File.ReadAllText(Server.MapPath("~/TemplateMail/CreateComplaintMail.html"));
+                message = message.Replace("{{Id}}", newComPlaint.Id.ToString());
+                message = message.Replace("{{TypeComplaintName}}", typeComplaint.Name);
+                message = message.Replace("{{AccountComplaint}}", accountComplaint.UserName);
+                message = message.Replace("{{Title}}", newComPlaint.Title);
+
+                //var htmlThumbnail = "";
+                //var arrThumbnail = newComPlaint.Thumbnail.Split(',');
+                //if (arrThumbnail.Length > 0)
+                //{
+                //    for (int i = 0; i < arrThumbnail.Length; i++)
+                //    {
+                //        if (arrThumbnail[i].Length == 0)
+                //        {
+                //            continue;
+                //        }
+                //        htmlThumbnail += "< div class='col-md-3 col-sm-3 position-relative' style='padding - left: 0!important;'>< img src =\" arrThumbnail[i] \" class='col-md-12 col-sm-12 img-thumbnail mr-2 mb-2 imagesChoice></div>";
+                //    }
+                //}
+
+
+                //message = message.Replace("{{ArrayThumbnail}}", newComPlaint.Thumbnail);
+                message = message.Replace("{{Detail}}", newComPlaint.Detail);
                 SendEmail(AccountEmailSend, typeComplaint.Name, message);
                 return Redirect("Index");
             }

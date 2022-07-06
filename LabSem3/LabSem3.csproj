@@ -365,9 +365,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+
     <Compile Include="Migrations\202207061419562_initDb.cs" />
     <Compile Include="Migrations\202207061419562_initDb.Designer.cs">
       <DependentUpon>202207061419562_initDb.cs</DependentUpon>
+
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
@@ -2351,6 +2353,8 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="TemplateMail\AssignComplaintMail.html" />
+    <Content Include="TemplateMail\CreateComplaintMail.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -2408,6 +2412,7 @@
     <Content Include="Views\Account\Profile.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Account\ChangeProfile.cshtml" />
+    <Content Include="Views\Complaint\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2428,6 +2433,8 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202207061419562_initDb.resx">
       <DependentUpon>202207061419562_initDb.cs</DependentUpon>
+
+
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

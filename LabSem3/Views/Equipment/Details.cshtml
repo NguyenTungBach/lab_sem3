@@ -4,75 +4,133 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2 style="font-weight: bold;">Details</h2>
 
 <div>
     <h4>Equipment</h4>
-    <hr />
+    </br>
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+        <div class="panel-body inf-content">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="table-responsive">
+                        <table class="table table-user-information">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-user  text-primary"></span>
+                                            Equipment Name
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        @Model.Name
+                                    </td>
+                                </tr>
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-cloud text-primary"></span>
+                                            Thumbnail
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        @Model.Thumbnail
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-envelope text-primary"></span>
+                                            Status
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        @Model.Status
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-bookmark text-primary"></span>
+                                            CreatedAt
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        @string.Format("{0:dd/MM/yyyy}", Model.CreatedAt)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-eye-open text-primary"></span>
+                                            UpdatedAt
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        @string.Format("{0:dd/MM/yyyy}", Model.UpdatedAt)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-eye-open text-primary"></span>
+                                            DeletedAt
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        @string.Format("{0:dd/MM/yyyy}", Model.DeletedAt)
+                                    </td>
+                                </tr>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-eye-open text-primary"></span>
+                                            LabId
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        @Model.LabId
+                                    </td>
+                                </tr>
 
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-eye-open text-primary"></span>
+                                            DocumentId
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        @Model.DocumentId
+                                    </td>
+                                </tr>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreatedAt)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UpdatedAt)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UpdatedAt)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DeletedAt)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DeletedAt)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.LabId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.LabId)
-        </dd>
-
-        <dt>
-            TypeEquipmentName
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TypeEquipment.Name)
-        </dd>
-
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-eye-open text-primary"></span>
+                                            TypeEquipmentName
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        @Html.DisplayFor(model => model.TypeEquipment.Name)
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
     </dl>
 </div>
 <p>
     @if (User.IsInRole("ADMIN"))
     {
         @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) <span> | </span>
-}
+    }
 
     @Html.ActionLink("Back to List", "Index")
 </p>
