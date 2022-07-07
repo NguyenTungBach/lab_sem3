@@ -12,7 +12,7 @@ namespace LabSem3.Models
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
-
+        public string TypeRole { get; set; }
         public int ComplaintId { get; set; }
         [ForeignKey("ComplaintId")]
         public virtual List<Complaint> Complaints { get; set; }

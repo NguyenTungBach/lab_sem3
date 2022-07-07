@@ -1,0 +1,226 @@
+﻿@model LabSem3.Models.Complaint
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <dl class="dl-horizontal">
+        <div class="panel-body inf-content">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="table-responsive">
+                        <table class="table table-user-information">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-asterisk text-primary"></span>
+                                            Id
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        @Model.Id
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-user  text-primary"></span>
+                                            Title
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        @Model.Title
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-cloud text-primary"></span>
+                                            Detail
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        @Model.Detail
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-envelope text-primary"></span>
+                                            Thumbnail
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary row">
+                                        @if (Model.Thumbnail != null)
+                                        {
+                                            var arrayThumbnail = Model.Thumbnail.Split(',');
+                                            if (arrayThumbnail.Length > 0)
+                                            {
+                                                for (int i = 0; i < arrayThumbnail.Length; i++)
+                                                {
+                                                    if (arrayThumbnail[i].Length == 0)
+                                                    {
+                                                        continue;
+                                                    }
+                                                    <div class="col-md-3 col-sm-3 position-relative" style="padding-left: 0 !important;">
+                                                        <img src="@arrayThumbnail[i]"
+                                                             class="col-md-12 col-sm-12 img-thumbnail mr-2 mb-2 imagesChoice">
+                                                    </div>
+                                                }
+                                            }
+                                        }
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-bookmark text-primary"></span>
+                                            Reason
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        @Model.Reason
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-eye-open text-primary"></span>
+                                            Solution
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        @Model.Solution
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-eye-open text-primary"></span>
+                                            Note
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        @Model.Note
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-eye-open text-primary"></span>
+                                            Account Complaint
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        @Model.Account.UserName
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-eye-open text-primary"></span>
+                                            Account Supporter
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        @(Model.Supporter != null ? Model.Supporter.UserName : "")
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-eye-open text-primary"></span>
+                                            TypeComplaint
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        @Model.TypeComplaint.Name
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-eye-open text-primary"></span>
+                                            Equipment
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        @Model.Equipment.Name
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-envelope text-primary"></span>
+                                            Status
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+                                        @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ComplaintStatusEnum)))
+                                        {
+                                            if (Model.Status == Int32.Parse(item.Value))
+                                            {
+                                                @item.Text
+                                            }
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-calendar text-primary"></span>
+                                            Created At
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+
+                                        @string.Format("{0:dd/MM/yyyy hh:mm tt}", Model.CreatedAt)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-calendar text-primary"></span>
+                                            Updated At
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+
+                                        @string.Format("{0:dd/MM/yyyy hh:mm tt}", Model.UpdatedAt)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <span class="glyphicon glyphicon-calendar text-primary"></span>
+                                            Deleted At
+                                        </strong>
+                                    </td>
+                                    <td class="text-primary">
+
+                                        @string.Format("{0:dd/MM/yyyy hh:mm tt}", Model.DeletedAt)
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </dl>
+
+</div>
+<p>
+    @if (User.IsInRole("ADMIN") | User.IsInRole("INSTRUCTOR") | User.IsInRole("TECHNICAL_STAFF"))
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) <span> | </span>
+    }
+    @Html.ActionLink("Back to List", "Index")
+</p>
