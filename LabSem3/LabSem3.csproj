@@ -365,9 +365,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202207061633339_Context.cs" />
-    <Compile Include="Migrations\202207061633339_Context.Designer.cs">
-      <DependentUpon>202207061633339_Context.cs</DependentUpon>
+    <Compile Include="Migrations\202207070727009_Context.cs" />
+    <Compile Include="Migrations\202207070727009_Context.Designer.cs">
+      <DependentUpon>202207070727009_Context.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
@@ -383,6 +383,7 @@
     <Compile Include="Models\ViewModel\AccountViewModel.cs" />
     <Compile Include="Models\ViewModel\ChangePasswordViewModel.cs" />
     <Compile Include="Models\ViewModel\ChangeProfileViewModel.cs" />
+    <Compile Include="Models\ViewModel\ComplaintEditViewModel.cs" />
     <Compile Include="Models\ViewModel\ComplaintViewModel.cs" />
     <Compile Include="Models\ViewModel\DepartmentViewModel\DepartmentCreateViewModel.cs" />
     <Compile Include="Models\ViewModel\DepartmentViewModel\DepartmentEditViewModel.cs" />
@@ -2429,8 +2430,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202207061633339_Context.resx">
-      <DependentUpon>202207061633339_Context.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202207070727009_Context.resx">
+      <DependentUpon>202207070727009_Context.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -1,5 +1,5 @@
-﻿@model LabSem3.Models.Complaint
-
+﻿@model LabSem3.Models.ViewModel.ComplaintEditViewModel
+@using Microsoft.AspNet.Identity
 @{
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_LayoutLabversion002.cshtml";
@@ -11,90 +11,145 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-            </div>
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-10 row">
+            @if (Model.Thumbnail != null)
+            {
+                var arrayThumbnail = Model.Thumbnail.Split(',');
+                if (arrayThumbnail.Length > 0)
+                {
+                    for (int i = 0; i < arrayThumbnail.Length; i++)
+                    {
+                        if (arrayThumbnail[i].Length == 0)
+                        {
+                            continue;
+                        }
+                        <div class="col-md-3 col-sm-3 position-relative" style="padding-left: 0 !important;">
+                            <img src="@arrayThumbnail[i]"
+                                 class="col-md-12 col-sm-12 img-thumbnail mr-2 mb-2 imagesChoice">
+                        </div>
+                    }
+                }
+            }
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Detail, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Detail, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Detail, "", new { @class = "text-danger" })
-            </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Detail, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <textarea class="form-control" id="Description" name="Description" rows="2" cols="20">@Model.Detail</textarea>
+
+            @Html.ValidationMessageFor(model => model.Detail, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Reason, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <textarea class="form-control" id="Reason" name="Reason" rows="2" cols="20">@Model.Reason</textarea>
+
+            @*@Html.EditorFor(model => model.Reason, new { htmlAttributes = new { @class = "form-control" } })*@
+            @Html.ValidationMessageFor(model => model.Reason, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Solution, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <textarea class="form-control" id="Solution" name="Solution" rows="2" cols="20">@Model.Solution</textarea>
+
+            @*@Html.EditorFor(model => model.Solution, new { htmlAttributes = new { @class = "form-control" } })*@
+            @Html.ValidationMessageFor(model => model.Solution, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Note, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <textarea class="form-control" id="Note" name="Note" rows="2" cols="20">@Model.Note</textarea>
+
+            @*@Html.EditorFor(model => model.Note, new { htmlAttributes = new { @class = "form-control" } })*@
+            @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
+
+        <div class="col-md-10">
+            <select class="form-control col-3" id="Status" name="Status">
+                @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ComplaintStatusEnum)))
+                {
+                    <option value="@item.Value" @(Int32.Parse(item.Value) == Model.Status ? "selected" : "")>@item.Text</option>
+                }
+            </select>
+            @Html.ValidationMessageFor(model => model.TypeComplaintId, "", new { @class = "text-danger" })
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Reason, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Reason, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Reason, "", new { @class = "text-danger" })
-            </div>
-        </div>
+    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Solution, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Solution, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Solution, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Note, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Note, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        
-        <div class="form-group">
-            @Html.LabelFor(model => model.AccountId, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="form-group">
+        @*@Html.LabelFor(model => model.AccountId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.AccountId, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.AccountId, "", new { @class = "text-danger" })
-            </div>
-        </div>
+            </div>*@
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.SupportedId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SupportedId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SupportedId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.TypeComplaintId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.TypeComplaintId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TypeComplaintId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input style=" background-color: antiquewhite; border-color: skyblue;" type="submit" value="Save" class="btn btn-default" />
-            </div>
+        <label class="control-label col-md-2">Account</label>
+        <div class="col-md-10">
+            <strong>@Model.AccountUserName</strong>
         </div>
     </div>
+
+
+    <div class="form-group">
+        <label class="control-label col-md-2">Equipment</label>
+        <div class="col-md-10">
+            <strong>@Model.EquipmentName</strong>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">Supported</label>
+        <div class="col-md-10">
+            @*<strong>@Model.Supporter.UserName</strong>*@
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.TypeComplaintId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <select class="form-control col-4" id="Status" name="Status">
+                @foreach (var item in ViewBag.TypeComplaints)
+                {
+                    <option value="@item.Id" @(item.Id == Model.TypeComplaintId ? "selected" : "")>@item.Name</option>
+                }
+            </select>
+            @Html.ValidationMessageFor(model => model.TypeComplaintId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input style=" background-color: antiquewhite; border-color: skyblue;" type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+</div>
 }
 
 <div>

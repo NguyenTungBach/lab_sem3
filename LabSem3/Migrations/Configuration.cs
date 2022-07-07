@@ -137,14 +137,14 @@ namespace LabSem3.Migrations
 
             var typeComplaints = new List<TypeComplaint>
              {
-                 new TypeComplaint {Id = 1, Name = "Software Licenses"},
-                 new TypeComplaint {Id = 2, Name = "Equipment Problem"},
-                 new TypeComplaint {Id = 3, Name = "Required New Equipment"},
-                 new TypeComplaint {Id = 4, Name = "Required Extra Lab"},
-                 new TypeComplaint {Id = 5, Name = "Hygiene And Safety"},
-                 new TypeComplaint {Id = 6, Name = "Lab Quality"},
-                 new TypeComplaint {Id = 7, Name = "Comment For Lab Staff"},
-                 new TypeComplaint {Id = 8, Name = "Other"}
+                 new TypeComplaint {Id = 1, Name = "Software Licenses", TypeRole = RoleEnum.INSTRUCTOR.ToString()},
+                 new TypeComplaint {Id = 2, Name = "Equipment Problem", TypeRole = RoleEnum.TECHNICAL_STAFF.ToString() },
+                 new TypeComplaint {Id = 3, Name = "Required New Equipment", TypeRole = RoleEnum.ADMIN.ToString()},
+                 new TypeComplaint {Id = 4, Name = "Required Extra Lab", TypeRole = RoleEnum.ADMIN.ToString()},
+                 new TypeComplaint {Id = 5, Name = "Hygiene And Safety", TypeRole = RoleEnum.TECHNICAL_STAFF.ToString()},
+                 new TypeComplaint {Id = 6, Name = "Lab Quality" , TypeRole = RoleEnum.INSTRUCTOR.ToString()},
+                 new TypeComplaint {Id = 7, Name = "Comment For Lab Staff" , TypeRole = RoleEnum.ADMIN.ToString()},
+                 new TypeComplaint {Id = 8, Name = "Other", TypeRole = RoleEnum.ADMIN.ToString()}
              };
 
             typeComplaints.ForEach(s => context.TypeComplaints.Add(s));
