@@ -68,6 +68,16 @@ namespace LabSem3.Controllers
         {
             if (ModelState.IsValid)
             {
+                var checkDuplicateEmail = db.Users.ToList();
+                foreach (var item in checkDuplicateEmail)
+                {
+                    if(item.Email == registerViewModel.Email)
+                    {
+                        TempData["False"] = "Duplicate Email";
+                        return View();
+                    }
+                }
+
                 Account user = new Account()
                 {
                     UserName = registerViewModel.UserName,
@@ -240,6 +250,16 @@ namespace LabSem3.Controllers
                     {
                         TempData["False"] = "Create account " + accountViewModel.UserName + " false because account exist";
                         return RedirectToAction("Index");
+                    }
+
+                    var checkDuplicateEmail = db.Users.ToList();
+                    foreach (var item in checkDuplicateEmail)
+                    {
+                        if (item.Email == accountViewModel.Email)
+                        {
+                            TempData["False"] = "Duplicate Email";
+                            return RedirectToAction("Index");
+                        }
                     }
 
                     Account account = new Account()

@@ -150,14 +150,32 @@
             </td>
             <td>
                 <div class="row">
-                    @if (item.TypeComplaint.TypeRole != "ADMIN")
+                    @switch (item.TypeComplaint.TypeRole)
+                    {
+                        case "INSTRUCTOR":
+                            <button compId="@item.Id" data-toggle="modal" data-target="#exampleModal" style="margin-top: 5px" type="button" class="btn btn-info nvq1">Assign Instructor Process</button>
+                            break;
+                        case "TECHNICAL_STAFF":
+                            <button compId="@item.Id" data-toggle="modal" data-target="#exampleModal_002" style="margin-top: 5px" type="button" class="btn btn-info nvq1">Assign Technical Staff Process</button>
+                            break;
+                        case "ADMIN":
+                            <button compId="@item.Id" data-toggle="modal" data-target="#exampleModal_003" style="margin-top: 5px" type="button" class="btn btn-info nvq1">Assign Admin Process</button>
+                            break;
+                        case "GENERAL":
+                            <button compId="@item.Id" data-toggle="modal" data-target="#exampleModal_003" style="margin-top: 5px" type="button" class="btn btn-info nvq1">Assign Admin Process</button>
+                            break;
+
+                    }
+
+
+                    @*@if (item.TypeComplaint.TypeRole != "ADMIN")
                     {
                         <button compId="@item.Id" data-toggle="modal" data-target="@(item.TypeComplaint.TypeRole == "INSTRUCTOR" ? "#exampleModal" : "#exampleModal_002")" style="margin-top: 5px" type="button" class="btn btn-info nvq1">Assign Staff Process</button>
                     }
                     else
                     {
                         <button compId="@item.Id" data-toggle="modal" data-target="#exampleModal_003" style="margin-top: 5px" type="button" class="btn btn-info nvq1">Assign Staff Process</button>
-                    }
+                    }*@
 
                 </div>
             </td>

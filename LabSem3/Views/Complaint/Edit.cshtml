@@ -6,26 +6,39 @@
 }
 
 <h2 style="font-weight: bold;">Update information and status about complaint</h2>
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["Success"]
+    </div>
+}
 
+@if (TempData["False"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["False"]
+    </div>
+}
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.HiddenFor(model => model.Id)
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
 
     <div class="form-group">
-        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+        <label class="control-label col-md-2" for="Title">Title</label>
+        @*@Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })*@
         <div class="col-md-10">
-            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            <strong>@Model.Title</strong>
         </div>
     </div>
 
     <div class="form-group">
+        <label class="control-label col-md-2" for="Thumbnail">Thumbnail</label>
         <div class="col-md-10 row">
             @if (Model.Thumbnail != null)
             {
@@ -49,107 +62,140 @@
 
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Detail, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <textarea class="form-control" id="Description" name="Description" rows="2" cols="20">@Model.Detail</textarea>
-
-            @Html.ValidationMessageFor(model => model.Detail, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Reason, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <textarea class="form-control" id="Reason" name="Reason" rows="2" cols="20">@Model.Reason</textarea>
-
-            @*@Html.EditorFor(model => model.Reason, new { htmlAttributes = new { @class = "form-control" } })*@
-            @Html.ValidationMessageFor(model => model.Reason, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Solution, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <textarea class="form-control" id="Solution" name="Solution" rows="2" cols="20">@Model.Solution</textarea>
-
-            @*@Html.EditorFor(model => model.Solution, new { htmlAttributes = new { @class = "form-control" } })*@
-            @Html.ValidationMessageFor(model => model.Solution, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Note, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <textarea class="form-control" id="Note" name="Note" rows="2" cols="20">@Model.Note</textarea>
-
-            @*@Html.EditorFor(model => model.Note, new { htmlAttributes = new { @class = "form-control" } })*@
-            @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
-
-        <div class="col-md-10">
-            <select class="form-control col-3" id="Status" name="Status">
-                @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ComplaintStatusEnum)))
-                {
-                    <option value="@item.Value" @(Int32.Parse(item.Value) == Model.Status ? "selected" : "")>@item.Text</option>
-                }
-            </select>
-            @Html.ValidationMessageFor(model => model.TypeComplaintId, "", new { @class = "text-danger" })
-        </div>
-
-    </div>
-
-    <div class="form-group">
-        @*@Html.LabelFor(model => model.AccountId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Detail, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.AccountId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.AccountId, "", new { @class = "text-danger" })
-            </div>*@
+                <strong>@Model.Detail</strong>
+            </div>
+        </div>
 
-        <label class="control-label col-md-2">Account</label>
-        <div class="col-md-10">
-            <strong>@Model.AccountUserName</strong>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Reason, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*<textarea class="form-control" id="Reason" name="Reason" rows="2" cols="20">@Model.Reason</textarea>*@
+                @Html.TextAreaFor(model => model.Reason, new { @class = "form-control" ,rows = "2", cols = "20" })
+                @Html.ValidationMessageFor(model => model.Reason, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Solution, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Solution, new { @class = "form-control", rows = "2", cols = "20" })
+                @*@Html.EditorFor(model => model.Solution, new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.ValidationMessageFor(model => model.Solution, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Note, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Note, new { @class = "form-control", rows = "2", cols = "20" })
+                @*@Html.EditorFor(model => model.Note, new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
+
+            <div class="col-md-10">
+                <select class="form-control col-3" id="Status" name="Status">
+                    @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ComplaintStatusEnum)))
+                    {
+                        switch (Model.Status)
+                        {
+                            case 1:
+                                if (Int32.Parse(item.Value) != 1 && Int32.Parse(item.Value) != 4)
+                                {
+                                    <option value="@item.Value" @(Int32.Parse(item.Value) == Model.Status ? "selected" : "")>@item.Text</option>
+                                }
+                                break;
+                            case 2:
+                                if (Int32.Parse(item.Value) != 2 && Int32.Parse(item.Value) != 4)
+                                {
+                                    <option value="@item.Value" @(Int32.Parse(item.Value) == Model.Status ? "selected" : "")>@item.Text</option>
+                                }
+                                break;
+                            case 3:
+                                if (Int32.Parse(item.Value) == 3)
+                                {
+                                    <option value="@item.Value" @(Int32.Parse(item.Value) == Model.Status ? "selected" : "")>@item.Text</option>
+                                }
+                                break;
+                            case 4:
+                                <option value="@item.Value" @(Int32.Parse(item.Value) == Model.Status ? "selected" : "")>@item.Text</option>
+                                break;
+                        }
+                    }
+                </select>
+                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            @*@Html.LabelFor(model => model.AccountId, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.AccountId, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.AccountId, "", new { @class = "text-danger" })
+                </div>*@
+
+            <label class="control-label col-md-2">Account</label>
+            <div class="col-md-10">
+                <strong>@Model.AccountUserName</strong>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Equipment</label>
+            <div class="col-md-10">
+                <strong>@Model.EquipmentName</strong>
+            </div>
+        </div>
+
+        @if (ViewBag.Supporters != null)
+        {
+            <div class="form-group">
+                <label class="control-label col-md-2">Supported</label>
+                <div class="col-md-10">
+                    <select class="form-control col-4" id="SupportedId" name="SupportedId">
+                        @foreach (var item in ViewBag.Supporters)
+                        {
+                            <option value="@item.Id" @(item.Id == Model.SupportedId ? "selected" : "")>@item.UserName</option>
+                        }
+                    </select>
+                    @Html.ValidationMessageFor(model => model.TypeComplaintId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        }
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TypeComplaintId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                
+                    @foreach (var item in ViewBag.TypeComplaints)
+                    {
+                        if (item.Id == Model.TypeComplaintId)
+                        {
+                            <strong>@item.Name</strong>
+                        }
+
+                        @*<option value="@item.Id" @(item.Id == Model.TypeComplaintId ? "selected" : "")>@item.Name</option>*@
+                    }
+                
+                @Html.ValidationMessageFor(model => model.TypeComplaintId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input style=" background-color: antiquewhite; border-color: skyblue;" type="submit" value="Save" class="btn btn-default" />
+            </div>
         </div>
     </div>
-
-
-    <div class="form-group">
-        <label class="control-label col-md-2">Equipment</label>
-        <div class="col-md-10">
-            <strong>@Model.EquipmentName</strong>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="control-label col-md-2">Supported</label>
-        <div class="col-md-10">
-            @*<strong>@Model.Supporter.UserName</strong>*@
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.TypeComplaintId, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <select class="form-control col-4" id="Status" name="Status">
-                @foreach (var item in ViewBag.TypeComplaints)
-                {
-                    <option value="@item.Id" @(item.Id == Model.TypeComplaintId ? "selected" : "")>@item.Name</option>
-                }
-            </select>
-            @Html.ValidationMessageFor(model => model.TypeComplaintId, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input style=" background-color: antiquewhite; border-color: skyblue;" type="submit" value="Save" class="btn btn-default" />
-        </div>
-    </div>
-</div>
 }
 
 <div>

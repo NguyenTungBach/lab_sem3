@@ -143,8 +143,8 @@ namespace LabSem3.Migrations
                  new TypeComplaint {Id = 4, Name = "Required Extra Lab", TypeRole = RoleEnum.ADMIN.ToString()},
                  new TypeComplaint {Id = 5, Name = "Hygiene And Safety", TypeRole = RoleEnum.TECHNICAL_STAFF.ToString()},
                  new TypeComplaint {Id = 6, Name = "Lab Quality" , TypeRole = RoleEnum.INSTRUCTOR.ToString()},
-                 new TypeComplaint {Id = 7, Name = "Comment For Lab Staff" , TypeRole = RoleEnum.ADMIN.ToString()},
-                 new TypeComplaint {Id = 8, Name = "Other", TypeRole = RoleEnum.ADMIN.ToString()}
+                 new TypeComplaint {Id = 7, Name = "Comment For Lab Staff" , TypeRole = "GENERAL"},
+                 new TypeComplaint {Id = 8, Name = "Other" , TypeRole = "GENERAL"}
              };
 
             typeComplaints.ForEach(s => context.TypeComplaints.Add(s));

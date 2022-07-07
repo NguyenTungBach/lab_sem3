@@ -1,5 +1,5 @@
 ﻿@model LabSem3.Models.Complaint
-
+@using Microsoft.AspNet.Identity
 @{
     ViewBag.Title = "Details";
 }
@@ -12,7 +12,7 @@
         <div class="container bootstrap snippets bootdey">
             <div class="panel-body inf-content">
                 <div class="row">
-                    
+
                     <div class="col-md-12">
                         <strong>Information</strong><br>
                         <div class="table-responsive">
@@ -61,7 +61,7 @@
                                         <td class="text-primary row">
                                             @if (Model.Thumbnail != null)
                                             {
-                                                var arrayThumbnail = Model.Thumbnail.Split(',');                                                
+                                                var arrayThumbnail = Model.Thumbnail.Split(',');
                                                 if (arrayThumbnail.Length > 0)
                                                 {
                                                     for (int i = 0; i < arrayThumbnail.Length; i++)
@@ -222,7 +222,7 @@
 
 </div>
 <p>
-    @if (User.IsInRole("ADMIN") | User.IsInRole("INSTRUCTOR") | User.IsInRole("TECHNICAL_STAFF") )
+    @if (User.IsInRole("ADMIN") | User.IsInRole("INSTRUCTOR") | User.IsInRole("TECHNICAL_STAFF"))
     {
         @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) <span> | </span>
     }
