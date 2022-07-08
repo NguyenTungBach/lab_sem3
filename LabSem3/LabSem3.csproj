@@ -365,9 +365,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202207071735594_initDb.cs" />
-    <Compile Include="Migrations\202207071735594_initDb.Designer.cs">
-      <DependentUpon>202207071735594_initDb.cs</DependentUpon>
+    <Compile Include="Migrations\202207081452271_initDb.cs" />
+    <Compile Include="Migrations\202207081452271_initDb.Designer.cs">
+      <DependentUpon>202207081452271_initDb.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
@@ -383,6 +383,7 @@
     <Compile Include="Models\ViewModel\AccountViewModel.cs" />
     <Compile Include="Models\ViewModel\ChangePasswordViewModel.cs" />
     <Compile Include="Models\ViewModel\ChangeProfileViewModel.cs" />
+    <Compile Include="Models\ViewModel\ComplaintEditViewModel.cs" />
     <Compile Include="Models\ViewModel\ComplaintViewModel.cs" />
     <Compile Include="Models\ViewModel\DepartmentViewModel\DepartmentCreateViewModel.cs" />
     <Compile Include="Models\ViewModel\DepartmentViewModel\DepartmentEditViewModel.cs" />
@@ -2353,6 +2354,8 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="TemplateMail\AssignComplaintMail.html" />
     <Content Include="TemplateMail\CreateComplaintMail.html" />
+    <Content Include="TemplateMail\HaveAssignComplaintMail.html" />
+    <Content Include="TemplateMail\ProcessComplaintMail.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -2429,8 +2432,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202207071735594_initDb.resx">
-      <DependentUpon>202207071735594_initDb.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202207081452271_initDb.resx">
+      <DependentUpon>202207081452271_initDb.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

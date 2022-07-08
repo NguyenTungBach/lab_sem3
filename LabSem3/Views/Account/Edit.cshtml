@@ -36,9 +36,8 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Thumbnail, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            <button type="button" id="upload_widget" class="cloudinary-button mb-3">
-                Upload files
-            </button>
+            <Input style="color:aliceblue;" type="submit" value="Upload"  class="btn btn-default bg-primary" id="upload_widget" class="cloudinary-button mb-3"></Input>
+
             <div id="preview-image">
                 @if (Model.Thumbnail != null)
                 {
@@ -143,7 +142,7 @@
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input style=" background-color: antiquewhite; border-color: skyblue;" type="submit" value="Update" class="btn btn-default" />
+            <input style="color:aliceblue;" type="submit" value="Update" class="btn btn-default bg-primary" />
         </div>
     </div>
 </div>

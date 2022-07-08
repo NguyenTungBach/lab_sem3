@@ -90,7 +90,7 @@ namespace LabSem3.Controllers
         [HttpPost]
         public ActionResult Create(Document document)
         {
-            try
+            if (ModelState.IsValid)
             {
                 // TODO: Add insert logic here
                 document.Status = ((int)DocumentStatusEnum.AVAILABLE);
@@ -100,9 +100,11 @@ namespace LabSem3.Controllers
                 TempData["Success"] = "Create " + document.Title + " Success ";
                 return RedirectToAction("Index");
             }
-            catch
+            else
             {
-                return View();
+                ViewBag.TypeEquipments = db.TypeEquipments.ToList();
+                TempData["False"] = "Invalid Create";
+                return View(document);
             }
         }
 

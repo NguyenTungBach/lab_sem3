@@ -68,9 +68,9 @@
         <th>
             Title
         </th>
-        <th>
+        @*<th>
             Detail
-        </th>
+        </th>*@
         <th>
             Status
         </th>
@@ -92,9 +92,9 @@
             <td>
                 @item.Title
             </td>
-            <td>
+            @*<td>
                 @item.Detail
-            </td>
+            </td>*@
             <td>
                 @foreach (var item2 in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ComplaintStatusEnum)))
                 {
@@ -121,9 +121,15 @@
                 }
                 else
                 {
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) <span> | </span>
-                    @Html.ActionLink("Details", "Details", new { id = item.Id })<span> | </span>
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    if (item.Supporter != null)
+                    {
+                        if (item.Status != 1 && item.Status != 3)
+                        {
+                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) <span> | </span>
+                        }
+                    }
+                    @Html.ActionLink("Details", "Details", new { id = item.Id })
+                    @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
                 }
             </td>
         </tr>

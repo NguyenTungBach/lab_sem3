@@ -1,5 +1,5 @@
 ﻿@model LabSem3.Models.ViewModel.ComplaintViewModel
-
+@using Microsoft.AspNet.Identity
 @{
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_LayoutLabversion002.cshtml";
@@ -21,7 +21,20 @@
                     @{
                         foreach (var vr in ViewBag.TypeComplaints)
                         {
-                            <option value="@vr.Id">@vr.Name</option>
+                            if (User.IsInRole("HOD"))
+                            {
+                                if (vr.TypeRole == "ADMIN" || vr.TypeRole == "GENERAL")
+                                {
+                                    <option value="@vr.Id">@vr.Name</option>
+                                }
+                            }
+                            if (User.IsInRole("STUDENT"))
+                            {
+                                if (vr.TypeRole == "INSTRUCTOR" || vr.TypeRole == "TECHNICAL_STAFF" || vr.TypeRole == "GENERAL")
+                                {
+                                    <option value="@vr.Id">@vr.Name</option>
+                                }
+                            }
                         }
                     }
                 </select>
@@ -51,6 +64,9 @@
             </div>
         </div>
 
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input style="color:aliceblue;" type="submit" value="Create" class="btn btn-default bg-primary" />
         <div class="form-group">
             @Html.LabelFor(model => model.Thumbnail, htmlAttributes: new { @class = "control-label col-md-4" })
             <div class="col-md-10">
@@ -58,9 +74,9 @@
                     Upload files
                 </button>
                 <div id="preview-image" class="row">
-                    
+
                 </div>
-                <input class="form-control text-box single-line" data-val="true" data-val-required="Thumbnail Required" id="Thumbnail" name="Thumbnail" type="text" value="">
+                <input class="form-control text-box single-line" hidden data-val="true" data-val-required="Thumbnail Required" id="Thumbnail" name="Thumbnail" type="text" value="">
                 @*@Html.EditorFor(model => model.Thumbnail, new { htmlAttributes = new { @class = "form-control" } })*@
                 @Html.ValidationMessageFor(model => model.Thumbnail, "", new { @class = "text-danger" })
             </div>
