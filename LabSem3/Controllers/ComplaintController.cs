@@ -352,7 +352,7 @@ namespace LabSem3.Controllers
                 Solution = complaint.Solution,
                 Note = complaint.Note,
                 AccountUserName = complaint.Account.UserName,
-                SupportedId = complaint.SupportedId,
+                Supporter = complaint.Supporter,
                 EquipmentName = complaint.Equipment.Name,
                 Status = complaint.Status,
                 TypeComplaintId = complaint.TypeComplaint.Id,
@@ -372,7 +372,6 @@ namespace LabSem3.Controllers
                 findComplaint.Reason = complaintNew.Reason;
                 findComplaint.Solution = complaintNew.Solution;
                 findComplaint.Note = complaintNew.Note;
-                findComplaint.SupportedId = complaintNew.SupportedId;
                 findComplaint.Status = complaintNew.Status;
                 findComplaint.UpdatedAt = DateTime.Now;
                 db.Complaints.AddOrUpdate(findComplaint);

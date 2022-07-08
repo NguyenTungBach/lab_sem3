@@ -21,7 +21,7 @@ namespace LabSem3.Models.ViewModel
         public string Solution { get; set; }
         public string Note { get; set; }
         public string AccountUserName { get; set; }
-        public string SupportedId { get; set; }
+        public Account Supporter { get; set; }
         
         public string EquipmentName { get; set; }
         [Required(ErrorMessage = "Status Require")]

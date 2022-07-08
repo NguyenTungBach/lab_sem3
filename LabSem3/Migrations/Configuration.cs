@@ -533,7 +533,13 @@ namespace LabSem3.Migrations
             equipment.ForEach(s => context.Equipments.Add(s));
             context.SaveChanges();
 
-
+            //var document = new List<Document>
+            //{
+            //    new Document {Id = 1, Status = ((int)DocumentStatusEnum.AVAILABLE), },
+                
+            //};
+            //document.ForEach(s => context.Document.Add(s));
+            //context.SaveChanges();
         }
     }
 }

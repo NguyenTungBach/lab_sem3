@@ -1,4 +1,6 @@
 ﻿@model LabSem3.Models.Document
+@using Microsoft.AspNet.Identity
+
 @{
     ViewBag.Title = "Create";
 }
@@ -6,49 +8,51 @@
 <h2 style="font-weight: bold;">Create</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-<div class="form-horizontal">
-    <h4>Document</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-        </div>
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Detail, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Detail, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Detail, "", new { @class = "text-danger" })
+    <div class="form-horizontal">
+        <h4>Document</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.TypeEquipmentId, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <select id="TypeEquipmentId" name="TypeEquipmentId" class="col-2 form-control valid">
-                @foreach (var typeEquipment in ViewBag.TypeEquipments)
-                {
-                    <option value="@typeEquipment.Id">@typeEquipment.Name</option>
-                }
-            </select>
-            @Html.ValidationMessageFor(model => model.TypeEquipmentId, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Detail, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Detail, new { @class = "form-control" })
+                @*<textarea class="form-control" cols="20" data-val="true" data-val-required="Detail Document Require" id="Detail" name="Detail" rows="2"></textarea>*@
+                @*<textarea class="ckeditor" id="ckeditor" rows="10" name="Detail"></textarea>*@
+                @Html.ValidationMessageFor(model => model.Detail, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input style=" background-color: antiquewhite; border-color: skyblue;" type="submit" value="Create" class="btn btn-default" />
+        <div class="form-group">
+            <label class="control-label col-md-2" for="TypeEquipment">TypeEquipment</label>
+            <div class="col-md-10">
+                <select id="TypeEquipmentId" name="TypeEquipmentId" class="col-2 form-control valid">
+                    @foreach (var typeEquipment in ViewBag.TypeEquipments)
+                    {
+                        <option value="@typeEquipment.Id">@typeEquipment.Name</option>
+                    }
+                </select>
+                @Html.ValidationMessageFor(model => model.TypeEquipmentId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input style=" background-color: antiquewhite; border-color: skyblue;" type="submit" value="Create" class="btn btn-default" />
+            </div>
         </div>
     </div>
-</div>
 }
 
 <div>
@@ -58,3 +62,42 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script src="//cdn.ckeditor.com/4.17.1/full/ckeditor.js"></script>
+<script>
+    CKEDITOR.editorConfig = function (config) {
+        config.toolbar = [
+            {
+                name: 'document',
+                items: ['Source', '-', 'Save', 'NewPage', 'ExportPdf', 'Preview', 'Print', '-', 'Templates']
+            },
+            { name: 'clipboard', items: ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'] },
+            { name: 'editing', items: ['Find', 'Replace', '-', 'SelectAll', '-', 'Scayt'] },
+            {
+                name: 'forms',
+                items: ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField']
+            },
+            '/',
+            {
+                name: 'basicstyles',
+                items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat']
+            },
+            {
+                name: 'paragraph',
+                items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language']
+            },
+            { name: 'links', items: ['Link', 'Unlink', 'Anchor'] },
+            {
+                name: 'insert',
+                items: ['Image', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']
+            },
+            '/',
+            { name: 'styles', items: ['Styles', 'Format', 'Font', 'FontSize'] },
+            { name: 'colors', items: ['TextColor', 'BGColor'] },
+            { name: 'tools', items: ['Maximize', 'ShowBlocks'] },
+            { name: 'about', items: ['About'] }
+        ];
+    };
+    CKEDITOR.replace('Detail');
+</script>
