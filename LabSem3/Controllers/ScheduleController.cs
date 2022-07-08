@@ -126,8 +126,10 @@ namespace LabSem3.Controllers
                 {
                     foreach (var slot in checkSlots)
                     {
+                        var number = Int32.Parse(slot);
                         var startTimeNew = startTime.AddDays(i).Date;
                         var scheduleDbs = db.Schedules.Where(s => EntityFunctions.TruncateTime(s.DateBoking)== startTimeNew && s.LabId == scheduleCreateViewModel.LabId).ToList();
+                        var schedulesWithSlot = db.Schedules.Where(s => EntityFunctions.TruncateTime(s.DateBoking) == startTimeNew && s.SlotNumber == number).ToList();
                         if(scheduleDbs.Count > 0)
                         {
                             foreach( var schedule1 in scheduleDbs)
@@ -139,17 +141,30 @@ namespace LabSem3.Controllers
                                     return RedirectToAction("Index");
                                 }
                                 else
+                                { 
+                                        Schedule schedule = new Schedule()
+                                        {
+                                            DateBoking = startTime.AddDays(i),
+                                            SlotNumber = Int32.Parse(slot),
+                                            Status = ((int)ScheduleStatusEnum.AVAILABLE),
+                                            CreatedAt = DateTime.Now,
+                                            LabId = scheduleCreateViewModel.LabId,
+                                            InstructorId = scheduleCreateViewModel.InstructorId,
+                                        };
+                                        list.Add(schedule);
+                                    
+                                }
+                            }
+                        }
+                        else if (schedulesWithSlot.Count > 0)
+                        {
+                            foreach (var check in schedulesWithSlot)
+                            {
+                                if (check.InstructorId.Equals(scheduleCreateViewModel.InstructorId))
                                 {
-                                    Schedule schedule = new Schedule()
-                                    {
-                                        DateBoking = startTime.AddDays(i),
-                                        SlotNumber = Int32.Parse(slot),
-                                        Status = ((int)ScheduleStatusEnum.AVAILABLE),
-                                        CreatedAt = DateTime.Now,
-                                        LabId = scheduleCreateViewModel.LabId,
-                                        InstructorId = scheduleCreateViewModel.InstructorId,
-                                    };
-                                    list.Add(schedule);
+                                    TempData["False"] = "Create Schedule False Because Duplicate Intructor";
+                                    list.Clear();
+                                    return RedirectToAction("Index");
                                 }
                             }
                         }
