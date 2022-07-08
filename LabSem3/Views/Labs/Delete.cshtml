@@ -81,7 +81,7 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <input style="color:aliceblue;" type="submit" value="Delete" onclick="return confirm('Are you sure?')" class="btn btn-default bg-primary" /> |
             @Html.ActionLink("Back to List", "Index")
         </div>
     }
