@@ -37,9 +37,9 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.LabId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-2">
+            <div class="col-md-1">
                 @*@Html.EditorFor(model => model.LabId, new { htmlAttributes = new { @class = "form-control" } })*@
-                <select id="LabId" name="LabId">
+                <select id="LabId" name="LabId" class="form-control">
                     @foreach (var lab in ViewBag.Lab)
                     {
                         <option value="@lab.Id" @(lab.Id == Model.Lab.Id ? "selected" : "")>@lab.Id</option>
@@ -52,9 +52,9 @@
 
         <div class="form-group">
             <label class="control-label col-md-2" for="TypeEquipmentId">TypeEquipment Name</label>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 @*@Html.EditorFor(model => model.TypeEquipmentId, new { htmlAttributes = new { @class = "form-control" } })*@
-                <select id="TypeEquipmentId" name="TypeEquipmentId">
+                <select id="TypeEquipmentId" name="TypeEquipmentId" class="form-control">
                     @foreach (var typeEquiment in ViewBag.TypeEquipment)
                     {
                         <option value="@typeEquiment.Id" @(typeEquiment.Id == Model.TypeEquipment.Id ? "selected" : "")>@typeEquiment.Name</option>
@@ -67,7 +67,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input style=" background-color: antiquewhite; border-color: skyblue;" type="submit" value="Save" class="btn btn-default" />
+                <input style="color:aliceblue;" type="submit" value="Save" class="btn btn-default bg-primary" />
             </div>
         </div>
     </div>

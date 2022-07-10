@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace LabSem3.Models
 {
@@ -15,7 +16,7 @@ namespace LabSem3.Models
         [Required(ErrorMessage = "Title Document Require")]
         public string Title { get; set; }
         [DataType(DataType.Text)]
-
+        [AllowHtml]
         [Required(ErrorMessage = "Detail Document Require")]
         public string Detail { get; set; }
        

@@ -12,7 +12,7 @@
     <dl class="dl-horizontal">
         <div class="panel-body inf-content">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-10">
                     <div class="table-responsive">
                         <table class="table table-user-information">
                             <tbody>
@@ -36,7 +36,8 @@
                                         </strong>
                                     </td>
                                     <td class="text-primary">
-                                        @Model.Thumbnail
+                                        <img height="300px" src="@Model.Thumbnail"/>
+                                        
                                     </td>
                                 </tr>
                                 <tr>
@@ -47,7 +48,14 @@
                                         </strong>
                                     </td>
                                     <td class="text-primary">
-                                        @Model.Status
+
+                                        @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.EquipmentStatusEnum)))
+                                        {
+                                            if (Int32.Parse(item.Value) == Model.Status)
+                                            {
+                                                @item.Text
+                                            }
+                                        }
                                     </td>
                                 </tr>
                                 <tr>
@@ -96,7 +104,7 @@
                                     </td>
                                 </tr>
 
-                                <tr>
+                                @*<tr>
                                     <td>
                                         <strong>
                                             <span class="glyphicon glyphicon-eye-open text-primary"></span>
@@ -106,7 +114,7 @@
                                     <td class="text-primary">
                                         @Model.DocumentId
                                     </td>
-                                </tr>
+                                </tr>*@
 
                                 <tr>
                                     <td>

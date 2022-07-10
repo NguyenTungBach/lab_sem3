@@ -88,6 +88,36 @@
     </div>
 </div>
 
+<!-- Modal Admin-->
+<div class="modal fade" id="exampleModal_003" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="" class="modal-title">Assign <b>Technical Staff</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("AssignPeople", "Complaint", FormMethod.Post))
+            {
+                <input id="idComplaint003" hidden="true" name="comPlaintId" class="moda_title_CaomIL" value="" />
+                <div class="modal-body">
+                      
+                        <div class="form-check">
+                            @User.Identity.GetUserName() :   @Html.RadioButton("StaffId", User.Identity.GetUserId())
+                        </div>
+                        
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Confirm</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
@@ -119,7 +149,33 @@
             </td>
             <td>
                 <div class="row">
-                    <button compId="@item.Id" data-toggle="modal" data-target="@(item.TypeComplaintId == 1 || item.TypeComplaintId == 2 || item.TypeComplaintId == 3 || item.TypeComplaintId == 4 ? "#exampleModal" : "#exampleModal_002")" style="margin-top: 5px" type="button" class="btn btn-info nvq1">Assign Staff Process</button>
+                    @switch (item.TypeComplaint.TypeRole)
+                    {
+                        case "INSTRUCTOR":
+                            <button compId="@item.Id" data-toggle="modal" data-target="#exampleModal" style="margin-top: 5px" type="button" class="btn btn-info nvq1">Assign Instructor Process</button>
+                            break;
+                        case "TECHNICAL_STAFF":
+                            <button compId="@item.Id" data-toggle="modal" data-target="#exampleModal_002" style="margin-top: 5px" type="button" class="btn btn-info nvq1">Assign Technical Staff Process</button>
+                            break;
+                        case "ADMIN":
+                            <button compId="@item.Id" data-toggle="modal" data-target="#exampleModal_003" style="margin-top: 5px" type="button" class="btn btn-info nvq1">Assign Admin Process</button>
+                            break;
+                        case "GENERAL":
+                            <button compId="@item.Id" data-toggle="modal" data-target="#exampleModal_003" style="margin-top: 5px" type="button" class="btn btn-info nvq1">Assign Admin Process</button>
+                            break;
+
+                    }
+
+
+                    @*@if (item.TypeComplaint.TypeRole != "ADMIN")
+                    {
+                        <button compId="@item.Id" data-toggle="modal" data-target="@(item.TypeComplaint.TypeRole == "INSTRUCTOR" ? "#exampleModal" : "#exampleModal_002")" style="margin-top: 5px" type="button" class="btn btn-info nvq1">Assign Staff Process</button>
+                    }
+                    else
+                    {
+                        <button compId="@item.Id" data-toggle="modal" data-target="#exampleModal_003" style="margin-top: 5px" type="button" class="btn btn-info nvq1">Assign Staff Process</button>
+                    }*@
+
                 </div>
             </td>
         </tr>
@@ -144,6 +200,7 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
                     var complaintID = this.getAttribute('compId');
                     document.getElementById("idComplaint").value = `${complaintID}`;
                     document.getElementById("idComplaint002").value = `${complaintID}`;
+                    document.getElementById("idComplaint003").value = `${complaintID}`;
                 });
         });
 

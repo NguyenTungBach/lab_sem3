@@ -22,105 +22,130 @@
         @TempData["False"]
     </div>
 }
-    <div class="container-fluid">
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
-            </div>
-            <div class="card-body">
-                <div>
-                    <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                        <form action="/Schedule/Index">
-                            <div class="row " style="margin-bottom:10px">
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+        </div>
+        <div class="card-body">
+            <div>
+                <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <form action="/Schedule/Index">
+                        <div class="row " style="margin-bottom:10px">
 
-                                <div style="margin:0 10px">
-                                    <div style="text-align: left">Department</div>
-                                    <div class="input-group">
-                                        <select class="form-control" id="DepartmentId" name="DepartmentId">
-                                            <option selected="" value="">-- Choose Department -- </option>
-                                            @foreach (var department in ViewBag.Departments)
-                                            {
-                                              <option value="@department.Id">@department.Name</option>
-                                            }
-                                        </select>
-                                    </div>
-                                </div>
-                                <div style="margin-right: 20px">
-                                    <div style="text-align: left">Date</div>
-                                    <div class="input-group">
-                                        <input name="Date" id="Date" type="date" class="form-control bg-default border-2 small" aria-label="Search" aria-describedby="basic-addon2">
-
-                                    </div>
-                                </div>
-                                <div style="margin-top:23px">
-                                    <button class="btn btn-primary" type="submit">
-                                        <i class="fas fa-search fa-sm"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
-                                    <thead>
-                                        <tr role="row"><th class="sorting sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 100px;">Lab Name</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 150px;"><div>Slot 1</div><div>(08:00 - 10:00)</div></th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 150px;"><div>Slot 2</div><div>(10:00 - 12:00)</div></th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 150px;"><div>Slot 3</div><div>(12:00 - 13:30)</div></th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 189px;"><div>Slot 4</div><div>(13:30 - 15:30)</div></th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 171px;"><div>Slot 5</div><div>(15:30 - 17:30)</div></th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 171px;"><div>Slot 6</div><div>(17:30 - 19:30)</div></th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 171px;"><div>Slot 7</div><div>(19:30 - 21:30)</div></th></tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr><th rowspan="1" colspan="1">Lab Name</th><th rowspan="1" colspan="1"><div>Slot 1</div><div>(08:00 - 10:00)</div></th><th rowspan="1" colspan="1"><div>Slot 2</div><div>(10:00-12:00)</div></th><th rowspan="1" colspan="1"><div>Slot 3</div><div>(12:00-13:30)</div></th><th rowspan="1" colspan="1"><div>Slot 4</div><div>(13:30 - 15:30)</div></th><th rowspan="1" colspan="1"><div>Slot 5</div><div>(15:30 - 17:30)</div></th><th rowspan="1" colspan="1"><div>Slot 6</div><div>(17:30 - 19:30)</div></th><th rowspan="1" colspan="1"><div>Slot 7</div><div>(19:30 - 21:30)</div></th></tr>
-                                    </tfoot>
-                                    <tbody>
-                                        @foreach (var lab in ViewBag.Labs)
+                            <div style="margin:0 10px">
+                                <div style="text-align: left">Department</div>
+                                <div class="input-group">
+                                    <select class="form-control" id="DepartmentId" name="DepartmentId">
+                                        <option selected="" value="">-- Choose Department -- </option>
+                                        @foreach (var department in ViewBag.Departments)
                                         {
-                                            <tr class="odd">
-                                                <td class="sorting_1">Lab @lab.Id</td>
-                                                @if (ViewBag.Schedules.Count > 0)
-                                                {
-                                                    var lenght = 7;
-                                                    for (var i = 0; i < lenght; i++)
-                                                    {
-                                                        for (var j = 0; j < ViewBag.Schedules.Count; j++)
-                                                        {
-                                                            if (ViewBag.Schedules[j].SlotNumber == i && ViewBag.Schedules[j].LabId == lab.Id)
-                                                            {
-                                                                <td>
-                                                                    <div><h3>T2012E</h3></div>
-                                                                    <div>@(ViewBag.Schedules[j].Instructor != null ? ViewBag.Schedules[j].Instructor.UserName : " " )</div>
-                                                                </td>
-                                                                ViewBag.Schedules.RemoveAt(j);
-                                                                break;
-                                                            }
-                                                            else
-                                                            {
-                                                                <td></td>
-                                                                break;
-                                                            }
-                                                        }
-                                                        if (ViewBag.Schedules.Count == 0)
-                                                        {
-                                                            
-                                                            <td></td>
-                                                        }
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    for (var i = 0; i < 7; i++)
-                                                    {
-                                                        <td></td>
-                                                    }
-
-                                                }
-
-                                            </tr>
+                                            <option value="@department.Id">@department.Name</option>
                                         }
-
-                                    </tbody>
-                                </table>
+                                    </select>
+                                </div>
                             </div>
+                            <div style="margin-right: 20px">
+                                <div style="text-align: left">Date</div>
+                                <div class="input-group">
+                                    <input name="Date" id="Date" type="date" class="form-control bg-default border-2 small" aria-label="Search" aria-describedby="basic-addon2">
+
+                                </div>
+                            </div>
+                            <div style="margin-top:23px">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                                <thead style="background-color: #4e73df;color:white">
+                                    <tr role="row"><th class="sorting sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 100px;">Lab Name</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 150px;"><div>Slot 1</div><div>(08:00 - 10:00)</div></th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 150px;"><div>Slot 2</div><div>(10:00 - 12:00)</div></th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 150px;"><div>Slot 3</div><div>(12:00 - 13:30)</div></th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 189px;"><div>Slot 4</div><div>(13:30 - 15:30)</div></th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 171px;"><div>Slot 5</div><div>(15:30 - 17:30)</div></th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 171px;"><div>Slot 6</div><div>(17:30 - 19:30)</div></th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 171px;"><div>Slot 7</div><div>(19:30 - 21:30)</div></th></tr>
+                                </thead>
+                                <tfoot style="background-color: #4e73df;color:white">
+                                    <tr><th rowspan="1" colspan="1">Lab Name</th><th rowspan="1" colspan="1"><div>Slot 1</div><div>(08:00 - 10:00)</div></th><th rowspan="1" colspan="1"><div>Slot 2</div><div>(10:00-12:00)</div></th><th rowspan="1" colspan="1"><div>Slot 3</div><div>(12:00-13:30)</div></th><th rowspan="1" colspan="1"><div>Slot 4</div><div>(13:30 - 15:30)</div></th><th rowspan="1" colspan="1"><div>Slot 5</div><div>(15:30 - 17:30)</div></th><th rowspan="1" colspan="1"><div>Slot 6</div><div>(17:30 - 19:30)</div></th><th rowspan="1" colspan="1"><div>Slot 7</div><div>(19:30 - 21:30)</div></th></tr>
+                                </tfoot>
+                                <tbody>
+                                    @foreach (var lab in ViewBag.Labs)
+                                    {
+                                        <tr class="odd" style="height:150px">
+                                            <td style="color:forestgreen; font-weight:bolder" class="sorting_1">Lab @lab.Id</td>
+                                            @if (ViewBag.Schedules.Count > 0)
+                                            {
+                                                var lenght = 7;
+                                                for (var i = 0; i < lenght; i++)
+                                                {
+                                                    for (var j = 0; j < ViewBag.Schedules.Count; j++)
+                                                    {
+                                                        if (ViewBag.Schedules[j].SlotNumber == i && ViewBag.Schedules[j].LabId == lab.Id)
+                                                        {
+
+
+                                                            <td style="text-align:center">
+                                                                <div><h5 style="color: #4e73df">T2012E</h5></div>
+                                                                @if (User.IsInRole("ADMIN"))
+                                                                {
+                                                                    <a href="/Schedule/Edit/@ViewBag.Schedules[j].Id"><div style="color: blue;font-weight:bolder">@(ViewBag.Schedules[j].Instructor != null ? ViewBag.Schedules[j].Instructor.UserName : " " )</div></a>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <div style="color: blue;font-weight:bolder">@(ViewBag.Schedules[j].Instructor != null ? ViewBag.Schedules[j].Instructor.UserName : " " )</div>
+                                                                }
+
+                                                            </td>
+                                                            ViewBag.Schedules.RemoveAt(j);
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            <td></td>
+                                                            break;
+                                                        }
+                                                    }
+                                                    @*if (ViewBag.Schedules.Count == 0)
+                                                        {
+
+                                                            <td></td>
+                                                        }*@
+                                                }
+                                            }
+                                            else
+                                            {
+                                                for (var i = 0; i < 7; i++)
+                                                {
+                                                    <td></td>
+                                                }
+
+                                            }
+
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
+
     </div>
+</div>
+<script>
+    var trs = document.getElementsByClassName("odd")
+    console.log(trs);
+    for (var i = 0; i < trs.length; i++) {
+        console.log(trs[i].childElementCount)
+        if (trs[i].childElementCount < 8) {
+            for (var j = 0; j < 10 - trs[i].childElementCount; j++) {
+                var td = document.createElement("td");
+                trs[i].appendChild(td);
+            }
+        }
+  
+        console.log(trs[i].childElementCount)
+    }
+</script>

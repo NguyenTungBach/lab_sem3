@@ -8,168 +8,30 @@
 
 <div>
     <h4>Document</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Detail)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Detail)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreatedAt)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UpdatedAt)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UpdatedAt)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DeletedAt)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DeletedAt)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TypeEquipmentId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TypeEquipmentId)
-        </dd>
-
-    </dl>
     </br>
-    <dl class="dl-horizontal">
-        <div class="panel-body inf-content">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="table-responsive">
-                        <table class="table table-user-information">
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <strong>
-                                            <span class="glyphicon glyphicon-user  text-primary"></span>
-                                            Title
-                                        </strong>
-                                    </td>
-                                    <td class="text-primary">
-                                        @Model.Title
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <strong>
-                                            <span class="glyphicon glyphicon-cloud text-primary"></span>
-                                            Detail
-                                        </strong>
-                                    </td>
-                                    <td class="text-primary">
-                                        @Model.Detail
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <strong>
-                                            <span class="glyphicon glyphicon-envelope text-primary"></span>
-                                            Status
-                                        </strong>
-                                    </td>
-                                    <td class="text-primary">
-                                        @Model.Status
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <strong>
-                                            <span class="glyphicon glyphicon-bookmark text-primary"></span>
-                                            CreatedAt
-                                        </strong>
-                                    </td>
-                                    <td class="text-primary">
-                                        @string.Format("{0:dd/MM/yyyy}", Model.CreatedAt)
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <strong>
-                                            <span class="glyphicon glyphicon-eye-open text-primary"></span>
-                                            UpdatedAt
-                                        </strong>
-                                    </td>
-                                    <td class="text-primary">
-                                        @string.Format("{0:dd/MM/yyyy}", Model.UpdatedAt)
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <strong>
-                                            <span class="glyphicon glyphicon-eye-open text-primary"></span>
-                                            DeletedAt
-                                        </strong>
-                                    </td>
-                                    <td class="text-primary">
-                                        @string.Format("{0:dd/MM/yyyy}", Model.DeletedAt)
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <strong>
-                                            <span class="glyphicon glyphicon-envelope text-primary"></span>
-                                            TypeEquipment Name
-                                        </strong>
-                                    </td>
-                                    <td class="text-primary">
-                                        @Html.DisplayFor(model => model.TypeEquipment.Name)
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                    </td>
-                                    <td class="text-primary">
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+    <div class="container-fluid">
+        <div style="text-align:center">
+            <div>
+                <h3 style="font-weight:bolder">@Model.Title</h3>
+            </div>
+            <div style="text-align:left">
+                <div><h4>Type Equipment: @Model.TypeEquipment.Name</h4></div>
+                @Html.Raw(Model.Detail)
+                @*<p>@Model.Detail</p>*@
+                <div>
+                    CreatedAt : @Model.CreatedAt
                 </div>
             </div>
-    </dl>
+
+        </div>
+    </div>
 
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+<p style="margin-top:20px">
+
+    @if (User.IsInRole("ADMIN"))
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) <span> | </span>
+    }
     @Html.ActionLink("Back to List", "Index")
 </p>

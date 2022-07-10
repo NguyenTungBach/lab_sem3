@@ -11,8 +11,9 @@ namespace LabSem3.Models.ViewModel
 {
     public class ComplaintViewModel
     {
-        [Required]
         [DisplayName("Type of complaint")]
+        [RegularExpression(@"^\S*$", ErrorMessage = "No white space allowed")]
+        [Required(ErrorMessage = "TypeComplaintId Require")]
         public int TypeComplaintId { get; set; }
         [Required(ErrorMessage = "Title Require")]
         [DisplayName("Title")]
@@ -28,7 +29,7 @@ namespace LabSem3.Models.ViewModel
         [DataType(DataType.Text)]
         public string Detail { get; set; }
 
-        [DisplayName("Thumbnail your problem")]
+        [DisplayName("Thumbnail")]
         [Required(ErrorMessage = "Thumbnail Require")]
         [DataType(DataType.Text)]
         public string Thumbnail { get; set; }

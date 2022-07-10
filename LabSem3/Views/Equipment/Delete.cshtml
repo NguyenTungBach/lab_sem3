@@ -12,7 +12,7 @@
     <dl class="dl-horizontal">
         <div class="panel-body inf-content">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-10">
                     <div class="table-responsive">
                         <table class="table table-user-information">
                             <tbody>
@@ -36,10 +36,11 @@
                                         </strong>
                                     </td>
                                     <td class="text-primary">
-                                        @Model.Thumbnail
+                                        <img height="300px" src="@Model.Thumbnail"/>
+                                        
                                     </td>
                                 </tr>
-                                <tr>
+                                @*<tr>
                                     <td>
                                         <strong>
                                             <span class="glyphicon glyphicon-envelope text-primary"></span>
@@ -118,7 +119,7 @@
                                     <td class="text-primary">
                                         @Html.DisplayFor(model => model.TypeEquipment.Name)
                                     </td>
-                                </tr>
+                                </tr>*@
                             </tbody>
                         </table>
                     </div>
@@ -131,7 +132,7 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input style=" background-color: antiquewhite; border-color: skyblue;" type="submit" value="Delete" class="btn btn-default" /> |
+            <input style="color:aliceblue;" type="submit" value="Delete" onclick="return confirm('Are you sure?')" class="btn btn-default bg-primary" /> |
             @Html.ActionLink("Back to List", "Index")
         </div>
     }

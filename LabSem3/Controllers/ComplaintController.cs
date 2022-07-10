@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Mvc.Html;
 using LabSem3.Data;
 using LabSem3.Enum;
 using LabSem3.Models;
@@ -89,30 +90,36 @@ namespace LabSem3.Controllers
         [Authorize(Roles = "ADMIN,HOD")]
         public ActionResult ComplaintWaiting(int? page)
         {
-            var listTechnicalStaff = new List<Account>();
-            var listInstructor = new List<Account>();
-            foreach (var user in db.Users.ToList())
-            {
-                var checkRole = userManager.GetRoles(user.Id).ToList();
-                foreach (var role in checkRole)
-                {
-                    if (role == RoleEnum.TECHNICAL_STAFF.ToString())
-                    {
-                        listTechnicalStaff.Add(user);
-                    }
+            //var listTechnicalStaff = new List<Account>();
+            //var listInstructor = new List<Account>();
+            //foreach (var user in db.Users.ToList())
+            //{
+            //    var checkRole = userManager.GetRoles(user.Id).ToList();
+            //    foreach (var role in checkRole)
+            //    {
+            //        if (role == RoleEnum.TECHNICAL_STAFF.ToString())
+            //        {
+            //            listTechnicalStaff.Add(user);
+            //        }
 
-                    if (role == RoleEnum.INSTRUCTOR.ToString())
-                    {
-                        listInstructor.Add(user);
-                    }
-                }
-            }
+            //        if (role == RoleEnum.INSTRUCTOR.ToString())
+            //        {
+            //            listInstructor.Add(user);
+            //        }
+            //    }
+            //}
 
-            ViewBag.listTechnicalStaff = listTechnicalStaff;
-            ViewBag.listInstructor = listInstructor;
+            //ViewBag.listTechnicalStaff = listTechnicalStaff;
+            //ViewBag.listInstructor = listInstructor;
+
+            var roleINSTRUCTOR = db.Roles.Where(s => s.Name.Contains(RoleEnum.INSTRUCTOR.ToString())).FirstOrDefault();
+            ViewBag.listInstructor = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleINSTRUCTOR.Id))).ToList();
+
+            var roleTECHNICAL_STAFF = db.Roles.Where(s => s.Name.Contains(RoleEnum.TECHNICAL_STAFF.ToString())).FirstOrDefault();
+            ViewBag.listTechnicalStaff = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleTECHNICAL_STAFF.Id))).ToList();
 
             ViewBag.UserAll = db.Users.ToList();
-            var result2 = db.Complaints.OrderBy(s => s.Id).AsQueryable().Where(s => s.Status == 4);
+            var result2 = db.Complaints.OrderBy(s => s.Id).Include(s => s.TypeComplaint).AsQueryable().Where(s => s.Status == 4);
             int pageSize = 10;
             int pageNumber = (page ?? 1);
             return View(result2.ToPagedList(pageNumber, pageSize));
@@ -139,8 +146,36 @@ namespace LabSem3.Controllers
                 message = message.Replace("{{AccountComplaint}}", accountComplaint.UserName);
                 message = message.Replace("{{Title}}", processComplaint.Title);
                 message = message.Replace("{{Detail}}", processComplaint.Detail);
+                var checkStatus = "";
+                foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ComplaintStatusEnum)))
+                {
+                    if (processComplaint.Status == Int32.Parse(item.Value))
+                    {
+                        checkStatus = item.Text;
+                    }
+                }
+                message = message.Replace("{{Status}}", checkStatus);
+
+
+                var messageForAccount = System.IO.File.ReadAllText(Server.MapPath("~/TemplateMail/HaveAssignComplaintMail.html"));
+                messageForAccount = messageForAccount.Replace("{{Id}}", processComplaint.Id.ToString());
+                messageForAccount = messageForAccount.Replace("{{TypeComplaintName}}", typeComplaint.Name);
+                messageForAccount = messageForAccount.Replace("{{SupporterUserName}}", supporter.UserName);
+                messageForAccount = messageForAccount.Replace("{{AccountComplaint}}", accountComplaint.UserName);
+                messageForAccount = messageForAccount.Replace("{{Title}}", processComplaint.Title);
+                messageForAccount = messageForAccount.Replace("{{Detail}}", processComplaint.Detail);
+                var checkStatusForAccount = "";
+                foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ComplaintStatusEnum)))
+                {
+                    if (processComplaint.Status == Int32.Parse(item.Value))
+                    {
+                        checkStatusForAccount = item.Text;
+                    }
+                }
+                messageForAccount = messageForAccount.Replace("{{Status}}", checkStatusForAccount);
 
                 SendEmail(supporter.Email, typeComplaint.Name, message);
+                SendEmail(accountComplaint.Email, typeComplaint.Name, messageForAccount);
                 TempData["Success"] = "Assign Account " + supporter.UserName + " Success";
                 db.SaveChanges();
                 return Redirect("/Complaint/ComplaintWaiting");
@@ -158,7 +193,7 @@ namespace LabSem3.Controllers
             {
                 var senderEmail = new MailAddress(AccountEmailSend, AccountNameSend);
                 var receiverEmail = new MailAddress(receiver, "ReceiverTest");
-                var password = "btdrbyurmfvacqcc";
+                var password = "qjkfuhxgpvuzymex";
                 var sub = subject;
                 var body = message;
                 var smtp = new SmtpClient
@@ -246,13 +281,23 @@ namespace LabSem3.Controllers
                 //        {
                 //            continue;
                 //        }
-                //        htmlThumbnail += "< div class='col-md-3 col-sm-3 position-relative' style='padding - left: 0!important;'>< img src =\" arrThumbnail[i] \" class='col-md-12 col-sm-12 img-thumbnail mr-2 mb-2 imagesChoice></div>";
+                //        htmlThumbnail += string.Format("<div class='col-md-3 col-sm-3 position-relative' style='padding - left: 0!important;'>< img src ='{0}' class='col-md-12 col-sm-12 img-thumbnail mr-2 mb-2 imagesChoice'></div>", arrThumbnail[i]);
                 //    }
                 //}
-
-
-                //message = message.Replace("{{ArrayThumbnail}}", newComPlaint.Thumbnail);
+                //message = message.Replace("{{ArrayThumbnail}}", HttpUtility.HtmlEncode(htmlThumbnail));
                 message = message.Replace("{{Detail}}", newComPlaint.Detail);
+
+                var checkStatus = "";
+                foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ComplaintStatusEnum)))
+                {
+                    if (newComPlaint.Status == Int32.Parse(item.Value))
+                    {
+                        checkStatus = item.Text;
+                    }
+                }
+
+                message = message.Replace("{{Status}}", checkStatus);
+                
                 SendEmail(AccountEmailSend, typeComplaint.Name, message);
                 return Redirect("Index");
             }
@@ -267,29 +312,122 @@ namespace LabSem3.Controllers
         // GET: Complaint/Edit/5
         public ActionResult Edit(int id)
         {
-            return View(db.Complaints.Find(id));
+            ViewBag.TypeComplaints = db.TypeComplaints.ToList();
+
+            // Trường hợp người hỗ trợ
+            var roleINSTRUCTOR = db.Roles.Where(s => s.Name.Contains(RoleEnum.INSTRUCTOR.ToString())).FirstOrDefault();
+            //ViewBag.InstructorList = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleINSTRUCTOR.Id))).ToList();
+
+            var roleTECHNICAL_STAFF = db.Roles.Where(s => s.Name.Contains(RoleEnum.TECHNICAL_STAFF.ToString())).FirstOrDefault();
+            //ViewBag.Teachnical_StaffList = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleTECHNICAL_STAFF.Id))).ToList();
+
+            var roleADMIN = db.Roles.Where(s => s.Name.Contains(RoleEnum.ADMIN.ToString())).FirstOrDefault();
+            //ViewBag.AdminList = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleADMIN.Id))).ToList();
+
+
+            var complaint = db.Complaints.Find(id);
+            // check role, nếu complaint này có support với role là INSTRUCTOR hoặc Teachnical_Staff 
+            if (complaint.Supporter != null)
+            {
+                if (!User.Identity.GetUserId().Equals(complaint.Supporter.Id))
+                {
+                    TempData["False"] = "You Can't edit this complaint";
+                    return Redirect("/Complaint/Index");
+                }
+            }
+                
+            
+            //if (complaint.TypeComplaint.TypeRole == "INSTRUCTOR")
+            //{
+            //    ViewBag.Supporters = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleINSTRUCTOR.Id))).ToList();
+            //}
+            //if (complaint.TypeComplaint.TypeRole == "TECHNICAL_STAFF")
+            //{
+            //    ViewBag.Supporters = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleTECHNICAL_STAFF.Id))).ToList();
+            //}
+
+
+            var editComplaint = new ComplaintEditViewModel()
+            {
+                Id = complaint.Id,
+                Title = complaint.Title,
+                Detail = complaint.Detail,
+                Reason = complaint.Reason,
+                Solution = complaint.Solution,
+                Note = complaint.Note,
+                AccountUserName = complaint.Account.UserName,
+                Supporter = complaint.Supporter,
+                EquipmentName = complaint.Equipment.Name,
+                Status = complaint.Status,
+                TypeComplaintId = complaint.TypeComplaint.Id,
+                Thumbnail = complaint.Thumbnail
+            };
+            return View(editComplaint);
         }
 
         [Authorize(Roles = "ADMIN,INSTRUCTOR,TECHNICAL_STAFF")]
         // POST: Complaint/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, Complaint complaintNew)
+        public ActionResult Edit(int id, ComplaintEditViewModel complaintNew)
         {
-            var findComplaint = db.Complaints.Find(id);
-            findComplaint = complaintNew;
-            db.Complaints.AddOrUpdate(findComplaint);
-            var result = db.SaveChanges();
-            if (result == 1)
+            if (ModelState.IsValid)
             {
-                var typeComplaint = db.TypeComplaints.Find(findComplaint.TypeComplaintId);
-                TempData["Success"] = "Edit Complaint "+ typeComplaint.Name + " Success";
-                return Redirect("/Complaint/Index");
+                var findComplaint = db.Complaints.Find(id);
+                findComplaint.Reason = complaintNew.Reason;
+                findComplaint.Solution = complaintNew.Solution;
+                findComplaint.Note = complaintNew.Note;
+                findComplaint.Status = complaintNew.Status;
+                findComplaint.UpdatedAt = DateTime.Now;
+                db.Complaints.AddOrUpdate(findComplaint);
+                var result = db.SaveChanges();
+                if (result == 1)
+                {
+                    var typeComplaint = db.TypeComplaints.Find(findComplaint.TypeComplaintId);
+                    TempData["Success"] = "Edit Complaint " + typeComplaint.Name + " Success";
+
+                    var message = System.IO.File.ReadAllText(Server.MapPath("~/TemplateMail/ProcessComplaintMail.html"));
+                    message = message.Replace("{{Id}}", findComplaint.Id.ToString());
+                    message = message.Replace("{{TypeComplaintName}}", typeComplaint.Name);
+                    message = message.Replace("{{SupporterUserName}}", findComplaint.Supporter.UserName);
+                    message = message.Replace("{{AccountComplaint}}", findComplaint.Account.UserName);
+                    message = message.Replace("{{Title}}", findComplaint.Title);
+                    message = message.Replace("{{Detail}}", findComplaint.Detail);
+
+                    var checkStatus = "";
+                    foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ComplaintStatusEnum)))
+                    {
+                        if (findComplaint.Status == Int32.Parse(item.Value))
+                        {
+                            checkStatus = item.Text;
+                        }
+                    }
+
+                    message = message.Replace("{{Status}}", checkStatus);
+                    if (typeComplaint.Name == "ADMIN")
+                    {
+                        SendEmail(findComplaint.Account.Email, typeComplaint.Name, message);
+                    }
+                    else
+                    {
+                        SendEmail(findComplaint.Account.Email, typeComplaint.Name, message);
+                        SendEmail(findComplaint.Supporter.Email, typeComplaint.Name, message);
+                        SendEmail(AccountEmailSend, typeComplaint.Name, message);
+                    }
+
+                    return Redirect("/Complaint/Index");
+                }
+                else
+                {
+                    TempData["False"] = "Edit Complaint False";
+                    return Redirect("/Complaint/Index");
+                }
             }
             else
             {
-                TempData["False"] = "Edit Complaint False";
-                return View("Error");
+                TempData["False"] = "Invalid Complaint";
+                return Redirect("/Complaint/Index");
             }
+
         }
 
         [Authorize(Roles = "ADMIN")]
