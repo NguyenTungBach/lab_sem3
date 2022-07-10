@@ -329,6 +329,9 @@ namespace LabSem3.Controllers
         {
             if (ModelState.IsValid)
             {
+                
+                
+
                 var checkRoles = accountEditViewModel.Role.Split(',');
                 var roleList = db.Roles.ToList();
 
@@ -354,6 +357,16 @@ namespace LabSem3.Controllers
                 {
                     return HttpNotFound();
                 }
+                if (accountEditViewModel.Email != account.Email)
+                {
+                    var checkEmail = db.Users.Where(s => s.Email.Equals(accountEditViewModel.Email)).FirstOrDefault();
+                    if (checkEmail != null)
+                    {
+                        TempData["False"] = "Email Existed";
+                        return RedirectToAction("Index");
+                    }
+                }
+
                 account.UserName = accountEditViewModel.UserName;
                 account.PhoneNumber = accountEditViewModel.PhoneNumber;
                 account.Birthday = accountEditViewModel.Birthday;
@@ -365,11 +378,17 @@ namespace LabSem3.Controllers
                 account.Status = accountEditViewModel.Status;
                 db.Users.AddOrUpdate(account);
                 db.SaveChanges();
+                //ViewBag.Role = db.Roles.ToList();
+                //ViewBag.RoleAccounts = userManager.GetRoles(id).ToList();
+                TempData["Success"] = "Update Account Success";
+                return RedirectToAction("Index");
             }
-            //ViewBag.Role = db.Roles.ToList();
-            //ViewBag.RoleAccounts = userManager.GetRoles(id).ToList();
-            TempData["Success"] = "Update Account Success";
-            return RedirectToAction("Index");
+            else
+            {
+                TempData["False"] = "Update Account Failse Because Invalid";
+                return RedirectToAction("Index");
+                
+            }
         }
 
 

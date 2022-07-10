@@ -118,9 +118,6 @@ namespace LabSem3.Controllers
             var roleTECHNICAL_STAFF = db.Roles.Where(s => s.Name.Contains(RoleEnum.TECHNICAL_STAFF.ToString())).FirstOrDefault();
             ViewBag.listTechnicalStaff = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleTECHNICAL_STAFF.Id))).ToList();
 
-
-          
-
             ViewBag.UserAll = db.Users.ToList();
             var result2 = db.Complaints.OrderBy(s => s.Id).Include(s => s.TypeComplaint).AsQueryable().Where(s => s.Status == 4);
             int pageSize = 10;
@@ -196,7 +193,7 @@ namespace LabSem3.Controllers
             {
                 var senderEmail = new MailAddress(AccountEmailSend, AccountNameSend);
                 var receiverEmail = new MailAddress(receiver, "ReceiverTest");
-                var password = "btdrbyurmfvacqcc";
+                var password = "qjkfuhxgpvuzymex";
                 var sub = subject;
                 var body = message;
                 var smtp = new SmtpClient
@@ -330,18 +327,25 @@ namespace LabSem3.Controllers
 
             var complaint = db.Complaints.Find(id);
             // check role, nếu complaint này có support với role là INSTRUCTOR hoặc Teachnical_Staff 
-            if (complaint.TypeComplaint.TypeRole == "INSTRUCTOR")
+            if (complaint.Supporter != null)
             {
-                ViewBag.Supporters = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleINSTRUCTOR.Id))).ToList();
+                if (!User.Identity.GetUserId().Equals(complaint.Supporter.Id))
+                {
+                    TempData["False"] = "You Can't edit this complaint";
+                    return Redirect("/Complaint/Index");
+                }
             }
-            if (complaint.TypeComplaint.TypeRole == "TECHNICAL_STAFF")
-            {
-                ViewBag.Supporters = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleTECHNICAL_STAFF.Id))).ToList();
-            }
-            //if (complaint.TypeComplaint.TypeRole == "ADMIN" || complaint.TypeComplaint.TypeRole == "GENERAL")
+                
+            
+            //if (complaint.TypeComplaint.TypeRole == "INSTRUCTOR")
             //{
-            //    ViewBag.Supporters = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleADMIN.Id))).ToList();
+            //    ViewBag.Supporters = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleINSTRUCTOR.Id))).ToList();
             //}
+            //if (complaint.TypeComplaint.TypeRole == "TECHNICAL_STAFF")
+            //{
+            //    ViewBag.Supporters = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleTECHNICAL_STAFF.Id))).ToList();
+            //}
+
 
             var editComplaint = new ComplaintEditViewModel()
             {
@@ -399,10 +403,16 @@ namespace LabSem3.Controllers
                     }
 
                     message = message.Replace("{{Status}}", checkStatus);
-
-                    SendEmail(findComplaint.Account.Email, typeComplaint.Name, message);
-                    SendEmail(findComplaint.Supporter.Email, typeComplaint.Name, message);
-                    SendEmail(AccountEmailSend, typeComplaint.Name, message);
+                    if (typeComplaint.Name == "ADMIN")
+                    {
+                        SendEmail(findComplaint.Account.Email, typeComplaint.Name, message);
+                    }
+                    else
+                    {
+                        SendEmail(findComplaint.Account.Email, typeComplaint.Name, message);
+                        SendEmail(findComplaint.Supporter.Email, typeComplaint.Name, message);
+                        SendEmail(AccountEmailSend, typeComplaint.Name, message);
+                    }
 
                     return Redirect("/Complaint/Index");
                 }
