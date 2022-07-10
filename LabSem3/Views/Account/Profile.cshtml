@@ -4,7 +4,7 @@
     ViewBag.Title = "Profile";
 }
 
-<h2>Profile</h2>
+<h2 style="font-weight: bold;">Profile</h2>
 
 @if (TempData["Success"] != null)
 {
@@ -21,110 +21,198 @@
 }
 
 <div>
-    <h4>Account</h4>
     <hr />
     <dl class="dl-horizontal">
+        <div class="container bootstrap snippets bootdey">
+            <div class="panel-body inf-content">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img alt="" style="width:600px;" title="" class="img-circle img-thumbnail isTooltip" src="@(Model.Thumbnail != null ? Model.Thumbnail : "https://2.bp.blogspot.com/-muVbmju-gkA/Vir94NirTeI/AAAAAAAAT9c/VoHzHZzQmR4/s1600/placeholder-image.jpg")" data-original-title="Usuario">
+                        <ul title="Ratings" class="list-inline ratings text-center">
+                            <li><a href="#"><span class="glyphicon glyphicon-star"></span></a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-star"></span></a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-star"></span></a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-star"></span></a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-star"></span></a></li>
+                            <p>
+                                @Html.ActionLink("ChangeProfile", "ChangeProfile") <span> | </span>
+                                
+                                @Html.ActionLink("ChangePassword", "ChangePassword")
+                            </p>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Information</strong><br>
+                        <div class="table-responsive">
+                            <table class="table table-user-information">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <strong>
+                                                <span class="glyphicon glyphicon-asterisk text-primary"></span>
+                                                Id
+                                            </strong>
+                                        </td>
+                                        <td class="text-primary">
+                                            @Model.Id
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>
+                                                <span class="glyphicon glyphicon-user  text-primary"></span>
+                                                Account
+                                            </strong>
+                                        </td>
+                                        <td class="text-primary">
+                                            @Model.UserName
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>
+                                                <span class="glyphicon glyphicon-cloud text-primary"></span>
+                                                Role
+                                            </strong>
+                                        </td>
+                                        <td class="text-primary">
+                                            @foreach (var role in ViewBag.Roles)
+                                            {
+                                                <span>@role </span>
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>
+                                                <span class="glyphicon glyphicon-cloud text-primary"></span>
+                                                Name
+                                            </strong>
+                                        </td>
+                                        <td class="text-primary">
+                                            @Model.FullName
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>
+                                                <span class="glyphicon glyphicon-envelope text-primary"></span>
+                                                Birthday
+                                            </strong>
+                                        </td>
+                                        <td class="text-primary">
+                                            @string.Format("{0:dd/MM/yyyy}", Model.Birthday)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>
+                                                <span class="glyphicon glyphicon-bookmark text-primary"></span>
+                                                Email
+                                            </strong>
+                                        </td>
+                                        <td class="text-primary">
+                                            @Model.Email
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>
+                                                <span class="glyphicon glyphicon-eye-open text-primary"></span>
+                                                PhoneNumber
+                                            </strong>
+                                        </td>
+                                        <td class="text-primary">
+                                            @Model.PhoneNumber
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>
+                                                <span class="glyphicon glyphicon-eye-open text-primary"></span>
+                                                Address
+                                            </strong>
+                                        </td>
+                                        <td class="text-primary">
+                                            @Model.Address
+                                        </td>
+                                    </tr>
 
-        <dd>
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
+                                    @if (User.IsInRole("HOD"))
+                                    {
+                                        <tr>
+                                            <td>
+                                                <strong>
+                                                    <span class="glyphicon glyphicon-eye-open text-primary"></span>
+                                                    Department
+                                                </strong>
+                                            </td>
+                                            <td class="text-primary">
+                                                @Model.Department.Name
+                                            </td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td>
+                                            <strong>
+                                                <span class="glyphicon glyphicon-envelope text-primary"></span>
+                                                Status
+                                            </strong>
+                                        </td>
+                                        <td class="text-primary">
+                                            @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.AccountStatusEnum)))
+                                            {
+                                                if (Model.Status == Int32.Parse(item.Value))
+                                                {
+                                                    @item.Text
+                                                }
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>
+                                                <span class="glyphicon glyphicon-calendar text-primary"></span>
+                                                Created At
+                                            </strong>
+                                        </td>
+                                        <td class="text-primary">
 
-        <dt>
-            @Html.DisplayNameFor(model => model.UserName)
-        </dt>
+                                            @string.Format("{0:dd/MM/yyyy hh:mm tt}", Model.CreatedAt)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>
+                                                <span class="glyphicon glyphicon-calendar text-primary"></span>
+                                                Updated At
+                                            </strong>
+                                        </td>
+                                        <td class="text-primary">
 
-        <dd>
-            @Html.DisplayFor(model => model.UserName)
-        </dd>
+                                            @string.Format("{0:dd/MM/yyyy hh:mm tt}", Model.UpdatedAt)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>
+                                                <span class="glyphicon glyphicon-calendar text-primary"></span>
+                                                Deleted At
+                                            </strong>
+                                        </td>
+                                        <td class="text-primary">
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
+                                            @string.Format("{0:dd/MM/yyyy hh:mm tt}", Model.DeletedAt)
+                                        </td>
+                                    </tr>
 
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreatedAt)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UpdatedAt)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UpdatedAt)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DeletedAt)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DeletedAt)
-        </dd>
-
-        @*<dt>
-                @Html.DisplayNameFor(model => model.Labs)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Labs)
-            </dd>*@
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Department)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Department.Name)
-        </dd>
-
-        @*<dt>
-                @Html.DisplayNameFor(model => model.Complaints)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Complaints)
-            </dd>*@
-
-        @*<dt>
-            @Html.DisplayNameFor(model => model.Schedules)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Schedules)
-        </dd>*@
-        <dt>
-            @Html.DisplayNameFor(model => model.Roles)
-        </dt>
-        <dt>
-            @foreach (var role in ViewBag.Roles)
-            {
-                <span>@role </span>
-            }
-        </dt>
-
-        @*<dt>
-                Test Account by role
-            </dt>
-            <dt>
-                @foreach (var account in ViewBag.AccountByRole)
-                {
-                    <span>@account </span>
-                }
-            </dt>*@
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </dl>
 </div>
-<p>
-    @Html.ActionLink("ChangePassword", "ChangePassword", new { id = Model.Id })
-</p>

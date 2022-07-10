@@ -13,11 +13,15 @@ namespace LabSem3.Models.ViewModel
         [DisplayName("Id")]
         public string Id { get; set; }
 
-        [DisplayName("UserName")]
-        [Required(ErrorMessage = "UserName Required")]
+        [DisplayName("Account")]
+        [Required(ErrorMessage = "Account Required")]
         [RegularExpression(@"^\S*$", ErrorMessage = "No white space allowed")]
         public string UserName { get; set; }
-
+        [Required(ErrorMessage = "Email Required")]
+        [EmailAddress(ErrorMessage = "Invalid Email Address")]
+        public string Email { get; set; }
+        
+        public string FullName { get; set; }
         [DisplayName("Password")]
         [Required(ErrorMessage = "Password Required")]
         [DataType(DataType.Password)]
@@ -36,8 +40,7 @@ namespace LabSem3.Models.ViewModel
         public DateTime? Birthday { get; set; }
         public string Thumbnail { get; set; }
         public string Address { get; set; }
-        public string Age { get; set; }
-
+        
         public int? Status { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
@@ -53,6 +56,11 @@ namespace LabSem3.Models.ViewModel
             Id = account.Id;
             UserName = account.UserName;
             Status = account.Status;
+            Email = account.Email;
+            FullName = account.FullName;
+            Thumbnail = account.Thumbnail;
+            Status = account.Status;
+            Address = account.Address;
             CreatedAt = account.CreatedAt;
             UpdatedAt = account.UpdatedAt;
             DeletedAt = account.DeletedAt;

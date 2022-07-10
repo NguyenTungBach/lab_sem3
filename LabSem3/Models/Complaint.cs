@@ -19,6 +19,8 @@ namespace LabSem3.Models
         [DataType(DataType.Text)]
         public string Detail { get; set; }
         [DataType(DataType.Text)]
+        public string Thumbnail { get; set; }
+        [DataType(DataType.Text)]
         public string Reason { get; set; }
         [DataType(DataType.Text)]
         public string Solution { get; set; }
@@ -73,6 +75,8 @@ namespace LabSem3.Models
             this.TypeComplaintId = complaintViewModel.TypeComplaintId;
             this.Title = complaintViewModel.Title;
             this.Detail = complaintViewModel.Detail;
+            this.Thumbnail = complaintViewModel.Thumbnail;
+            this.CreatedAt = DateTime.Now;
             this.Status = 4;
         }
     }

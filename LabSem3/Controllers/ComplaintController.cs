@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 using LabSem3.Data;
@@ -20,6 +22,8 @@ namespace LabSem3.Controllers
         private UserManager<Account> userManager; //Bên database
         private RoleManager<IdentityRole> roleManager; //Bên database
         private LabSem3Context db;
+        private static string AccountEmailSend = "bachntth2010055@fpt.edu.vn";
+        private static string AccountNameSend = "MEGA LAB";
 
         public ComplaintController()
         {
@@ -119,18 +123,80 @@ namespace LabSem3.Controllers
         //[ValidateAntiForgeryToken]
         public ActionResult AssignPeople(int comPlaintId, string StaffId)
         {
-            var processComplaint = db.Complaints.Find(comPlaintId);
-            processComplaint.Status = 2;
-            processComplaint.SupportedId = StaffId;
-            db.SaveChanges();
-            return Redirect("/Complaint/ComplaintWaiting");
+            try
+            {
+                var processComplaint = db.Complaints.Find(comPlaintId);
+                processComplaint.Status = 2;
+                processComplaint.SupportedId = StaffId;
+                var supporter = db.Users.Find(StaffId);
+                var accountComplaint = db.Users.Find(processComplaint.AccountId);
+                var typeComplaint = db.TypeComplaints.Find(processComplaint.TypeComplaintId);
+
+                var message = System.IO.File.ReadAllText(Server.MapPath("~/TemplateMail/AssignComplaintMail.html"));
+                message = message.Replace("{{Id}}", processComplaint.Id.ToString());
+                message = message.Replace("{{TypeComplaintName}}", typeComplaint.Name);
+                message = message.Replace("{{SupporterUserName}}", supporter.UserName);
+                message = message.Replace("{{AccountComplaint}}", accountComplaint.UserName);
+                message = message.Replace("{{Title}}", processComplaint.Title);
+                message = message.Replace("{{Detail}}", processComplaint.Detail);
+
+                SendEmail(supporter.Email, typeComplaint.Name, message);
+                TempData["Success"] = "Assign Account " + supporter.UserName + " Success";
+                db.SaveChanges();
+                return Redirect("/Complaint/ComplaintWaiting");
+            } catch(Exception ex)
+            {
+                TempData["False"] = "Assign Account False: "  + ex;
+                return Redirect("/Complaint/ComplaintWaiting");
+            }
+
         }
+
+        public bool SendEmail(string receiver, string subject, string message)
+        {
+            try
+            {
+                var senderEmail = new MailAddress(AccountEmailSend, AccountNameSend);
+                var receiverEmail = new MailAddress(receiver, "ReceiverTest");
+                var password = "btdrbyurmfvacqcc";
+                var sub = subject;
+                var body = message;
+                var smtp = new SmtpClient
+                {
+                    Host = "smtp.gmail.com",
+                    Port = 587,
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(senderEmail.Address, password)
+                };
+                using (var mess = new MailMessage(senderEmail, receiverEmail)
+                {
+                    Subject = subject,
+                    IsBodyHtml = true,
+                    Body = body
+                })
+                {
+                    smtp.Send(mess);
+                }
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = "Some Error" + ex;
+                return false;
+            }
+            return false;
+        }
+
 
         [Authorize(Roles = "ADMIN,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
         // GET: Complaint/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var complaintDetail = db.Complaints.Find(id);
+            return View(complaintDetail);
         }
 
         [Authorize(Roles = "HOD,STUDENT")]
@@ -160,11 +226,40 @@ namespace LabSem3.Controllers
             var result = db.SaveChanges();
             if (result == 1)
             {
+                var typeComplaint = db.TypeComplaints.Find(newComPlaint.TypeComplaintId);
+                TempData["Success"] = "Create Complaint " + typeComplaint.Name + " Success";
+                var accountComplaint = db.Users.Find(newComPlaint.AccountId);
+
+                var message = System.IO.File.ReadAllText(Server.MapPath("~/TemplateMail/CreateComplaintMail.html"));
+                message = message.Replace("{{Id}}", newComPlaint.Id.ToString());
+                message = message.Replace("{{TypeComplaintName}}", typeComplaint.Name);
+                message = message.Replace("{{AccountComplaint}}", accountComplaint.UserName);
+                message = message.Replace("{{Title}}", newComPlaint.Title);
+
+                //var htmlThumbnail = "";
+                //var arrThumbnail = newComPlaint.Thumbnail.Split(',');
+                //if (arrThumbnail.Length > 0)
+                //{
+                //    for (int i = 0; i < arrThumbnail.Length; i++)
+                //    {
+                //        if (arrThumbnail[i].Length == 0)
+                //        {
+                //            continue;
+                //        }
+                //        htmlThumbnail += "< div class='col-md-3 col-sm-3 position-relative' style='padding - left: 0!important;'>< img src =\" arrThumbnail[i] \" class='col-md-12 col-sm-12 img-thumbnail mr-2 mb-2 imagesChoice></div>";
+                //    }
+                //}
+
+
+                //message = message.Replace("{{ArrayThumbnail}}", newComPlaint.Thumbnail);
+                message = message.Replace("{{Detail}}", newComPlaint.Detail);
+                SendEmail(AccountEmailSend, typeComplaint.Name, message);
                 return Redirect("Index");
             }
             else
             {
-                return View("Faile");
+                TempData["False"] = "Create Complaint False";
+                return Redirect("Index");
             }
         }
 
@@ -186,10 +281,13 @@ namespace LabSem3.Controllers
             var result = db.SaveChanges();
             if (result == 1)
             {
+                var typeComplaint = db.TypeComplaints.Find(findComplaint.TypeComplaintId);
+                TempData["Success"] = "Edit Complaint "+ typeComplaint.Name + " Success";
                 return Redirect("/Complaint/Index");
             }
             else
             {
+                TempData["False"] = "Edit Complaint False";
                 return View("Error");
             }
         }

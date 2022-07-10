@@ -11,6 +11,7 @@ namespace LabSem3.Models.ViewModel
     {
         [DisplayName("UserName")]
         [Required(ErrorMessage = "UserName Required")]
+        [RegularExpression(@"^\S*$", ErrorMessage = "No white space allowed")]
         public string UserName { get; set; }
         [DisplayName("Password")]
         [Required(ErrorMessage = "Password Required")]
@@ -22,11 +23,18 @@ namespace LabSem3.Models.ViewModel
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Confirm password doesn't match, Type again !")]
         public string ComfirmPassword { get; set; }
+        [Required(ErrorMessage = "Email Required")]
+        [EmailAddress(ErrorMessage = "Invalid Email Address")]
+        public string Email { get; set; }
+        public RegisterViewModel()
+        {
 
-        [DataType(DataType.Date)]
-        public DateTime? Birthday { get; set; }
-        public string Thumbnail { get; set; }
-        public string Address { get; set; }
-        public string Age { get; set; }
+        }
+
+        //[DataType(DataType.Date)]
+        //public DateTime? Birthday { get; set; }
+        //public string Thumbnail { get; set; }
+        //public string Address { get; set; }
+        //public string Age { get; set; }
     }
 }

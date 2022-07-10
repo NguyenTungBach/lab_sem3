@@ -13,6 +13,7 @@ using System.Data.Entity.Migrations;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -35,10 +36,6 @@ namespace LabSem3.Controllers
             
         }
 
-        //public ActionResult Login()
-        //{
-        //    return View("");
-        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -48,7 +45,7 @@ namespace LabSem3.Controllers
             Debug.WriteLine("user đăng nhập là ", user);
             if (user == null)
             {
-                TempData["False"] = "Account - Not Found " + UserName;
+                TempData["False"] = "Login False With " + UserName;
                 return View("Login");
             }
             else
@@ -73,7 +70,9 @@ namespace LabSem3.Controllers
             {
                 Account user = new Account()
                 {
-                    UserName = registerViewModel.UserName
+                    UserName = registerViewModel.UserName,
+                    Email = registerViewModel.Email,
+                    CreatedAt = DateTime.Now
                 };
 
                 var result = await userManager.CreateAsync(user, registerViewModel.Password);
@@ -91,6 +90,7 @@ namespace LabSem3.Controllers
                     var check = await AddUserToRoleAsync(queryUser.Id, RoleEnum.STUDENT.ToString());
                     if (check)
                     {
+                        
                         return Redirect("/Account/Login");
                     }
                     else
@@ -245,6 +245,7 @@ namespace LabSem3.Controllers
                     Account account = new Account()
                     {
                         UserName = accountViewModel.UserName,
+                        Email = accountViewModel.Email,
                         Status = 1,
                         CreatedAt = DateTime.Now
                     };
@@ -278,8 +279,9 @@ namespace LabSem3.Controllers
                 //TempData["False"] = "Tạo tài khoản thành công";
                 return RedirectToAction("Index");
             }
-            catch
+            catch(Exception ex)
             {
+                TempData["False"] = "Create Account False " + ex;
                 return View();
             }
         }
@@ -303,11 +305,11 @@ namespace LabSem3.Controllers
         [Authorize(Roles = "ADMIN")]
         // POST: Account/Edit/5
         [HttpPost]
-        public async Task<ActionResult> EditPost(string Id, string UserName, string Role, int Status)
+        public async Task<ActionResult> EditPost(AccountEditViewModel accountEditViewModel)
         {
             if (ModelState.IsValid)
             {
-                var checkRoles = Role.Split(',');
+                var checkRoles = accountEditViewModel.Role.Split(',');
                 var roleList = db.Roles.ToList();
 
                 foreach (var role in roleList)
@@ -317,24 +319,30 @@ namespace LabSem3.Controllers
                     {
                         if (role.Name.Equals(checkRole))
                         {
-                            userManager.AddToRole(Id, role.Name);
+                            userManager.AddToRole(accountEditViewModel.Id, role.Name);
                             check = 1;
                             break;
                         }
                     }
                     if(check == 0)
                     {
-                        userManager.RemoveFromRole(Id, role.Name);
+                        userManager.RemoveFromRole(accountEditViewModel.Id, role.Name);
                     }
                 }
-                Account account = db.Users.Find(Id);
+                Account account = db.Users.Find(accountEditViewModel.Id);
                 if (account == null)
                 {
                     return HttpNotFound();
                 }
-                account.UserName = UserName;
+                account.UserName = accountEditViewModel.UserName;
+                account.PhoneNumber = accountEditViewModel.PhoneNumber;
+                account.Birthday = accountEditViewModel.Birthday;
+                account.Thumbnail = accountEditViewModel.Thumbnail;
+                account.FullName = accountEditViewModel.FullName;
+                account.Email = accountEditViewModel.Email;
+                account.Address = accountEditViewModel.Address;
                 account.UpdatedAt = DateTime.Now;
-                account.Status = Status;
+                account.Status = accountEditViewModel.Status;
                 db.Users.AddOrUpdate(account);
                 db.SaveChanges();
             }
@@ -343,6 +351,8 @@ namespace LabSem3.Controllers
             TempData["Success"] = "Update Account Success";
             return RedirectToAction("Index");
         }
+
+
 
         [Authorize(Roles = "ADMIN")]
         // GET: Account/Delete/5
@@ -393,6 +403,57 @@ namespace LabSem3.Controllers
         {
             HttpContext.GetOwinContext().Authentication.SignOut();
             return Redirect("/Account/Login");
+        }
+
+        [Authorize(Roles = "ADMIN,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
+        public ActionResult ChangeProfile()
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return HttpNotFound();
+            }
+
+            var account = db.Users.Find(User.Identity.GetUserId());
+            var changeProfileViewModel = new ChangeProfileViewModel(account);
+            
+            return View(changeProfileViewModel);
+        }
+
+        public ActionResult ComfirmChangeProfile(ChangeProfileViewModel changeProfileViewModel)
+        {
+            try
+            {
+                if (!User.Identity.IsAuthenticated)
+                {
+                    return HttpNotFound();
+                }
+                if (ModelState.IsValid)
+                {
+                    var account = db.Users.Find(User.Identity.GetUserId());
+                    account.UserName = changeProfileViewModel.UserName;
+                    account.PhoneNumber = changeProfileViewModel.PhoneNumber;
+                    account.Birthday = changeProfileViewModel.Birthday;
+                    account.FullName = changeProfileViewModel.FullName;
+                    account.Email = changeProfileViewModel.Email;
+                    account.Thumbnail = changeProfileViewModel.Thumbnail;
+                    account.Address = changeProfileViewModel.Address;
+                    db.Users.AddOrUpdate(account);
+                    db.SaveChanges();
+
+                    TempData["Success"] = "Change Profile Success";
+                    return RedirectToAction("Profile");
+                }
+                else
+                {
+                    TempData["False"] = "Invalidate Change Profile";
+                    return RedirectToAction("Profile");
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["False"] = "Change Profile False: " + ex;
+                return RedirectToAction("Profile");
+            }
         }
 
         [Authorize(Roles = "ADMIN,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]

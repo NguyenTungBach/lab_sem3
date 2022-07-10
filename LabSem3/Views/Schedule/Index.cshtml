@@ -1,10 +1,9 @@
-﻿@model PagedList.IPagedList<LabSem3.Models.Schedule>
-@using PagedList.Mvc;
+﻿
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2 style="font-weight: bold;">Index</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -23,140 +22,105 @@
         @TempData["False"]
     </div>
 }
-<div style="margin-left: 10px; margin-bottom:20px">
-    <form action="/Schedule/Index" method="get" class="d-none d-sm-inline-block form-inline navbar-search">
-        <div class="">
-            <div>
-                <div class="row">
+    <div class="container-fluid">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+            </div>
+            <div class="card-body">
+                <div>
+                    <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <form action="/Schedule/Index">
+                            <div class="row " style="margin-bottom:10px">
 
-                    <div style="margin-right: 20px">
-                        <div style="text-align: left">SlotNumber</div>
-                        <div class="input-group">
-                            <select class="form-control mr-4" name="SlotNumber">
-                                <option @(ViewBag.SlotNumber == null ? "selected" : "")>SlotNumber...</option>
-                                @foreach (var slot in EnumHelper.GetSelectList(typeof(LabSem3.Enum.SlotNumberEnum)))
-                                {
-                                    <option @(ViewBag.SlotNumber == Int32.Parse(slot.Value) ? "selected" : " ") value=@Int32.Parse(slot.Value)>@slot.Text</option>
-                                }
-                            </select>
-                        </div>
-                    </div>
+                                <div style="margin:0 10px">
+                                    <div style="text-align: left">Department</div>
+                                    <div class="input-group">
+                                        <select class="form-control" id="DepartmentId" name="DepartmentId">
+                                            <option selected="" value="">-- Choose Department -- </option>
+                                            @foreach (var department in ViewBag.Departments)
+                                            {
+                                              <option value="@department.Id">@department.Name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div style="margin-right: 20px">
+                                    <div style="text-align: left">Date</div>
+                                    <div class="input-group">
+                                        <input name="Date" id="Date" type="date" class="form-control bg-default border-2 small" aria-label="Search" aria-describedby="basic-addon2">
 
-                    <div style="margin-right: 20px">
-                        <div style="text-align: left">Instructor</div>
-                        <div>
-                            <select id="InstructorId" name="InstructorId" class="form-control">
-                                <option value="" @(ViewBag.InstructorId == null ? "selected" : "")>Choose Instructor</option>
-                                @foreach (var instructor in ViewBag.Instructor)
-                                {
-                                    <option value="@instructor.Id" @(instructor.Id == ViewBag.InstructorId ? "selected" : "")>@instructor.UserName</option>
-                                }
-                            </select>
-                        </div>
-                    </div>
-
-                    <div style="margin-right: 20px">
-                        <div style="text-align: left">StartTime</div>
-                        <div class="input-group">
-                            <input value="@ViewBag.StartTime" name="StartTime" type="date" class="form-control bg-default border-0 small" aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="submit">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
+                                    </div>
+                                </div>
+                                <div style="margin-top:23px">
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="fas fa-search fa-sm"></i>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div style="margin-right: 20px">
-                        <div style="text-align: left">EndTime</div>
-                        <div class="input-group">
-                            <input value="@ViewBag.EndTime" name="EndTime" type="date" class="form-control bg-default border-0 small" aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="submit">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
+                        </form>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                                    <thead>
+                                        <tr role="row"><th class="sorting sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 100px;">Lab Name</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 150px;"><div>Slot 1</div><div>(08:00 - 10:00)</div></th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 150px;"><div>Slot 2</div><div>(10:00 - 12:00)</div></th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 150px;"><div>Slot 3</div><div>(12:00 - 13:30)</div></th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 189px;"><div>Slot 4</div><div>(13:30 - 15:30)</div></th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 171px;"><div>Slot 5</div><div>(15:30 - 17:30)</div></th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 171px;"><div>Slot 6</div><div>(17:30 - 19:30)</div></th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 171px;"><div>Slot 7</div><div>(19:30 - 21:30)</div></th></tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr><th rowspan="1" colspan="1">Lab Name</th><th rowspan="1" colspan="1"><div>Slot 1</div><div>(08:00 - 10:00)</div></th><th rowspan="1" colspan="1"><div>Slot 2</div><div>(10:00-12:00)</div></th><th rowspan="1" colspan="1"><div>Slot 3</div><div>(12:00-13:30)</div></th><th rowspan="1" colspan="1"><div>Slot 4</div><div>(13:30 - 15:30)</div></th><th rowspan="1" colspan="1"><div>Slot 5</div><div>(15:30 - 17:30)</div></th><th rowspan="1" colspan="1"><div>Slot 6</div><div>(17:30 - 19:30)</div></th><th rowspan="1" colspan="1"><div>Slot 7</div><div>(19:30 - 21:30)</div></th></tr>
+                                    </tfoot>
+                                    <tbody>
+                                        @foreach (var lab in ViewBag.Labs)
+                                        {
+                                            <tr class="odd">
+                                                <td class="sorting_1">Lab @lab.Id</td>
+                                                @if (ViewBag.Schedules.Count > 0)
+                                                {
+                                                    var lenght = 7;
+                                                    for (var i = 0; i < lenght; i++)
+                                                    {
+                                                        for (var j = 0; j < ViewBag.Schedules.Count; j++)
+                                                        {
+                                                            if (ViewBag.Schedules[j].SlotNumber == i && ViewBag.Schedules[j].LabId == lab.Id)
+                                                            {
+                                                                <td>
+                                                                    <div><h3>T2012E</h3></div>
+                                                                    <div>@(ViewBag.Schedules[j].Instructor != null ? ViewBag.Schedules[j].Instructor.UserName : " " )</div>
+                                                                </td>
+                                                                ViewBag.Schedules.RemoveAt(j);
+                                                                break;
+                                                            }
+                                                            else
+                                                            {
+                                                                <td></td>
+                                                                break;
+                                                            }
+                                                        }
+                                                        if (ViewBag.Schedules.Count == 0)
+                                                        {
+                                                            
+                                                            <td></td>
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    for (var i = 0; i < 7; i++)
+                                                    {
+                                                        <td></td>
+                                                    }
+
+                                                }
+
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
+
         </div>
-        <div>
-        </div>
-    </form>
-</div>
-<table class="table">
-    <tr>
-        <th>
-            DateBoking
-        </th>
-        <th>
-            SlotNumber
-        </th>
-        <th>
-            Status
-        </th>
-        <th>
-            CreatedAt
-        </th>
-        <th>
-            Lab
-        </th>
-        <th>
-            Instructor
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateBoking)
-            </td>
-            <td>
-                @foreach (var slot in EnumHelper.GetSelectList(typeof(LabSem3.Enum.SlotNumberEnum)))
-                {
-                    if (Int32.Parse(slot.Value) == item.SlotNumber)
-                    {
-                        @slot.Text
-                    }
-                }
-
-            </td>
-            <td>
-                @foreach (var status in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ScheduleStatusEnum)))
-                {
-                    if (Int32.Parse(status.Value) == item.Status)
-                    {
-                        @status.Text
-                    }
-                }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-
-            <td>
-                @foreach (var lab in ViewBag.Labs)
-                {
-                    if (lab.Id == item.LabId)
-                    {
-                        <span>Lab @lab.Id</span>
-                    }
-                }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Instructor.UserName)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
-    }
-
-</table>
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-@Html.PagedListPager(Model, page => Url.Action("Index", new { page, SlotNumber = ViewBag.SlotNumber, InstructorId = ViewBag.InstructorId, StartTime = ViewBag.StartTime, EndTime = ViewBag.EndTime }))
+    </div>

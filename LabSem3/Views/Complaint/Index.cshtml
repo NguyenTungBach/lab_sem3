@@ -9,7 +9,21 @@
 
 }
 
-<h2>List All Complaints</h2>
+<h2 style="font-weight: bold;">List All Complaints</h2>
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["False"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["False"]
+    </div>
+}
+
 @if (!@User.IsInRole("ADMIN"))
 {
     <p>
@@ -23,10 +37,11 @@
             <option @(ViewBag.statusCheck == -1 ? "selected" : " ") value="-1">Status...</option>
             @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ComplaintStatusEnum)))
             {
-                <option @(ViewBag.statusCheck == Int32.Parse(item.Value) ? "selected" : " ") value="@item.Value">@item.Text</option>
+                <option @(!User.IsInRole("ADMIN") && item.Text == "UNASSIGN" ? "hidden" : "" )  @(ViewBag.statusCheck == Int32.Parse(item.Value) ? "selected" : " ") value="@item.Value">@item.Text</option>
+                
             }
         </select>
-        @if(User.IsInRole("ADMIN") || User.IsInRole("HOD"))
+        @if (User.IsInRole("ADMIN") || User.IsInRole("HOD"))
         {
             <select class="form-control mr-4" name="SupportId">
                 <option @(ViewBag.SupportId == null ? "selected" : " ") value="">Support...</option>
@@ -73,37 +88,45 @@
 
     @foreach (var item in Model)
     {
-<tr>
-    <td>
-        @item.Title
-    </td>
-    <td>
-        @item.Detail
-    </td>
-    <td>
-        @foreach (var item2 in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ComplaintStatusEnum)))
-        {
-            if (item.Status == Int32.Parse(item2.Value))
-            {
-                @item2.Text
-                break;
-            }
-        }
-    </td>
-    <td>
-        @(item.Supporter !=null ? item.Supporter.UserName : "")
-    </td>
-    <td>
-        @item.EquipmentId
-    </td>
-    <td>
-        @item.TypeComplaint.Name
-    </td>
-    <td>
-        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-    </td>
-</tr>
+        <tr>
+            <td>
+                @item.Title
+            </td>
+            <td>
+                @item.Detail
+            </td>
+            <td>
+                @foreach (var item2 in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ComplaintStatusEnum)))
+                {
+                    if (item.Status == Int32.Parse(item2.Value))
+                    {
+                        @item2.Text
+                        break;
+                    }
+                }
+            </td>
+            <td>
+                @(item.Supporter !=null ? item.Supporter.UserName : "")
+            </td>
+            <td>
+                @item.EquipmentId
+            </td>
+            <td>
+                @item.TypeComplaint.Name
+            </td>
+            <td>
+                @if (User.IsInRole("STUDENT") || User.IsInRole("HOD"))
+                {
+                    @Html.ActionLink("Details", "Details", new { id = item.Id })
+                }
+                else
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) <span> | </span>
+                    @Html.ActionLink("Details", "Details", new { id = item.Id })<span> | </span>
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                }
+            </td>
+        </tr>
     }
 
 </table>

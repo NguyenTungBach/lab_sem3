@@ -23,45 +23,23 @@ namespace LabSem3.Controllers
         }
 
         [Authorize(Roles = "ADMIN,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
+        [Obsolete]
         // GET: Schedule
-        public ActionResult Index(int? SlotNumber, int? page, string InstructorId, string StartTime, string EndTime)
+        public ActionResult Index(int? DepartmentId, string Date)
         {
-
-            var listSchedule = db.Schedules.Include(s => s.Instructor).OrderBy(s => s.Id).AsQueryable();
-
-            if (SlotNumber != null)
+            var labs = db.Labs.Where(s => s.DepartmentId == 1);
+            var dateNow = DateTime.Now.AddDays(1).Date;
+            var listSchedules = db.Schedules.Where(s => s.Lab.DepartmentId == 1 && EntityFunctions.TruncateTime(s.DateBoking) == dateNow).Include(s=>s.Instructor).OrderBy(s => s.LabId).ThenBy(s => s.SlotNumber).ToList();
+            if(DepartmentId != null && Date != null && Date != "")
             {
-                listSchedule = listSchedule.Where(s => s.SlotNumber == SlotNumber);
+                var date = DateTime.Parse(Date).Date;
+                listSchedules = db.Schedules.Where(s =>  s.Lab.DepartmentId == DepartmentId && EntityFunctions.TruncateTime(s.DateBoking) == date).Include(s => s.Instructor).OrderBy(s => s.LabId).ThenBy(s => s.SlotNumber).ToList();
+                labs = db.Labs.Where(s => s.DepartmentId == DepartmentId);
             }
-
-            if (InstructorId != null && InstructorId.Length > 0)
-            {
-                listSchedule = listSchedule.Where(s => s.InstructorId.Equals(InstructorId));
-            }
-
-            if (StartTime != null && StartTime != "")
-            {
-                var startDateTime0000 = DateTime.Parse(StartTime);
-                listSchedule = listSchedule.Where(s => s.DateBoking >= startDateTime0000);
-            }
-            if (EndTime != null && EndTime != "")
-            {
-                var endDateTime2359 = DateTime.Parse(EndTime).AddDays(1).AddTicks(-1);
-                listSchedule = listSchedule.Where(s => s.DateBoking <= endDateTime2359);
-            }
-
-            ViewBag.Labs = db.Labs.ToList();
-            var roleINSTRUCTOR = db.Roles.Where(s => s.Name.Contains(RoleEnum.INSTRUCTOR.ToString())).FirstOrDefault();
-            ViewBag.Instructor = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleINSTRUCTOR.Id))).ToList();
-            ViewBag.SlotNumber = SlotNumber;
-            ViewBag.InstructorId = InstructorId;
-            ViewBag.StartTime = StartTime;
-            ViewBag.EndTime = EndTime;
-
-            int pageSize = 10;
-            int pageNumber = (page ?? 1);
-
-            return View(listSchedule.ToPagedList(pageNumber, pageSize));
+            ViewBag.Schedules = listSchedules;
+            ViewBag.Labs = labs;
+            ViewBag.Departments = db.Departments.ToList();
+            return View();
         }
 
         [Authorize(Roles = "ADMIN,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
@@ -89,13 +67,13 @@ namespace LabSem3.Controllers
         {
             if (ModelState.IsValid)
             {
-                var startTime = scheduleCreateViewModel.StartTime;
-                var endTime = scheduleCreateViewModel.EndTime;
+                var startTime = scheduleCreateViewModel.StartTime.Date;
+                var endTime = scheduleCreateViewModel.EndTime.Date;
 
                 var scheduleDay = endTime.Subtract(startTime).Days + 1;
 
                 var checkToday = DateTime.Now.Date;
-                if(checkToday.Date == startTime.Date)
+                if(checkToday.Date == startTime)
                 {
                     ViewBag.Labs = db.Labs.ToList();
                     var roleINSTRUCTOR = db.Roles.Where(s => s.Name.Contains(RoleEnum.INSTRUCTOR.ToString())).FirstOrDefault();
@@ -103,7 +81,7 @@ namespace LabSem3.Controllers
                     TempData["False"] = "Start Date can't today";
                     return View();
                 }
-                if(checkToday.Date > startTime.Date)
+                if(checkToday.Date > startTime)
                 {
                     ViewBag.Labs = db.Labs.ToList();
                     var roleINSTRUCTOR = db.Roles.Where(s => s.Name.Contains(RoleEnum.INSTRUCTOR.ToString())).FirstOrDefault();
@@ -111,7 +89,7 @@ namespace LabSem3.Controllers
                     TempData["False"] = "Start Date can't less than Date Now";
                     return View();
                 }
-                if(startTime.Date > endTime.Date)
+                if(startTime.Date > endTime)
                 {
                     ViewBag.Labs = db.Labs.ToList();
                     var roleINSTRUCTOR = db.Roles.Where(s => s.Name.Contains(RoleEnum.INSTRUCTOR.ToString())).FirstOrDefault();
@@ -119,43 +97,6 @@ namespace LabSem3.Controllers
                     TempData["False"] = "Start Date can't more than End Time";
                     return View();
                 }
-
-                //var checkToday = DateTime.Now.Subtract(startTime).Days + 1;
-                //if (checkToday == 1)
-                //{
-                //    ViewBag.Labs = db.Labs.ToList();
-                //    var roleINSTRUCTOR = db.Roles.Where(s => s.Name.Contains(RoleEnum.INSTRUCTOR.ToString())).FirstOrDefault();
-                //    ViewBag.InstructorList = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleINSTRUCTOR.Id))).ToList(); ;
-                //    TempData["False"] = "Start Date can't today";
-                //    return View();
-                //}
-
-                //if (checkToday < 1)
-                //{
-                //    ViewBag.Labs = db.Labs.ToList();
-                //    var roleINSTRUCTOR = db.Roles.Where(s => s.Name.Contains(RoleEnum.INSTRUCTOR.ToString())).FirstOrDefault();
-                //    ViewBag.InstructorList = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleINSTRUCTOR.Id))).ToList(); ;
-                //    TempData["False"] = "Start Date can't more than Date Now";
-                //    return View();
-                //}
-
-                //if (scheduleDay <= 1)
-                //{
-                //    ViewBag.Labs = db.Labs.ToList();
-                //    var roleINSTRUCTOR = db.Roles.Where(s => s.Name.Contains(RoleEnum.INSTRUCTOR.ToString())).FirstOrDefault();
-                //    ViewBag.InstructorList = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleINSTRUCTOR.Id))).ToList(); ;
-                //    TempData["False"] = "End Date can't less than Start Date";
-                //    return View();
-                //}
-
-                //if(DateTime.Now.Subtract(startTime).Days + 1 <= 0)
-                //{
-                //    ViewBag.Labs = db.Labs.ToList();
-                //    var roleINSTRUCTOR = db.Roles.Where(s => s.Name.Contains(RoleEnum.INSTRUCTOR.ToString())).FirstOrDefault();
-                //    ViewBag.InstructorList = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleINSTRUCTOR.Id))).ToList(); ;
-                //    TempData["False"] = "Start Date can't less than Date Now";
-                //    return View();
-                //}
 
                 if (scheduleCreateViewModel.InstructorId == null )
                 {
@@ -224,16 +165,8 @@ namespace LabSem3.Controllers
                                 InstructorId = scheduleCreateViewModel.InstructorId,
                             };
                             list.Add(schedule);
+                           
                         }
-                        //Schedule schedule = new Schedule()
-                        //{
-                        //    DateBoking = startTime.AddDays(i),
-                        //    SlotNumber = Int32.Parse(slot),
-                        //    Status = ((int)ScheduleStatusEnum.AVAILABLE),
-                        //    CreatedAt = DateTime.Now,
-                        //    LabId = scheduleCreateViewModel.LabId,
-                        //    InstructorId = scheduleCreateViewModel.InstructorId,
-                        //}; 
                     }
                 }
                 list.ForEach(s => db.Schedules.AddOrUpdate(s));
@@ -247,10 +180,19 @@ namespace LabSem3.Controllers
         // GET: Schedule/Edit/5
         public ActionResult Edit(int id)
         {
+            var Schedule = db.Schedules.Find(id);
+            var scheduleEditViewModel = new ScheduleEditViewModel() {
+                DateBoking = Schedule.DateBoking,
+                SlotNumber = Schedule.SlotNumber,
+                LabId = Schedule.LabId,
+                Status = Schedule.Status,
+                InstructorId = Schedule.InstructorId
+            };
             ViewBag.Labs = db.Labs.ToList();
             var roleINSTRUCTOR = db.Roles.Where(s => s.Name.Contains(RoleEnum.INSTRUCTOR.ToString())).FirstOrDefault();
             ViewBag.InstructorList = db.Users.Include(l => l.Roles).Where(s => s.Roles.Any(c => c.RoleId.Contains(roleINSTRUCTOR.Id))).ToList();
-            return View();
+            
+            return View(scheduleEditViewModel);
         }
 
         [Authorize(Roles = "ADMIN,INSTRUCTOR")]
@@ -318,7 +260,7 @@ namespace LabSem3.Controllers
             }
             if (scheduleDbs != null)
             {
-                TempData["False"] = "Can't change schedule beacause slot ";
+                TempData["False"] = "Can't change schedule beacause duplicate slot";
                 return RedirectToAction("Index");
             }
             else

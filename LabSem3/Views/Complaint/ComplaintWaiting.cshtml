@@ -8,6 +8,19 @@
 }
 
 <h2>Unallocated work list</h2>
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["False"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["False"]
+    </div>
+}
 
 <!-- Modal instructor-->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

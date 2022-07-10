@@ -32,6 +32,16 @@ namespace LabSem3.Controllers
             roleManager = new RoleManager<IdentityRole>(roleStore); // giống Service, xử lý các vấn đề liên quan đến logic
         }
 
+        public ActionResult ViewError()
+        {
+            return View();
+        }
+
+        public ActionResult ViewSuccess()
+        {
+            return View();
+        }
+
         [Authorize(Roles = "ADMIN,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
         // GET: Labs
         public ActionResult Index(int? page, int? status, string startTime, string endTime,int? departmentId)

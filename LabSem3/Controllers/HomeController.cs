@@ -8,6 +8,7 @@ namespace LabSem3.Controllers
 {
     public class HomeController : Controller
     {
+        [Authorize(Roles = "ADMIN,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
         public ActionResult Index()
         {
             return View();

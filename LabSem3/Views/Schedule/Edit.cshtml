@@ -1,100 +1,114 @@
 ﻿@model LabSem3.Models.ViewModel.ScheduleViewModel.ScheduleEditViewModel
-
+@using Microsoft.AspNet.Identity
 @{
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+<h2 style="font-weight: bold;">Edit</h2>
 
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["False"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["False"]
+    </div>
+}
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
-    <h4>ScheduleEditViewModel</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(model => model.DateBoking, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.DateBoking, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.DateBoking, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="control-label col-md-2">
-            SlotNumber
-        </div>
-        @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.SlotNumberEnum)))
-        {
+    <div class="form-horizontal">
+        <h4>ScheduleEditViewModel</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.DateBoking, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <div>
-                    <input type="checkbox" value="@item.Value" id="SlotNumber" name="SlotNumber" class="slotCheck">
-                    <label class="form-check-label" for="@item.Text">
-                        @switch (Int32.Parse(item.Value))
-                        {
-                            case 0:
-                                <span>@item.Text (8:00-10:00)</span>
-                                break;
-                            case 1:
-                                <span>@item.Text (10:00-12:00)</span>
-                                break;
-                            case 2:
-                                <span>@item.Text (12:00-13:30)</span>
-                                break;
-                            case 3:
-                                <span>@item.Text (13:30-15:30)</span>
-                                break;
-                            case 4:
-                                <span>@item.Text (15:30-17:30)</span>
-                                break;
-                            case 5:
-                                <span>@item.Text (17:30-19:30)</span>
-                                break;
-                            case 6:
-                                <span>@item.Text (19:30-21:30)</span>
-                                break;
-                        }
-                    </label>
-                </div>
+                <input class="form-control text-box single-line" data-val="true" data-val-date="The field DateBoking must be a date." data-val-required="DateBoking Required" id="DateBoking" name="DateBoking" type="date" value="@Model.DateBoking.ToString("yyyy-MM-dd")">
+                @Html.ValidationMessageFor(model => model.DateBoking, "", new { @class = "text-danger" })
             </div>
-        }
+        </div>
+
+       
+        <div class="form-group">
+            <div class="control-label col-md-2">
+                SlotNumber
+            </div>
+            @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.SlotNumberEnum)))
+            {
+                <div class="col-md-10">
+                    <div>
+                        <input type="radio" value="@item.Value" @(Int32.Parse(item.Value) == Model.SlotNumber ? "checked" : "") id="SlotNumber" name="SlotNumber">
+                        <label class="form-check-label" for="@item.Text">
+                            @switch (Int32.Parse(item.Value))
+                            {
+                                case 0:
+                                    <span>@item.Text (8:00-10:00)</span>
+                                    break;
+                                case 1:
+                                    <span>@item.Text (10:00-12:00)</span>
+                                    break;
+                                case 2:
+                                    <span>@item.Text (12:00-13:30)</span>
+                                    break;
+                                case 3:
+                                    <span>@item.Text (13:30-15:30)</span>
+                                    break;
+                                case 4:
+                                    <span>@item.Text (15:30-17:30)</span>
+                                    break;
+                                case 5:
+                                    <span>@item.Text (17:30-19:30)</span>
+                                    break;
+                                case 6:
+                                    <span>@item.Text (19:30-21:30)</span>
+                                    break;
+                            }
+                        </label>
+                    </div>
+                </div>
+            }
 
 
-    </div>
+        </div>
 
-    <div class="form-group">
-        <label class="control-label col-md-2" for="DepartmentId">Lab</label>
-        <div class="col-md-10">
-            <select class="form-control" id="LabId" name="LabId">
-                @foreach (var lab in ViewBag.Labs)
-                {
-                    <option value="@lab.Id">Lab @lab.Id</option>
-                }
-            </select>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="DepartmentId">Lab</label>
+            <div class="col-md-2">
+                <select class="form-control" id="LabId" name="LabId">
+                    @foreach (var lab in ViewBag.Labs)
+                    {
+                        <option value="@lab.Id" @(lab.Id == Model.LabId ? "selected" : "")>Lab @lab.Id</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="DepartmentId">Status</label>
+            <div class="col-md-2">
+                <select class="form-control" id="Status" name="Status">
+                    @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ScheduleStatusEnum)))
+                    {
+                        <option value="@item.Value"  @(Model.Status == Int32.Parse(item.Value) ? "selected" : "")>@item.Text</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input style=" background-color: antiquewhite; border-color: skyblue;" type="submit" value="Save" class="btn btn-default" />
+            </div>
         </div>
     </div>
-
-    <div class="form-group">
-        <label class="control-label col-md-2" for="DepartmentId">Status</label>
-        <div class="col-md-10">
-            <select class="form-control" id="Status" name="Status">
-                @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ScheduleStatusEnum)))
-                {
-                    <option value="@item.Value">@item.Text</option>
-                }
-            </select>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-default" />
-        </div>
-    </div>
-</div>
 }
 
 <div>
@@ -105,46 +119,4 @@
     @Scripts.Render("~/bundles/jqueryval")
 }
 
-<script src="~/Scripts/jquery-3.4.1.js"></script>
-<script>
-    const selectStatus = $(".slotCheck");
-        $(document).ready(function () {
-        var checkStatus = document.querySelectorAll(".slotCheck");
-        var checkArray = document.getElementById('SlotNumberArray').value.split(',');
 
-        if (checkArray.length > 0) {
-            checkArray.forEach(s => {
-                checkStatus.forEach(h => {
-                if (s == h.value) {
-                    //console.log("check h: " + h.value)
-
-                    h.checked = true
-                }
-            })
-        });
-        }
-    });
-
-    selectStatus.on('click', function () {
-        let array = new Set();
-        let value = this.value;
-        let checkWait = true; // kiểm tra có wait không
-        for (let i = 0; i < selectStatus.length; i++) { // Kiểm tra từng selectStatus
-            if (selectStatus[i].checked) { // Nếu có selectStatus được check
-                array.add(selectStatus[i].value); // thì đưa vào Set
-            }
-        }
-
-        if ($(this).prop('checked')) {
-            if (!checkWait) { // nếu kiểm tra tất cả mà không có wait
-                array.add(value); // thì thêm vào mảng
-            }
-        } else {
-            if (array.has(value)) {
-                array.delete(value);
-            }
-        }
-        console.log('array la: ' + Array.from(array));
-        $('#SlotNumberArray').val(Array.from(array));
-    });
-</script>
