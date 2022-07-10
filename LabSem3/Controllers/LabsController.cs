@@ -208,11 +208,16 @@ namespace LabSem3.Controllers
 
         [Authorize(Roles = "ADMIN")]
         [HttpPost]
-        public JsonResult UpdatedStatus(int id,int status)
+        public JsonResult UpdatedStatus(string id,int status)
         {
-            Equipment equipment = db.Equipments.Find(id);
-            equipment.Status = status;
-            db.SaveChanges();
+           var ids = id.Split(',');
+           foreach(var number in ids)
+            {
+                int result = Int32.Parse(number);
+                Equipment equipment = db.Equipments.Find(result);
+                equipment.Status = status;
+                db.SaveChanges();
+            }
             return Json("Save sucesss!!");
         }
 

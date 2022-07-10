@@ -131,7 +131,7 @@ namespace LabSem3.Controllers
         [HttpPost]
         public ActionResult Edit(Document document)
         {
-            try
+            if (ModelState.IsValid)
             {
                 // TODO: Add update logic here
                 var DocumnetEdit = db.Document.Find(document.Id);
@@ -145,9 +145,10 @@ namespace LabSem3.Controllers
                 TempData["Success"] = "Edit " + document.Title + " Success ";
                 return RedirectToAction("Index");
             }
-            catch
+            else
             {
-                return View();
+                ViewBag.TypeEquipments = db.TypeEquipments.ToList();
+                return View(document);
             }
         }
 

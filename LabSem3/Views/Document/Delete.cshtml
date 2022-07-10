@@ -29,7 +29,7 @@
                                     </td>
                                 </tr>
 
-                                <tr>
+                                @*<tr>
                                     <td>
                                         <strong>
                                             <span class="glyphicon glyphicon-cloud text-primary"></span>
@@ -39,7 +39,7 @@
                                     <td class="text-primary">
                                         @Model.Detail
                                     </td>
-                                </tr>
+                                </tr>*@
                                 <tr>
                                     <td>
                                         <strong>
@@ -48,7 +48,10 @@
                                         </strong>
                                     </td>
                                     <td class="text-primary">
-                                        @Model.Status
+                                        @foreach (var statusItem in EnumHelper.GetSelectList(typeof(LabSem3.Enum.DocumentStatusEnum)))
+                                        {
+                                            @(Int32.Parse(statusItem.Value) == Model.Status ? statusItem.Text : "" )
+                                        }
                                     </td>
                                 </tr>
                               
