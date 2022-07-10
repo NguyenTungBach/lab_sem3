@@ -233,33 +233,43 @@
             function updatedStatus() {
                 var select = document.getElementById('selected');
                 var value = select.options[select.selectedIndex].value;
-
-                if (array != null) {
-                    array.forEach(s => {
-                        $.ajax({
+                var arrayString = Array.from(array).toString();
+                console.log(value);
+                console.log(arrayString)
+                if (arrayString != null) {
+                     $.ajax({
                             url: "/Labs/UpdatedStatus",
-
                             type: "POST",
-
-                            data: { id: s, status: value },
-                        });
-                        window.location.reload(true);
-                    })
-
+                         data: { id: arrayString, status: value },
+                         success: function (data) {
+                             window.location.reload();
+                         },
+                            
+                     });
+                    
                 }
-
             }
             var array = new Set;
             document.getElementById('checkAll').onclick = function () {
                 var check = document.getElementById('checkAll');
                 var checkBox = document.getElementsByName('checkElement');
-                if (check.checked = true) {
+                if (check.checked == true) {
                     for (var i = 0; i < checkBox.length; i++) {
                         checkBox[i].checked = true;
                     }
                     var ids = document.getElementsByClassName("sorting_1");
                     for (let id of ids) {
                         array.add(Number(id.innerHTML));
+                    }
+                    console.log(array)
+                }
+                else {
+                    for (var i = 0; i < checkBox.length; i++) {
+                        checkBox[i].checked = false;
+                    }
+                    var ids = document.getElementsByClassName("sorting_1");
+                    for (let id of ids) {
+                        array.delete(Number(id.innerHTML));
                     }
                     console.log(array)
                 }
@@ -275,25 +285,34 @@
                 var checkBox = document.getElementsByName('checkElement');
                 for (var i = 0; i < checkBox.length; i++) {
                     if (checkBox[i].checked == true) {
-                        array.add(id);
+                        if (!array.has(id)) {
+                            array.add(id);
+                            break;
+                        }
+                    }
+                    else {
+                        array.delete(id);
+
 
                     }
+
                 }
-                console.log(array)
+                console.log(array);
+
             }
 
 
 
-            document.getElementById('checkAll').ondblclick = function () {
-                var check = document.getElementById('checkAll');
-                var checkBox = document.getElementsByName('checkElement');;
-                check.checked = false
-                for (var i = 0; i < checkBox.length; i++) {
-                    checkBox[i].checked = false;
-                }
-                array.clear();
-                console.log(array)
-            }
+            //document.getElementById('checkAll').ondblclick = function () {
+            //    var check = document.getElementById('checkAll');
+            //    var checkBox = document.getElementsByName('checkElement');;
+            //    check.checked = false
+            //    for (var i = 0; i < checkBox.length; i++) {
+            //        checkBox[i].checked = false;
+            //    }
+            //    array.clear();
+            //    console.log(array)
+            //}
         </script>
 
 
