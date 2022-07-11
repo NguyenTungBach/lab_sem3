@@ -35,7 +35,7 @@ namespace LabSem3.Controllers
 
         [Authorize(Roles = "ADMIN,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
         // GET: Department
-        public async Task<ActionResult> Index(string Name, int? page, int? LabSearch, string HodSearch, string InstructorSearch, string StartTime, string EndTime)
+        public async Task<ActionResult> Index(string Name, int? page, int? LabSearch, int? statusCheck, string HodSearch, string InstructorSearch, string StartTime, string EndTime)
         {
             var department = db.Departments.OrderBy(s => s.Id).AsQueryable();
             ViewBag.RoleList = db.Roles.ToList();
@@ -52,7 +52,12 @@ namespace LabSem3.Controllers
             {
                 department = department.Where(s => s.Hod.Id.Contains(HodSearch));
             }
-            
+
+            if (statusCheck != -2 && statusCheck != null)
+            {
+                department = department.Where(s => s.Status == statusCheck);
+            }
+
             if (StartTime != null && StartTime != "")
             {
                 var startDateTime0000 = DateTime.Parse(StartTime);

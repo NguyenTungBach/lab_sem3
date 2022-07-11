@@ -154,7 +154,7 @@ namespace LabSem3.Controllers
 
         [Authorize(Roles = "ADMIN")]
         // GET: Account
-        public async Task<ActionResult> Index(string UserName, int? page, string RoleSearch, string StartTime, string EndTime)
+        public async Task<ActionResult> Index(string UserName, int? page, string RoleSearch, int? statusCheck, string StartTime, string EndTime)
         {
             var account = db.Users.Include(l => l.Department).Include(l => l.Roles).OrderBy(s => s.Id).AsQueryable();
             ViewBag.RoleList = db.Roles.ToList();
@@ -167,6 +167,11 @@ namespace LabSem3.Controllers
             if (RoleSearch != null && RoleSearch.Length > 0)
             {
                 account = account.Where(s => s.Roles.Any(c => c.RoleId.Contains(RoleSearch)));
+            }
+
+            if (statusCheck != -2 && statusCheck != null)
+            {
+                account = account.Where(s => s.Status == statusCheck);
             }
 
             if (StartTime != null && StartTime != "")

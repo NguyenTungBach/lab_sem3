@@ -37,20 +37,33 @@
             <option @(ViewBag.statusCheck == -1 ? "selected" : " ") value="-1">Status...</option>
             @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ComplaintStatusEnum)))
             {
-                <option @(!User.IsInRole("ADMIN") && item.Text == "UNASSIGN" ? "hidden" : "" )  @(ViewBag.statusCheck == Int32.Parse(item.Value) ? "selected" : " ") value="@item.Value">@item.Text</option>
-                
+                <option @(!User.IsInRole("ADMIN") && item.Text == "UNASSIGN" ? "hidden" : "" ) @(ViewBag.statusCheck == Int32.Parse(item.Value) ? "selected" : " ") value="@item.Value">@item.Text</option>
+
             }
         </select>
         @if (User.IsInRole("ADMIN") || User.IsInRole("HOD"))
         {
             <select class="form-control mr-4" name="SupportId">
                 <option @(ViewBag.SupportId == null ? "selected" : " ") value="">Support...</option>
+                <option @(ViewBag.SupportId == "1" ? "selected" : " ") value="1">Unassign</option>
                 @foreach (var item in ViewBag.Support)
                 {
                     <option @(ViewBag.SupportId == item.Id ? "selected" : " ") value="@item.Id">@item.UserName</option>
                 }
             </select>
         }
+        @*Type Complaint Check*@
+        <div style="margin-right: 20px">
+            <div class="TypeComplaintCheck">
+                <select id="TypeComplaintCheck" name="TypeComplaintCheck" class="form-control">
+                    <option @(ViewBag.TypeComplaintCheck == null ? "selected" : "")>Choose TypeEquipment Search</option>
+                    @foreach (var TypeComplaint in ViewBag.TypeComplaintList)
+                    {
+                        <option value="@TypeComplaint.Id" @(TypeComplaint.Id == ViewBag.TypeComplaintCheck ? "selected" : "")>@TypeComplaint.Name</option>
+                    }
+                </select>
+            </div>
+        </div>
 
 
         <input value="@ViewBag.keyWord" name="keyWord" type="text" class="form-control bg-default small" placeholder="Search for..."
@@ -155,7 +168,7 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
 <nav aria-label="Page navigation example">
     <ul class="pagination">
 
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, SupportId = ViewBag.SupportId, statusCheck = ViewBag.statusCheck, keyWord = ViewBag.keyWord }))
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, SupportId = ViewBag.SupportId, statusCheck = ViewBag.statusCheck, keyWord = ViewBag.keyWord, TypecomplaintCheck = ViewBag.ComplaintCheck }))
 
     </ul>
 </nav>
