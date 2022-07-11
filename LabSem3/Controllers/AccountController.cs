@@ -33,7 +33,7 @@ namespace LabSem3.Controllers
             userManager = new UserManager<Account>(userStore); // giống Service, xử lý các vấn đề liên quan đến logic
             RoleStore<IdentityRole> roleStore = new RoleStore<IdentityRole>(db); // create, update, delete giống UserModel
             roleManager = new RoleManager<IdentityRole>(roleStore); // giống Service, xử lý các vấn đề liên quan đến logic
-            
+
         }
 
 
@@ -71,7 +71,7 @@ namespace LabSem3.Controllers
                 var checkDuplicateEmail = db.Users.ToList();
                 foreach (var item in checkDuplicateEmail)
                 {
-                    if(item.Email == registerViewModel.Email)
+                    if (item.Email == registerViewModel.Email)
                     {
                         TempData["False"] = "Duplicate Email";
                         return View();
@@ -100,13 +100,13 @@ namespace LabSem3.Controllers
                     var check = await AddUserToRoleAsync(queryUser.Id, RoleEnum.STUDENT.ToString());
                     if (check)
                     {
-                        
+
                         return Redirect("/Account/Login");
                     }
                     else
                     {
                         TempData["False"] = "Not found Add Role please call Admin to help";
-                        
+
                         return View();
                     }
                 }
@@ -123,7 +123,7 @@ namespace LabSem3.Controllers
                 return View();
             }
 
-            
+
         }
 
         [Authorize(Roles = "ADMIN")]
@@ -154,7 +154,7 @@ namespace LabSem3.Controllers
 
         [Authorize(Roles = "ADMIN")]
         // GET: Account
-        public async Task<ActionResult> Index(string UserName, int? page, string RoleSearch, string StartTime, string EndTime)
+        public async Task<ActionResult> Index(string UserName, int? page, string RoleSearch, int? statusCheck, string StartTime, string EndTime)
         {
             var account = db.Users.Include(l => l.Department).Include(l => l.Roles).OrderBy(s => s.Id).AsQueryable();
             ViewBag.RoleList = db.Roles.ToList();
@@ -163,10 +163,15 @@ namespace LabSem3.Controllers
             {
                 account = account.Where(s => s.UserName.Contains(UserName));
             }
-            
+
             if (RoleSearch != null && RoleSearch.Length > 0)
             {
                 account = account.Where(s => s.Roles.Any(c => c.RoleId.Contains(RoleSearch)));
+            }
+
+            if (statusCheck != -2 && statusCheck != null)
+            {
+                account = account.Where(s => s.Status == statusCheck);
             }
 
             if (StartTime != null && StartTime != "")
@@ -180,7 +185,7 @@ namespace LabSem3.Controllers
                 account = account.Where(s => s.CreatedAt <= endDateTime2359);
             }
 
-            
+
             ViewBag.UserName = UserName;
             ViewBag.RoleSearch = RoleSearch;
             ViewBag.StartTime = StartTime;
@@ -270,7 +275,7 @@ namespace LabSem3.Controllers
                         CreatedAt = DateTime.Now
                     };
                     await userManager.CreateAsync(account, accountViewModel.Password);
-                    
+
 
                     foreach (var role in checkRoles)
                     {
@@ -292,14 +297,14 @@ namespace LabSem3.Controllers
                         }
 
                     }
-                    
+
                     TempData["Success"] = "Create account " + accountViewModel.UserName + " success";
                     return RedirectToAction("Index");
                 }
                 //TempData["False"] = "Tạo tài khoản thành công";
                 return RedirectToAction("Index");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 TempData["False"] = "Create Account False " + ex;
                 return View();
@@ -318,7 +323,7 @@ namespace LabSem3.Controllers
             var accountViewModel = new AccountEditViewModel(account);
             ViewBag.Role = db.Roles.ToList();
             ViewBag.RoleAccounts = userManager.GetRoles(id).ToList();
-            
+
             return View(accountViewModel);
         }
 
@@ -329,6 +334,9 @@ namespace LabSem3.Controllers
         {
             if (ModelState.IsValid)
             {
+
+
+
                 var checkRoles = accountEditViewModel.Role.Split(',');
                 var roleList = db.Roles.ToList();
 
@@ -344,7 +352,7 @@ namespace LabSem3.Controllers
                             break;
                         }
                     }
-                    if(check == 0)
+                    if (check == 0)
                     {
                         userManager.RemoveFromRole(accountEditViewModel.Id, role.Name);
                     }
@@ -354,6 +362,16 @@ namespace LabSem3.Controllers
                 {
                     return HttpNotFound();
                 }
+                if (accountEditViewModel.Email != account.Email)
+                {
+                    var checkEmail = db.Users.Where(s => s.Email.Equals(accountEditViewModel.Email)).FirstOrDefault();
+                    if (checkEmail != null)
+                    {
+                        TempData["False"] = "Email Existed";
+                        return RedirectToAction("Index");
+                    }
+                }
+
                 account.UserName = accountEditViewModel.UserName;
                 account.PhoneNumber = accountEditViewModel.PhoneNumber;
                 account.Birthday = accountEditViewModel.Birthday;
@@ -365,11 +383,17 @@ namespace LabSem3.Controllers
                 account.Status = accountEditViewModel.Status;
                 db.Users.AddOrUpdate(account);
                 db.SaveChanges();
+                //ViewBag.Role = db.Roles.ToList();
+                //ViewBag.RoleAccounts = userManager.GetRoles(id).ToList();
+                TempData["Success"] = "Update Account Success";
+                return RedirectToAction("Index");
             }
-            //ViewBag.Role = db.Roles.ToList();
-            //ViewBag.RoleAccounts = userManager.GetRoles(id).ToList();
-            TempData["Success"] = "Update Account Success";
-            return RedirectToAction("Index");
+            else
+            {
+                TempData["False"] = "Update Account Failse Because Invalid";
+                return RedirectToAction("Index");
+
+            }
         }
 
 
@@ -435,7 +459,7 @@ namespace LabSem3.Controllers
 
             var account = db.Users.Find(User.Identity.GetUserId());
             var changeProfileViewModel = new ChangeProfileViewModel(account);
-            
+
             return View(changeProfileViewModel);
         }
 
@@ -498,7 +522,7 @@ namespace LabSem3.Controllers
 
             try
             {
-                
+
                 var user = db.Users.Find(User.Identity.GetUserId());
 
                 var result = userManager.ChangePassword(user.Id, changePasswordViewModel.OldPassword, changePasswordViewModel.NewPassword);
@@ -511,7 +535,7 @@ namespace LabSem3.Controllers
                 TempData["Success"] = "Change Password For Account " + user.UserName + " Success";
                 return Redirect("/Account/Profile");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 TempData["False"] = "Change Password For Account " + User.Identity.GetUserName() + " False: " + ex;
                 return Redirect("/Account/Profile");
@@ -520,6 +544,16 @@ namespace LabSem3.Controllers
 
         public ActionResult RegisterNVQ()
         {
+            return View();
+        }
+
+        public ActionResult Dashboard()
+        {
+            float total1 = db.Complaints.Count();
+            ViewBag.PENDING = (float)db.Complaints.Count(s => s.Status == 1) / total1 * 100;
+            ViewBag.PROCESSING = (float)db.Complaints.Count(s => s.Status == 2) / total1 * 100;
+            ViewBag.COMPLETE = (float)db.Complaints.Count(s => s.Status == 3) / total1 * 100;
+            ViewBag.UNASSIGN = (float)db.Complaints.Count(s => s.Status == 4) / total1 * 100;
             return View();
         }
     }

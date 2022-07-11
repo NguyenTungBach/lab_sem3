@@ -44,7 +44,7 @@ namespace LabSem3.Migrations
                 SecurityStamp = "073164e1-4029-4461-b688-a48f28f3d56e",
                 CreatedAt = DateTime.Now,
                 Status = ((int)AccountStatusEnum.ACTIVE)
-            }; 
+            };
             context.Users.Add(admin);
             //context.SaveChanges();
 
@@ -93,7 +93,7 @@ namespace LabSem3.Migrations
                 SecurityStamp = "dd9326d7-3f4c-43fd-9f9d-328b54e2d271",
                 CreatedAt = DateTime.Now,
                 Status = ((int)AccountStatusEnum.ACTIVE)
-            }; 
+            };
             context.Users.Add(hod1);
             //context.SaveChanges();
 
@@ -106,7 +106,7 @@ namespace LabSem3.Migrations
                 SecurityStamp = "9ec44d14-0748-4d8e-af2a-d7f8e057bf9e",
                 CreatedAt = DateTime.Now,
                 Status = ((int)AccountStatusEnum.ACTIVE)
-            }; 
+            };
             context.Users.Add(hod2);
             //context.SaveChanges();
 
@@ -123,7 +123,7 @@ namespace LabSem3.Migrations
             context.Users.Add(hod3);
             context.SaveChanges();
 
-            
+
 
             var userStore = new UserStore<Account>(context);
             var userManager = new UserManager<Account>(userStore);
@@ -421,7 +421,7 @@ namespace LabSem3.Migrations
                 new Equipment{Id = 333,Thumbnail="https://salt.tikicdn.com/ts/tmp/c9/ab/25/0ab43d2de77597a75d9857caf59e53d2.jpg" ,Name = "Table",TypeEquipmentId=13,Status=(int)EquipmentStatusEnum.GOOD,CreatedAt=DateTime.Now,UpdatedAt=DateTime.Now,LabId=3},
                 new Equipment{Id = 334,Thumbnail="https://salt.tikicdn.com/ts/tmp/c9/ab/25/0ab43d2de77597a75d9857caf59e53d2.jpg" ,Name = "Table",TypeEquipmentId=13,Status=(int)EquipmentStatusEnum.GOOD,CreatedAt=DateTime.Now,UpdatedAt=DateTime.Now,LabId=3},
                 new Equipment{Id = 335,Thumbnail="https://salt.tikicdn.com/ts/tmp/c9/ab/25/0ab43d2de77597a75d9857caf59e53d2.jpg" ,Name = "Table",TypeEquipmentId=13,Status=(int)EquipmentStatusEnum.GOOD,CreatedAt=DateTime.Now,UpdatedAt=DateTime.Now,LabId=3},
-               
+
 
                 new Equipment{Id = 200, Thumbnail="https://cdn.shopify.com/s/files/1/1640/2231/collections/collection-titan-series_grande.png?v=1580878311",Name = "Chair SecretLab",TypeEquipmentId=14,Status=(int)EquipmentStatusEnum.GOOD,CreatedAt=DateTime.Now,UpdatedAt=DateTime.Now,LabId=2},
                 new Equipment{Id = 201, Thumbnail="https://cdn.shopify.com/s/files/1/1640/2231/collections/collection-titan-series_grande.png?v=1580878311",Name = "Chair SecretLab",TypeEquipmentId=14,Status=(int)EquipmentStatusEnum.GOOD,CreatedAt=DateTime.Now,UpdatedAt=DateTime.Now,LabId=2},
@@ -534,6 +534,62 @@ namespace LabSem3.Migrations
             context.SaveChanges();
 
 
+
+            var document = new List<Document>
+        {
+            new Document {Id = 1, Status = ((int)DocumentStatusEnum.AVAILABLE), Title="Guilded HeadPhone", Detail="Determine the left and right sides of the in-ear headphones. You can usually find “L” and “R” markings on each side which suggests the proper orientation.,With the proper orientation in check, put on the in-ear headphones. Place each ear tip on the corresponding side of your head. Pull your earlobe with the other hand to create enough space to gently push the ear tip inside your ear canal.,Depending on your personal preference, position the wire in front or behind you.,With these tips and detailed instructions in mind, you should now be able to wear your headphones comfortably for the best listening experience. Not only are you able to wear headphones the way they were intended to be worn, but you should also know what to look out for to reduce overall discomfort when wearing them.,How’d you like our detailed guide? What’s your favorite type of headphones? Are you still having trouble putting them on? Please feel free to let us know in the comments down below!",TypeEquipmentId=2,CreatedAt=DateTime.Now,UpdatedAt=DateTime.Now},
+            new Document {Id = 2 ,Status = ((int)DocumentStatusEnum.AVAILABLE), Title="Guilded Desktop", Detail="Set up your computer. If you are setting up a new desktop computer, there are a few steps you will need to go through before you can start using it. After finding a place near your desk to put the tower, you will need to connect your monitor, keyboard, and mouse, as well as plug the tower into a power source.,Create an account. If it's your first time turning on a brand new computer, you'll usually be asked to create an account. This account will hold all of your documents, pictures, downloaded files, and any other files that you create.,Learn mouse and keyboard basics. The mouse and keyboard are your primary means of interacting with your computer. Take some time to get familiar with how they work and how you can interact with your operating system and programs.,Loop the wire over your ear and secure it snugly in place.,After looping the wire over your ear, position the rest of the wire in front or behind you depending on your personal preference.,No matter how expensive or high quality your headphones are, it means nothing if it doesn’t even fit you well. Although this tip mostly applies to in-ear headphones with replaceable ear tips, it helps to be aware of the importance of having a proper fit for other types of headphones as well.,It’s not advisable to wear earrings or other ear piercings when wearing headphones as not only will these cause discomfort or pain, but these objects can also damage the ear cups or headphone padding.",TypeEquipmentId=3,CreatedAt=DateTime.Now,UpdatedAt=DateTime.Now},
+            new Document {Id = 3, Status = ((int)DocumentStatusEnum.AVAILABLE),Title="Guilded Mouse", Detail="Today's computer mouse consists of two buttons and a mouse wheel as shown in the picture below. By default, the left button acts as the left-click and is the default mouse button you use for most actions on the mouse. The right mouse button performs the right-click and gives you a menu or other options that are explained later.,To hold the mouse, keep your thumb on the side of the mouse, index finger on the left button, and middle finger on the right button. While holding the mouse relax your hand and make sure your hand is straight with your arm. You should never have your wrist at an angle while using the mouse.,Using your right or left hand, pick up the mouse and move it to the center of the mouse pad. Once in position, drag the mouse up, down, left, or right to move the mouse pointer on the screen. If you reach the edge of your mouse pad, pick up the mouse and move it to the opposite side of the mouse pad. Then, continue dragging the mouse in the direction you want the mouse pointer to move.",TypeEquipmentId=5,CreatedAt=DateTime.Now,UpdatedAt=DateTime.Now},
+            new Document {Id = 4, Status = ((int)DocumentStatusEnum.AVAILABLE), Title="Guilded Microsoft Office", Detail= "The latest version of Microsoft Office is called Microsoft Office 2019, although the web-based Microsoft 365 is the version that Microsoft would prefer users to adopt. Various versions of the suite have been around since 1988, including but not limited to Microsoft Office Professional, Microsoft Office Home and Student, and various collections of Microsoft Office 2016. Most people still refer to any version of the suite as Microsoft Office, though, which makes distinguishing among editions difficult.,What makes Microsoft 365 stand out from older editions of MS Office is that it integrates all aspects of the apps with the cloud. It’s a subscription service, too, which means users pay a monthly or yearly fee to use it, and upgrades to newer versions are included in this price. Previous versions of Microsoft Office, including Office 2016, didn’t offer all the cloud features that Microsoft 365 does and were not subscription-based. Office 2016 was a one-time purchase, just as other editions were, and as Office 2019 is.,Microsoft 365 Business comes in four different packages: Basic, Standard, Premium, and Apps.,Users who purchase a Microsoft Office suite typically do so when they discover that the apps included with their operating system aren’t robust enough to meet their needs. For example, it would be nearly impossible to write a book using only Microsoft WordPad, the word processing app that is included free with all editions of Windows. But it would certainly be feasible to write a book with Microsoft Word, which offers many more features.",TypeEquipmentId=1,CreatedAt=DateTime.Now,UpdatedAt=DateTime.Now }
+        };
+            document.ForEach(s => context.Document.Add(s));
+            context.SaveChanges();
+
+            var complaints = new List<Complaint>
+            {
+                new Complaint {Id = 1, Title = "Complaint 001", Detail="Test Complaint",EquipmentId = 1, TypeComplaintId = 1, AccountId = "f25157a3-90ea-4191-afd2-13eb8631d838",
+                    Status  = 1},
+                new Complaint {Id = 2, Title = "Complaint 002", Detail="Test Complaint", EquipmentId = 1, TypeComplaintId = 1, AccountId = "f25157a3-90ea-4191-afd2-13eb8631d838",
+                    Status  = 1},
+                new Complaint {Id = 3, Title = "Complaint 003", Detail="Test Complaint", EquipmentId = 1, TypeComplaintId = 1, AccountId = "f25157a3-90ea-4191-afd2-13eb8631d838",
+                    Status  = 2},
+                new Complaint {Id = 4, Title = "Complaint 004", Detail="Test Complaint", EquipmentId = 1, TypeComplaintId = 1, AccountId = "f25157a3-90ea-4191-afd2-13eb8631d838",
+                    Status  = 2},
+                new Complaint {Id = 5, Title = "Complaint 005", Detail="Test Complaint", EquipmentId = 1, TypeComplaintId = 1, AccountId = "f25157a3-90ea-4191-afd2-13eb8631d838",
+                    Status  = 2},
+                new Complaint {Id = 6, Title = "Complaint 006", Detail="Test Complaint", EquipmentId = 1, TypeComplaintId = 1, AccountId = "f25157a3-90ea-4191-afd2-13eb8631d838",
+                    Status  = 3},
+                new Complaint {Id = 7, Title = "Complaint 007", Detail="Test Complaint", EquipmentId = 1, TypeComplaintId = 1, AccountId = "f25157a3-90ea-4191-afd2-13eb8631d838",
+                    Status  = 3},
+                new Complaint {Id = 8, Title = "Complaint 008", Detail="Test Complaint", EquipmentId = 1, TypeComplaintId = 1, AccountId = "f25157a3-90ea-4191-afd2-13eb8631d838",
+                    Status  = 3},
+                new Complaint {Id = 9, Title = "Complaint 009", Detail="Test Complaint", EquipmentId = 1, TypeComplaintId = 1, AccountId = "f25157a3-90ea-4191-afd2-13eb8631d838",
+                    Status  = 4},
+                new Complaint {Id = 10, Title = "Complaint 010", Detail="Test Complaint", EquipmentId = 1, TypeComplaintId = 1, AccountId = "f25157a3-90ea-4191-afd2-13eb8631d838",
+                    Status  = 4},
+                new Complaint {Id = 11, Title = "Complaint 011", Detail="Test Complaint", EquipmentId = 1, TypeComplaintId = 1, AccountId = "f25157a3-90ea-4191-afd2-13eb8631d838",
+                    Status  = 1},
+                new Complaint {Id = 12, Title = "Complaint 012", Detail="Test Complaint", EquipmentId = 1, TypeComplaintId = 1, AccountId = "f25157a3-90ea-4191-afd2-13eb8631d838",
+                    Status  = 1},
+                new Complaint {Id = 13, Title = "Complaint 013", Detail="Test Complaint", EquipmentId = 1, TypeComplaintId = 1, AccountId = "f25157a3-90ea-4191-afd2-13eb8631d838",
+                    Status  = 2},
+                new Complaint {Id = 14, Title = "Complaint 014", Detail="Test Complaint", EquipmentId = 1, TypeComplaintId = 1, AccountId = "f25157a3-90ea-4191-afd2-13eb8631d838",
+                    Status  = 2},
+                new Complaint {Id = 15, Title = "Complaint 015", Detail="Test Complaint", EquipmentId = 1, TypeComplaintId = 1, AccountId = "f25157a3-90ea-4191-afd2-13eb8631d838",
+                    Status  = 2},
+                new Complaint {Id = 16, Title = "Complaint 016", Detail="Test Complaint", EquipmentId = 1, TypeComplaintId = 1, AccountId = "f25157a3-90ea-4191-afd2-13eb8631d838",
+                    Status  = 3},
+                new Complaint {Id = 17, Title = "Complaint 017", Detail="Test Complaint", EquipmentId = 1, TypeComplaintId = 1, AccountId = "f25157a3-90ea-4191-afd2-13eb8631d838",
+                    Status  = 3},
+                new Complaint {Id = 18, Title = "Complaint 018", Detail="Test Complaint", EquipmentId = 1, TypeComplaintId = 1, AccountId = "f25157a3-90ea-4191-afd2-13eb8631d838",
+                    Status  = 3},
+                new Complaint {Id = 19, Title = "Complaint 019", Detail="Test Complaint", EquipmentId = 1, TypeComplaintId = 1, AccountId = "f25157a3-90ea-4191-afd2-13eb8631d838",
+                    Status  = 4},
+                new Complaint {Id = 20, Title = "Complaint 020", Detail="Test Complaint", EquipmentId = 1, TypeComplaintId = 1, AccountId = "f25157a3-90ea-4191-afd2-13eb8631d838",
+                    Status  = 4}
+            };
+            complaints.ForEach(s => context.Complaints.Add(s));
+            context.SaveChanges();
         }
     }
 }

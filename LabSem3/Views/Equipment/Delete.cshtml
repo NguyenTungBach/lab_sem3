@@ -36,10 +36,11 @@
                                         </strong>
                                     </td>
                                     <td class="text-primary">
-                                        @Model.Thumbnail
+                                        <img height="300px" src="@Model.Thumbnail"/>
+                                        
                                     </td>
                                 </tr>
-                                <tr>
+                                @*<tr>
                                     <td>
                                         <strong>
                                             <span class="glyphicon glyphicon-envelope text-primary"></span>
@@ -118,7 +119,7 @@
                                     <td class="text-primary">
                                         @Html.DisplayFor(model => model.TypeEquipment.Name)
                                     </td>
-                                </tr>
+                                </tr>*@
                             </tbody>
                         </table>
                     </div>

@@ -4,11 +4,10 @@
     ViewBag.Title = "Delete";
 }
 
-<h2 style="font-weight: bold;">Delete</h2>
+<h2 style="font-weight: bold;">Delete Document</h2>
 
 <h3 style="color: red;">Are you sure you want to delete this?</h3>
 <div>
-    <h4>Document</h4>
     </br>
     <dl class="dl-horizontal">
         <div class="panel-body inf-content">
@@ -29,7 +28,7 @@
                                     </td>
                                 </tr>
 
-                                <tr>
+                                @*<tr>
                                     <td>
                                         <strong>
                                             <span class="glyphicon glyphicon-cloud text-primary"></span>
@@ -39,7 +38,7 @@
                                     <td class="text-primary">
                                         @Model.Detail
                                     </td>
-                                </tr>
+                                </tr>*@
                                 <tr>
                                     <td>
                                         <strong>
@@ -48,7 +47,10 @@
                                         </strong>
                                     </td>
                                     <td class="text-primary">
-                                        @Model.Status
+                                        @foreach (var statusItem in EnumHelper.GetSelectList(typeof(LabSem3.Enum.DocumentStatusEnum)))
+                                        {
+                                            @(Int32.Parse(statusItem.Value) == Model.Status ? statusItem.Text : "" )
+                                        }
                                     </td>
                                 </tr>
                               

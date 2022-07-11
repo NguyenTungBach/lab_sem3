@@ -8,10 +8,13 @@
 
 <div>
     <dl class="dl-horizontal">
+
         <div class="panel-body inf-content">
             <div class="row">
+
                 <div class="col-md-8">
-                    <div class="table-responsive">
+
+                    <div>
                         <table class="table table-user-information">
                             <tbody>
                                 <tr>
@@ -212,15 +215,19 @@
                     </div>
                 </div>
             </div>
-
         </div>
+
     </dl>
 
 </div>
 <p>
     @if (User.IsInRole("ADMIN") | User.IsInRole("INSTRUCTOR") | User.IsInRole("TECHNICAL_STAFF"))
     {
-        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) <span> | </span>
+        if (Model.Status == 2)
+        {
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) <span> | </span>
+        }
+
     }
     @Html.ActionLink("Back to List", "Index")
 </p>

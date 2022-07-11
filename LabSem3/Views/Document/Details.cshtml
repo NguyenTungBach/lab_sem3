@@ -9,6 +9,7 @@
 <div>
     <h4>Document</h4>
     </br>
+    
     <dl class="dl-horizontal">
         <div class="panel-body inf-content">
             <div class="row">
@@ -87,15 +88,15 @@
                                 <tr>
                                     <td>
                                         <strong>
-                                            <span class="glyphicon glyphicon-envelope text-primary"></span>
-                                            TypeEquipment Name
+                                            <span class="glyphicon glyphicon-eye-open text-primary"></span>
+                                            TypeEquipmentName
                                         </strong>
                                     </td>
                                     <td class="text-primary">
-                                        @Html.DisplayFor(model => model.TypeEquipment.Name)
+                                        @Model.TypeEquipment.Name
                                     </td>
                                 </tr>
-
+                                
                                 <tr>
                                     <td>
                                     </td>
@@ -110,7 +111,11 @@
     </dl>
 
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+<p style="margin-top:20px">
+
+    @if (User.IsInRole("ADMIN"))
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) <span> | </span>
+    }
     @Html.ActionLink("Back to List", "Index")
 </p>
