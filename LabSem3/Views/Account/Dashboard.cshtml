@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_LayoutLabversion002.cshtml";
+}
+
+<h2>Dashboard</h2>
+
+<input type="text" hidden id="inputDashBoard" name="name" value="" />
+<div class="row">
+
+    <!-- Content Column -->
+    <div class="col-lg-9 mb-12">
+        <!-- Project Card Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Complaint Status Statistical</h6>
+            </div>
+            <div class="card-body">
+                <h4 class="small font-weight-bold">
+                    PROCESSING <span class="float-right">@ViewBag.PROCESSING%</span>
+                </h4>
+                <div class="progress mb-4">
+                    <div class="progress-bar bg-danger" role="progressbar" style="width: @ViewBag.PROCESSING%"
+                         aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <h4 class="small font-weight-bold">
+                    COMPLETE <span class="float-right">@ViewBag.COMPLETE%</span>
+                </h4>
+                <div class="progress mb-4">
+                    <div class="progress-bar bg-warning" role="progressbar" style="width: @ViewBag.COMPLETE%"
+                         aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <h4 class="small font-weight-bold">
+                    PENDING <span class="float-right">@ViewBag.PENDING%</span>
+                </h4>
+                <div class="progress mb-4">
+                    <div class="progress-bar" role="progressbar" style="width: @ViewBag.PENDING%"
+                         aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <h4 class="small font-weight-bold">
+                    UN-ASSIGN <span class="float-right">@ViewBag.UNASSIGN%</span>
+                </h4>
+                <div class="progress">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: @ViewBag.UNASSIGN%"
+                         aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
