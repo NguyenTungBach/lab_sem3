@@ -37,10 +37,10 @@
                                 <div style="text-align: left">Department</div>
                                 <div class="input-group">
                                     <select class="form-control" id="DepartmentId" name="DepartmentId">
-                                        <option selected="" value="">-- Choose Department -- </option>
+                                      
                                         @foreach (var department in ViewBag.Departments)
                                         {
-                                            <option value="@department.Id">@department.Name</option>
+                                            <option  @(department.Id == ViewBag.SelectDp ? "selected" : "") value="@department.Id">@department.Name</option>
                                         }
                                     </select>
                                 </div>
@@ -48,7 +48,7 @@
                             <div style="margin-right: 20px">
                                 <div style="text-align: left">Date</div>
                                 <div class="input-group">
-                                    <input name="Date" id="Date" type="date" class="form-control bg-default border-2 small" aria-label="Search" aria-describedby="basic-addon2">
+                                    <input name="Date" id="Date" value="@ViewBag.DateTime" type="date" class="form-control bg-default border-2 small" aria-label="Search" aria-describedby="basic-addon2">
 
                                 </div>
                             </div>
