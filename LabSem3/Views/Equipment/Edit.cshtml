@@ -19,7 +19,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-2">
                 @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
             </div>
@@ -27,7 +27,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
-            <select class="form-control col-2" style="margin-left: 10px" id="Status" name="Status">
+            <select class="form-control col-1" style="margin-left: 10px" id="Status" name="Status">
                 @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.DocumentStatusEnum)))
                 {
                     <option value="@item.Value" @(Int32.Parse(item.Value) == Model.Status ? "selected" : "")>@item.Text</option>
@@ -38,7 +38,6 @@
         <div class="form-group">
             @Html.LabelFor(model => model.LabId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-1">
-                @*@Html.EditorFor(model => model.LabId, new { htmlAttributes = new { @class = "form-control" } })*@
                 <select id="LabId" name="LabId" class="form-control">
                     @foreach (var lab in ViewBag.Lab)
                     {
@@ -52,8 +51,7 @@
 
         <div class="form-group">
             <label class="control-label col-md-2" for="TypeEquipmentId">TypeEquipment Name</label>
-            <div class="col-md-3">
-                @*@Html.EditorFor(model => model.TypeEquipmentId, new { htmlAttributes = new { @class = "form-control" } })*@
+            <div class="col-md-2">
                 <select id="TypeEquipmentId" name="TypeEquipmentId" class="form-control">
                     @foreach (var typeEquiment in ViewBag.TypeEquipment)
                     {
@@ -66,7 +64,7 @@
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
+            <div class="col-md-offset-2 col-md-4">
                 <input style="color:aliceblue;" type="submit" value="Save" class="btn btn-default bg-primary" />
             </div>
         </div>

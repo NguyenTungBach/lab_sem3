@@ -17,49 +17,15 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-2">
                 @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        @*<div class="form-group">
-            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
-
-        @*<div class="form-group">
-                @Html.LabelFor(model => model.CreatedAt, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.CreatedAt, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.CreatedAt, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.UpdatedAt, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.UpdatedAt, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.UpdatedAt, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.DeletedAt, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.DeletedAt, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.DeletedAt, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
-
     <div class="form-group">
         <label class="control-label col-md-2" for="LabId">Lab</label>
-        @*@Html.LabelFor(model => model.LabId, htmlAttributes: new { @class = "control-label col-md-2" })*@
-        <div class="col-md-10">
-            @*@Html.DropDownList("LabId",null, "-Select form LabId", new { htmlAttributes = new { @class = "form-control" } })*@
+        <div class="col-md-4">
             <select id="LabId" name="LabId" class="form-control col-1">
                 @foreach (var lab in ViewBag.Lab)
                 {
@@ -73,10 +39,8 @@
 
     <div class="form-group">
         <label class="control-label col-md-2" for="TypeEquipmentId">TypeEquipment</label>
-        @*@Html.LabelFor(model => model.TypeEquipmentId, htmlAttributes: new { @class = "control-label col-md-2" })*@
-        <div class="col-md-10">
-            @* @Html.DropDownList("TypeEquipmentId", null, "-Select form TypeEquipmentId", new { htmlAttributes = new { @class = "form-control" } })*@
-            <select id="TypeEquipmentId" name="TypeEquipmentId" class="form-control col-4">
+        <div class="col-md-4">
+            <select id="TypeEquipmentId" name="TypeEquipmentId" class="form-control col-5">
                 @foreach (var typeEquiment in ViewBag.TypeEquipment)
                 {
                     <option value="@typeEquiment.Id">@typeEquiment.Name</option>
@@ -88,7 +52,7 @@
     </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
+            <div class="col-md-offset-2 col-md-4">
                 <input style="color:aliceblue;" type="submit" value="Create" class="btn btn-default bg-primary" />
             </div>
         </div>

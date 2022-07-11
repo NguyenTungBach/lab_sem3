@@ -37,7 +37,7 @@ namespace LabSem3.Controllers
 
         [Authorize(Roles = "ADMIN,HOD,INSTRUCTOR,TECHNICAL_STAFF,STUDENT")]
         // GET: Complaint
-        public ActionResult Index(string SupportID, string keyWord, int? statusCheck,  int? page) {
+        public ActionResult Index(int? TypeComplaintCheck, string SupportID, string keyWord, int? statusCheck,  int? page) {
             
             var result2 = db.Complaints.OrderBy(s => s.Id).AsQueryable();
 
@@ -73,7 +73,12 @@ namespace LabSem3.Controllers
             {
                 result2 = result2.Where(s => s.Status == statusCheck);
             }
-
+            if (TypeComplaintCheck != null)
+            {
+                result2 = result2.Where(s => s.TypeComplaintId == TypeComplaintCheck);
+            }
+            ViewBag.TypeComplaintList = db.TypeComplaints.ToList();
+            ViewBag.TypeComplaintCheck = TypeComplaintCheck;
             ViewBag.statusCheck = statusCheck;
             ViewBag.SupportID = SupportID;
             var roleINSTRUCTOR = db.Roles.Where(s => s.Name.Contains(RoleEnum.INSTRUCTOR.ToString())).FirstOrDefault();

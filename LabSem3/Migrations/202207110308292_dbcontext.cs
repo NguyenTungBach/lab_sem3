@@ -3,7 +3,7 @@ namespace LabSem3.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class addTable : DbMigration
+    public partial class dbcontext : DbMigration
     {
         public override void Up()
         {
