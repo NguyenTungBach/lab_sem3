@@ -45,6 +45,7 @@
         {
             <select class="form-control mr-4" name="SupportId">
                 <option @(ViewBag.SupportId == null ? "selected" : " ") value="">Support...</option>
+                <option @(ViewBag.SupportId == "1" ? "selected" : " ") value="1">Unassign</option>
                 @foreach (var item in ViewBag.Support)
                 {
                     <option @(ViewBag.SupportId == item.Id ? "selected" : " ") value="@item.Id">@item.UserName</option>
