@@ -3,7 +3,11 @@
     using System;
     using System.Data.Entity.Migrations;
     
+<<<<<<<< HEAD:LabSem3/Migrations/202207110308292_dbcontext.cs
+    public partial class dbcontext : DbMigration
+========
     public partial class Context : DbMigration
+>>>>>>>> 796396a8f9e3b366388d67d446479a0c3f8a862f:LabSem3/Migrations/202207110213354_Context.cs
     {
         public override void Up()
         {

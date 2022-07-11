@@ -19,7 +19,7 @@
 
     <div class="form-group">
             @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-4">
                 @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
             </div>
@@ -27,7 +27,7 @@
 
     <div class="form-group">
         @Html.LabelFor(model => model.FullName, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        <div class="col-md-4">
             @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
         </div>
@@ -35,8 +35,8 @@
 
     <div class="form-group">
         @Html.LabelFor(model => model.Thumbnail, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <Input style="color:aliceblue;" type="submit" value="Upload"  class="btn btn-default bg-primary" id="upload_widget" class="cloudinary-button mb-3"></Input>
+        <div class="col-md-4">
+            <Input style="color:aliceblue;" type="button" value="Upload"  class="btn btn-default bg-primary" id="upload_widget" class="cloudinary-button mb-3"></Input>
 
             <div id="preview-image">
                 @if (Model.Thumbnail != null)
@@ -47,7 +47,7 @@
                     </div>
                 }
             </div>
-            <input class="form-control text-box single-line" data-val="true" data-val-required="Thumbnail Required" id="Thumbnail" name="Thumbnail" type="text" value="@Model.Thumbnail">
+            <input class="form-control text-box single-line" data-val="true" data-val-required="Thumbnail Required" id="Thumbnail" name="Thumbnail" type="text" value="@Model.Thumbnail" hidden>
             @*@Html.EditorFor(model => model.Thumbnail, new { htmlAttributes = new { @class = "form-control" } })*@
             @Html.ValidationMessageFor(model => model.Thumbnail, "", new { @class = "text-danger" })
         </div>
@@ -55,7 +55,7 @@
 
     <div class="form-group">
         @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        <div class="col-md-4">
             @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
         </div>
@@ -63,7 +63,7 @@
 
     <div class="form-group">
         @Html.LabelFor(model => model.Birthday, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        <div class="col-md-4">
             <input class="form-control text-box single-line" data-val="true" data-val-date="The field Birthday must be a date." data-val-required="Birthday Required" id="Birthday" name="Birthday" type="date" value="@(Model.Birthday != null ? string.Format("{0:yyyy-MM-dd}", Model.Birthday) : "")">
             @*@Html.EditorFor(model => model.Birthday, new { htmlAttributes = new { @class = "form-control" } })*@
             @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "text-danger" })
@@ -80,7 +80,7 @@
 
     <div class="form-group">
         @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        <div class="col-md-4">
             @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
         </div>
@@ -88,7 +88,7 @@
 
     @*<div class="form-group">
             @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-4">
                 @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
             </div>
@@ -96,7 +96,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.ComfirmPassword, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-4">
                 @Html.EditorFor(model => model.ComfirmPassword, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.ComfirmPassword, "", new { @class = "text-danger" })
             </div>
@@ -108,7 +108,7 @@
         </div>
         @foreach (var item in ViewBag.Role)
         {
-            <div class="col-md-10">
+            <div class="col-md-4">
                 <div>
                     <input type="checkbox" value="@item.Name" id="@item.Name" class="roleCheck"
                            @foreach (var roleAccount in ViewBag.RoleAccounts) { @(roleAccount == item.Name ? "checked" : "") }>
@@ -122,7 +122,7 @@
 
     <div class="form-group" hidden>
         @Html.LabelFor(model => model.Role, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        <div class="col-md-4">
             @Html.EditorFor(model => model.Role, new { htmlAttributes = new { @class = "form-control", @id = "arrayRole" } })
             @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
         </div>
@@ -141,7 +141,7 @@
     </div>
 
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
+        <div class="col-md-offset-2 col-md-4">
             <input style="color:aliceblue;" type="submit" value="Update" class="btn btn-default bg-primary" />
         </div>
     </div>

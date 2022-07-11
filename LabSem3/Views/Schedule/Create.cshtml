@@ -22,7 +22,7 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-4">
                 @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
             </div>
@@ -30,7 +30,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-4">
                 @Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
             </div>
@@ -79,7 +79,7 @@
             </div>
             @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.SlotNumberEnum)))
             {
-                <div class="col-md-10">
+                <div class="col-md-4">
                     <div>
                         <input type="checkbox" value="@item.Value" id="@item.Text" class="slotCheck">
                         <label class="form-check-label" for="@item.Text">
@@ -115,7 +115,7 @@
 
         <div class="form-group" hidden>
             @Html.LabelFor(model => model.SlotNumberArray, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-4">
                 @Html.EditorFor(model => model.SlotNumberArray, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.SlotNumberArray, "", new { @class = "text-danger" })
             </div>
@@ -148,7 +148,7 @@
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
+            <div class="col-md-offset-2 col-md-4">
                 <input style="color:aliceblue;" type="submit" value="Create" class="btn btn-default bg-primary" />
             </div>
         </div>
