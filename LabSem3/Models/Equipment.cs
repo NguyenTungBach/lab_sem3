@@ -26,7 +26,7 @@ namespace LabSem3.Models
 
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime? DeletedAt { get; set; }
-
+        [Display(Name = "Lab Id")]
         public int LabId { get; set; }
         [ForeignKey("LabId")]
         public virtual Lab Lab { get; set; }
@@ -34,7 +34,7 @@ namespace LabSem3.Models
         public int? DocumentId { get; set; }
         [ForeignKey("DocumentId")]
         public virtual Document Document { get; set; }
-
+        [Display(Name = "TypeEquipment Id")]
         public int TypeEquipmentId { get; set; }
         [ForeignKey("TypeEquipmentId")]
         public virtual TypeEquipment TypeEquipment { get; set; }

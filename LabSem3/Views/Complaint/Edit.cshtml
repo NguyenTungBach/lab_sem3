@@ -22,11 +22,6 @@
 
 @switch (Model.Status)
 {
-    case 1:
-        <div>
-            @Html.ActionLink("Back To List Because This Complaint Done", "Index")
-        </div>
-        break;
     case 3:
         <div>
             @Html.ActionLink("Back To List Because This Complaint Done", "Index")
@@ -37,7 +32,7 @@
             @Html.ActionLink("Back To List Because This Complaint UNASSIGN", "Index")
         </div>
         break;
-    case 2:
+    default:
         
         using (Html.BeginForm())
         {

@@ -155,21 +155,21 @@ namespace LabSem3.Migrations
              {
                  new TypeEquipment {Id = 1, Name = "Software"},
                  new TypeEquipment {Id = 2, Name = "Head Phone"},
-                 new TypeEquipment {Id = 3, Name = "Desktop"},
+                 new TypeEquipment {Id = 3, Name = "Monitor"},
                  new TypeEquipment {Id = 4, Name = "Case"},
                  new TypeEquipment {Id = 5, Name = "Mouse"},
-                 new TypeEquipment {Id = 6, Name = "Key Board"},
+                 new TypeEquipment {Id = 6, Name = "Keyboard"},
                  new TypeEquipment {Id = 7, Name = "Projecter"},
                  new TypeEquipment {Id = 8, Name = "Screen"},
-                 new TypeEquipment {Id = 17, Name = "Air Conditioner"},
                  new TypeEquipment {Id = 9, Name = "Fittings"},
-                 new TypeEquipment {Id = 10, Name = "Wireless LAN"},
+                 new TypeEquipment {Id = 10, Name = "Adapter"},
                  new TypeEquipment {Id = 11, Name = "Cable"},
                  new TypeEquipment {Id = 12, Name = "Video and audio switcher"},
                  new TypeEquipment {Id = 13, Name = "Table"},
                  new TypeEquipment {Id = 14, Name = "Chair"},
                  new TypeEquipment {Id = 15, Name = "Light"},
-                 new TypeEquipment {Id = 16, Name = "Other"}
+                 new TypeEquipment {Id = 16, Name = "Air Conditioner"},
+                 new TypeEquipment {Id = 17, Name = "Other"}
              };
 
 
