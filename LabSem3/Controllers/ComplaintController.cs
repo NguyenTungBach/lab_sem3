@@ -138,6 +138,7 @@ namespace LabSem3.Controllers
                 var supporter = db.Users.Find(StaffId);
                 var accountComplaint = db.Users.Find(processComplaint.AccountId);
                 var typeComplaint = db.TypeComplaints.Find(processComplaint.TypeComplaintId);
+                var EquipmentFind = db.Equipments.Find(processComplaint.EquipmentId);
 
                 var message = System.IO.File.ReadAllText(Server.MapPath("~/TemplateMail/AssignComplaintMail.html"));
                 message = message.Replace("{{Id}}", processComplaint.Id.ToString());
@@ -146,6 +147,8 @@ namespace LabSem3.Controllers
                 message = message.Replace("{{AccountComplaint}}", accountComplaint.UserName);
                 message = message.Replace("{{Title}}", processComplaint.Title);
                 message = message.Replace("{{Detail}}", processComplaint.Detail);
+                message = message.Replace("{{EquipmentId}}", processComplaint.EquipmentId.ToString());
+                message = message.Replace("{{EquipmentName}}", EquipmentFind.Name);
                 var checkStatus = "";
                 foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ComplaintStatusEnum)))
                 {
@@ -164,6 +167,8 @@ namespace LabSem3.Controllers
                 messageForAccount = messageForAccount.Replace("{{AccountComplaint}}", accountComplaint.UserName);
                 messageForAccount = messageForAccount.Replace("{{Title}}", processComplaint.Title);
                 messageForAccount = messageForAccount.Replace("{{Detail}}", processComplaint.Detail);
+                messageForAccount = messageForAccount.Replace("{{EquipmentId}}", processComplaint.EquipmentId.ToString());
+                messageForAccount = messageForAccount.Replace("{{EquipmentName}}", EquipmentFind.Name);
                 var checkStatusForAccount = "";
                 foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ComplaintStatusEnum)))
                 {
@@ -264,12 +269,14 @@ namespace LabSem3.Controllers
                 var typeComplaint = db.TypeComplaints.Find(newComPlaint.TypeComplaintId);
                 TempData["Success"] = "Create Complaint " + typeComplaint.Name + " Success";
                 var accountComplaint = db.Users.Find(newComPlaint.AccountId);
-
+                var EquipmentFind = db.Equipments.Find(newComPlaint.EquipmentId);
                 var message = System.IO.File.ReadAllText(Server.MapPath("~/TemplateMail/CreateComplaintMail.html"));
                 message = message.Replace("{{Id}}", newComPlaint.Id.ToString());
                 message = message.Replace("{{TypeComplaintName}}", typeComplaint.Name);
                 message = message.Replace("{{AccountComplaint}}", accountComplaint.UserName);
                 message = message.Replace("{{Title}}", newComPlaint.Title);
+                message = message.Replace("{{EquipmentId}}", newComPlaint.EquipmentId.ToString());
+                message = message.Replace("{{EquipmentName}}", EquipmentFind.Name);
 
                 //var htmlThumbnail = "";
                 //var arrThumbnail = newComPlaint.Thumbnail.Split(',');
@@ -384,7 +391,7 @@ namespace LabSem3.Controllers
                 {
                     var typeComplaint = db.TypeComplaints.Find(findComplaint.TypeComplaintId);
                     TempData["Success"] = "Edit Complaint " + typeComplaint.Name + " Success";
-
+                    var EquipmentFind = db.Equipments.Find(findComplaint.EquipmentId);
                     var message = System.IO.File.ReadAllText(Server.MapPath("~/TemplateMail/ProcessComplaintMail.html"));
                     message = message.Replace("{{Id}}", findComplaint.Id.ToString());
                     message = message.Replace("{{TypeComplaintName}}", typeComplaint.Name);
@@ -392,7 +399,12 @@ namespace LabSem3.Controllers
                     message = message.Replace("{{AccountComplaint}}", findComplaint.Account.UserName);
                     message = message.Replace("{{Title}}", findComplaint.Title);
                     message = message.Replace("{{Detail}}", findComplaint.Detail);
-
+                    message = message.Replace("{{EquipmentId}}", findComplaint.EquipmentId.ToString());
+                    message = message.Replace("{{EquipmentName}}", EquipmentFind.Name);
+                    message = message.Replace("{{Reason}}", findComplaint.Reason);
+                    message = message.Replace("{{Solution}}", findComplaint.Solution);
+                    message = message.Replace("{{Note}}", findComplaint.Note);
+                    
                     var checkStatus = "";
                     foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ComplaintStatusEnum)))
                     {
@@ -403,16 +415,37 @@ namespace LabSem3.Controllers
                     }
 
                     message = message.Replace("{{Status}}", checkStatus);
-                    if (typeComplaint.Name == "ADMIN")
+
+                    switch(typeComplaint.TypeRole)
                     {
-                        SendEmail(findComplaint.Account.Email, typeComplaint.Name, message);
-                    }
-                    else
-                    {
-                        SendEmail(findComplaint.Account.Email, typeComplaint.Name, message);
-                        SendEmail(findComplaint.Supporter.Email, typeComplaint.Name, message);
-                        SendEmail(AccountEmailSend, typeComplaint.Name, message);
-                    }
+                        case "GENERAL":
+                            SendEmail(findComplaint.Account.Email, typeComplaint.Name, message);
+                            break;
+                        case "ADMIN":
+                            SendEmail(findComplaint.Account.Email, typeComplaint.Name, message);
+                            break;
+                        default:
+                            SendEmail(findComplaint.Account.Email, typeComplaint.Name, message);
+                            SendEmail(findComplaint.Supporter.Email, typeComplaint.Name, message);
+                            SendEmail(AccountEmailSend, typeComplaint.Name, message);
+                            break;
+                    };
+                        
+
+                    //if (typeComplaint.TypeRole == "GENERAL")
+                    //{
+                    //    SendEmail(findComplaint.Account.Email, typeComplaint.Name, message);
+                    //}
+                    //if (typeComplaint.TypeRole == "ADMIN")
+                    //{
+                    //    SendEmail(findComplaint.Account.Email, typeComplaint.Name, message);
+                    //} 
+                    //else
+                    //{
+                    //    SendEmail(findComplaint.Account.Email, typeComplaint.Name, message);
+                    //    SendEmail(findComplaint.Supporter.Email, typeComplaint.Name, message);
+                    //    SendEmail(AccountEmailSend, typeComplaint.Name, message);
+                    //}
 
                     return Redirect("/Complaint/Index");
                 }
