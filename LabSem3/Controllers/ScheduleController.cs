@@ -36,9 +36,19 @@ namespace LabSem3.Controllers
                 listSchedules = db.Schedules.Where(s => s.Lab.DepartmentId == DepartmentId && EntityFunctions.TruncateTime(s.DateBoking) == date).Include(s => s.Instructor).OrderBy(s => s.LabId).ThenBy(s => s.SlotNumber).ToList();
                 labs = db.Labs.Where(s => s.DepartmentId == DepartmentId);
             }
+            if(Date != null)
+            {
+                ViewBag.DateTime = Date;
+            }
+            else
+            {
+                ViewBag.DateTime = dateNow.ToString("yyyy-MM-dd");
+            }
             ViewBag.Schedules = listSchedules;
             ViewBag.Labs = labs;
+            ViewBag.SelectDp = DepartmentId;
             ViewBag.Departments = db.Departments.ToList();
+            
             return View();
         }
 
@@ -73,6 +83,7 @@ namespace LabSem3.Controllers
                 var scheduleDay = endTime.Subtract(startTime).Days + 1;
 
                 var checkToday = DateTime.Now.Date;
+             
                 if (checkToday.Date == startTime)
                 {
                     ViewBag.Labs = db.Labs.ToList();
@@ -138,7 +149,7 @@ namespace LabSem3.Controllers
                                 {
                                     TempData["False"] = "Create Schedule False Because Duplicate Date";
 
-                                    return RedirectToAction("Index");
+                                    return RedirectToAction("Create");
                                 }
                                 else
                                 {
@@ -164,7 +175,7 @@ namespace LabSem3.Controllers
                                 {
                                     TempData["False"] = "Create Schedule False Because Duplicate Intructor";
 
-                                    return RedirectToAction("Index");
+                                    return RedirectToAction("Create");
                                 }
                             }
                         }
@@ -187,6 +198,8 @@ namespace LabSem3.Controllers
                 db.SaveChanges();
                 TempData["Success"] = "Create Schedule " + scheduleCreateViewModel.StartTime + " - " + scheduleCreateViewModel.EndTime + " Success";
             }
+            
+
             return RedirectToAction("Index");
         }
 
