@@ -56,7 +56,7 @@
         <div style="margin-right: 20px">
             <div class="TypeComplaintCheck">
                 <select id="TypeComplaintCheck" name="TypeComplaintCheck" class="form-control">
-                    <option @(ViewBag.TypeComplaintCheck == null ? "selected" : "")>Choose TypeEquipment Search</option>
+                    <option @(ViewBag.TypeComplaintCheck == null ? "selected" : "")>Choose Type Equipment Search</option>
                     @foreach (var TypeComplaint in ViewBag.TypeComplaintList)
                     {
                         <option value="@TypeComplaint.Id" @(TypeComplaint.Id == ViewBag.TypeComplaintCheck ? "selected" : "")>@TypeComplaint.Name</option>
