@@ -119,7 +119,7 @@
                                 switch (Model.Status)
                                 {
                                     case 1:
-                                        if (Int32.Parse(item.Value) == 1)
+                                        if (Int32.Parse(item.Value) == 1 || Int32.Parse(item.Value) == 3)
                                         {
                                             <option value="@item.Value" @(Int32.Parse(item.Value) == Model.Status ? "selected" : "")>@item.Text</option>
                                         }
