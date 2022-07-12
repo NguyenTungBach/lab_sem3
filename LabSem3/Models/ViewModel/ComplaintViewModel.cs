@@ -20,8 +20,8 @@ namespace LabSem3.Models.ViewModel
         public string Title { get; set; }
 
         [DisplayName("ID Of Equipment")]
-        [Required(ErrorMessage = "EquipmentId Require")]
-        [CanBeNull]
+        //[Required(ErrorMessage = "EquipmentId Require")]
+        //[CanBeNull]
         public string EquipmentId { get; set; }
 
         [Required(ErrorMessage = "Detail Require")]

@@ -46,14 +46,14 @@ namespace LabSem3.Controllers
                 return HttpNotFound();
             }
 
-            if (!User.IsInRole("ADMIN"))
+            if (!User.IsInRole("ADMIN") || !User.IsInRole("HOD"))
             {
                 var userID = User.Identity.GetUserId();
                 if (User.IsInRole(RoleEnum.INSTRUCTOR.ToString()) || User.IsInRole(RoleEnum.TECHNICAL_STAFF.ToString()))
                 {
                     result2 = result2.Where(s => s.SupportedId.Equals(userID));
                 }
-                else
+                if(User.IsInRole(RoleEnum.STUDENT.ToString()))
                 {
                     result2 = result2.Where(s => s.AccountId == userID);
                 }
@@ -152,8 +152,7 @@ namespace LabSem3.Controllers
                 var supporter = db.Users.Find(StaffId);
                 var accountComplaint = db.Users.Find(processComplaint.AccountId);
                 var typeComplaint = db.TypeComplaints.Find(processComplaint.TypeComplaintId);
-                var EquipmentFind = db.Equipments.Find(processComplaint.EquipmentId);
-
+                
                 var message = System.IO.File.ReadAllText(Server.MapPath("~/TemplateMail/AssignComplaintMail.html"));
                 message = message.Replace("{{Id}}", processComplaint.Id.ToString());
                 message = message.Replace("{{TypeComplaintName}}", typeComplaint.Name);
@@ -161,8 +160,19 @@ namespace LabSem3.Controllers
                 message = message.Replace("{{AccountComplaint}}", accountComplaint.UserName);
                 message = message.Replace("{{Title}}", processComplaint.Title);
                 message = message.Replace("{{Detail}}", processComplaint.Detail);
-                message = message.Replace("{{EquipmentId}}", processComplaint.EquipmentId.ToString());
-                message = message.Replace("{{EquipmentName}}", EquipmentFind.Name);
+
+                if (processComplaint.EquipmentId !=null)
+                {
+                    var EquipmentFind = db.Equipments.Find(processComplaint.EquipmentId);
+                    message = message.Replace("{{EquipmentId}}", processComplaint.EquipmentId.ToString());
+                    message = message.Replace("{{EquipmentName}}", EquipmentFind.Name);
+                }
+                else
+                {
+                    message = message.Replace("{{EquipmentId}}", "NO");
+                    message = message.Replace("{{EquipmentName}}", "NO");
+                }
+                
                 var checkStatus = "";
                 foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ComplaintStatusEnum)))
                 {
@@ -181,8 +191,20 @@ namespace LabSem3.Controllers
                 messageForAccount = messageForAccount.Replace("{{AccountComplaint}}", accountComplaint.UserName);
                 messageForAccount = messageForAccount.Replace("{{Title}}", processComplaint.Title);
                 messageForAccount = messageForAccount.Replace("{{Detail}}", processComplaint.Detail);
-                messageForAccount = messageForAccount.Replace("{{EquipmentId}}", processComplaint.EquipmentId.ToString());
-                messageForAccount = messageForAccount.Replace("{{EquipmentName}}", EquipmentFind.Name);
+                
+                if (processComplaint.EquipmentId != null)
+                {
+                    var EquipmentFind = db.Equipments.Find(processComplaint.EquipmentId);
+                    messageForAccount = messageForAccount.Replace("{{EquipmentId}}", processComplaint.EquipmentId.ToString());
+                    messageForAccount = messageForAccount.Replace("{{EquipmentName}}", EquipmentFind.Name);
+
+                }
+                else
+                {
+                    messageForAccount = messageForAccount.Replace("{{EquipmentId}}", "NO");
+                    messageForAccount = messageForAccount.Replace("{{EquipmentName}}", "NO");
+                }
+
                 var checkStatusForAccount = "";
                 foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.ComplaintStatusEnum)))
                 {
@@ -283,29 +305,27 @@ namespace LabSem3.Controllers
                 var typeComplaint = db.TypeComplaints.Find(newComPlaint.TypeComplaintId);
                 TempData["Success"] = "Create Complaint " + typeComplaint.Name + " Success";
                 var accountComplaint = db.Users.Find(newComPlaint.AccountId);
-                var EquipmentFind = db.Equipments.Find(newComPlaint.EquipmentId);
+                
                 var message = System.IO.File.ReadAllText(Server.MapPath("~/TemplateMail/CreateComplaintMail.html"));
                 message = message.Replace("{{Id}}", newComPlaint.Id.ToString());
                 message = message.Replace("{{TypeComplaintName}}", typeComplaint.Name);
                 message = message.Replace("{{AccountComplaint}}", accountComplaint.UserName);
                 message = message.Replace("{{Title}}", newComPlaint.Title);
-                message = message.Replace("{{EquipmentId}}", newComPlaint.EquipmentId.ToString());
-                message = message.Replace("{{EquipmentName}}", EquipmentFind.Name);
 
-                //var htmlThumbnail = "";
-                //var arrThumbnail = newComPlaint.Thumbnail.Split(',');
-                //if (arrThumbnail.Length > 0)
-                //{
-                //    for (int i = 0; i < arrThumbnail.Length; i++)
-                //    {
-                //        if (arrThumbnail[i].Length == 0)
-                //        {
-                //            continue;
-                //        }
-                //        htmlThumbnail += string.Format("<div class='col-md-3 col-sm-3 position-relative' style='padding - left: 0!important;'>< img src ='{0}' class='col-md-12 col-sm-12 img-thumbnail mr-2 mb-2 imagesChoice'></div>", arrThumbnail[i]);
-                //    }
-                //}
-                //message = message.Replace("{{ArrayThumbnail}}", HttpUtility.HtmlEncode(htmlThumbnail));
+                if (newComPlaint.EquipmentId != null)
+                {
+                    var EquipmentFind = db.Equipments.Find(newComPlaint.EquipmentId);
+                    message = message.Replace("{{EquipmentId}}", newComPlaint.EquipmentId.ToString());
+                    message = message.Replace("{{EquipmentName}}", EquipmentFind.Name);
+
+                }
+                else
+                {
+                    message = message.Replace("{{EquipmentId}}", "NO");
+                    message = message.Replace("{{EquipmentName}}", "NO");
+                }
+
+
                 message = message.Replace("{{Detail}}", newComPlaint.Detail);
 
                 var checkStatus = "";
