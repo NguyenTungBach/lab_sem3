@@ -12,79 +12,78 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.TypeComplaintId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <select class="form-control" id="" name="TypeComplaintId">
-                    @{
-                        foreach (var vr in ViewBag.TypeComplaints)
+<div class="form-horizontal">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.TypeComplaintId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-2">
+            <select class="form-control" id="" name="TypeComplaintId">
+                @{
+                    foreach (var vr in ViewBag.TypeComplaints)
+                    {
+                        if (User.IsInRole("HOD"))
                         {
-                            if (User.IsInRole("HOD"))
+                            if (vr.TypeRole == "ADMIN" || vr.TypeRole == "GENERAL")
                             {
-                                if (vr.TypeRole == "ADMIN" || vr.TypeRole == "GENERAL")
-                                {
-                                    <option value="@vr.Id">@vr.Name</option>
-                                }
+                                <option value="@vr.Id">@vr.Name</option>
                             }
-                            if (User.IsInRole("STUDENT"))
+                        }
+                        if (User.IsInRole("STUDENT"))
+                        {
+                            if (vr.TypeRole == "INSTRUCTOR" || vr.TypeRole == "TECHNICAL_STAFF" || vr.TypeRole == "GENERAL")
                             {
-                                if (vr.TypeRole == "INSTRUCTOR" || vr.TypeRole == "TECHNICAL_STAFF" || vr.TypeRole == "GENERAL")
-                                {
-                                    <option value="@vr.Id">@vr.Name</option>
-                                }
+                                <option value="@vr.Id">@vr.Name</option>
                             }
                         }
                     }
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.EquipmentId, htmlAttributes: new { @class = "control-label col-md-2", @value = "" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EquipmentId, new { htmlAttributes = new { @class = "form-control col-md-3", @type = "number" } })
-                @Html.ValidationMessageFor(model => model.EquipmentId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Detail, htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-10">
-                @Html.TextAreaFor(model => model.Detail, new { @class = "form-control"})
-                @Html.ValidationMessageFor(model => model.Detail, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Thumbnail, htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-10">
-                <button type="button" id="upload_widget" class="cloudinary-button mb-3">
-                    Upload files
-                </button>
-                <div id="preview-image" class="row">
-
-                </div>
-                <input class="form-control text-box single-line" hidden data-val="true" data-val-required="Thumbnail Required" id="Thumbnail" name="Thumbnail" type="text" value="">
-                @*@Html.EditorFor(model => model.Thumbnail, new { htmlAttributes = new { @class = "form-control" } })*@
-                @Html.ValidationMessageFor(model => model.Thumbnail, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input style="color:aliceblue;" type="submit" value="Create" class="btn btn-default bg-primary" />
-            </div>
+                }
+            </select>
         </div>
     </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-2">
+            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Thumbnail, htmlAttributes: new { @class = "control-label col-md-4" })
+        <div class="col-md-2">
+            <Input style="color:aliceblue;" type="button" value="Upload" class="btn btn-default bg-primary" id="upload_widget" class="cloudinary-button mb-3"></Input>
+            <div id="preview-image" class="row">
+
+            </div>
+            <input class="form-control text-box single-line" hidden data-val="true" data-val-required="Thumbnail Required" id="Thumbnail" name="Thumbnail" type="text" value="">
+            @*@Html.EditorFor(model => model.Thumbnail, new { htmlAttributes = new { @class = "form-control" } })*@
+            @Html.ValidationMessageFor(model => model.Thumbnail, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.EquipmentId, htmlAttributes: new { @class = "control-label col-md-2", @value = "" })
+        <div class="col-md-2">
+            @Html.EditorFor(model => model.EquipmentId, new { htmlAttributes = new { @class = "form-control col-md-3", @type = "number" } })
+            @Html.ValidationMessageFor(model => model.EquipmentId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Detail, htmlAttributes: new { @class = "control-label col-md-4" })
+        <div class="col-md-6">
+            @Html.TextAreaFor(model => model.Detail, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Detail, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-2">
+            <input style="color:aliceblue;" type="submit" value="Create" class="btn btn-default bg-primary" />
+        </div>
+    </div>
+</div>
 }
 
 <div>
