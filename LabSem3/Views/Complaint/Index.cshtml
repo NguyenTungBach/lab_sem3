@@ -41,17 +41,23 @@
 
             }
         </select>
-        @if (User.IsInRole("ADMIN") || User.IsInRole("HOD"))
+
+        @if (User.IsInRole("ADMIN") || User.IsInRole("HOD") || User.IsInRole("STUDENT"))
         {
             <select class="form-control mr-4" name="SupportId">
                 <option @(ViewBag.SupportId == null ? "selected" : " ") value="">Support...</option>
-                <option @(ViewBag.SupportId == "1" ? "selected" : " ") value="1">Unassign</option>
+                @if (User.IsInRole("ADMIN") || User.IsInRole("HOD"))
+                {
+                    <option @(ViewBag.SupportId == "1" ? "selected" : " ") value="1">Unassign</option>
+                }
+
                 @foreach (var item in ViewBag.Support)
                 {
                     <option @(ViewBag.SupportId == item.Id ? "selected" : " ") value="@item.Id">@item.UserName</option>
                 }
             </select>
         }
+
         @*Type Complaint Check*@
         <div style="margin-right: 20px">
             <div class="TypeComplaintCheck">

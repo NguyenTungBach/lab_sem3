@@ -17,7 +17,7 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>ScheduleCreateViewModel</h4>
+        <h4>Schedule Create</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -75,7 +75,7 @@
 
         <div class="form-group">
             <div class="control-label col-md-2">
-                SlotNumber
+                Slot Number
             </div>
             @foreach (var item in EnumHelper.GetSelectList(typeof(LabSem3.Enum.SlotNumberEnum)))
             {
