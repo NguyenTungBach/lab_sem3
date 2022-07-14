@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
@@ -236,7 +236,7 @@ namespace LabSem3.Controllers
             {
                 var senderEmail = new MailAddress(AccountEmailSend, AccountNameSend);
                 var receiverEmail = new MailAddress(receiver, "ReceiverTest");
-                var password = "qjkfuhxgpvuzymex";
+                var password = "zopylytengbdgmvs";
                 var sub = subject;
                 var body = message;
                 var smtp = new SmtpClient
